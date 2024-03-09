@@ -29,3 +29,24 @@
 5. 异构。如何发挥各个后端的性能，统一调配计算资源，发挥SoC的最大性能。
 
 ![MiniNN](../assets/mininn.svg)
+
+
+# 开发中
+
+> 本项目作者受tensorflow lite，paddle-lite，Android NNAPI影响较大，一些设计可能借鉴上述项目
+> 本项目实践过程跟随项目：https://github.com/zjhellofss/KuiperInfer，在此表示感谢
+
+## 环境问题
+
+大家都知道，程序开发中半数人卡在了环境配置上面：新手基本都是从Windows开发的，不愿意折腾Linux，更不用提docker了；老手即使只有一份源码，自己也可以进行一定的平台迁移。所以本项目优先在Windows下开发。
+
+这里首先搬上来经典的“hello world”来走一遍编译流程，目前先使用cmake，后续会迁移到bazel。
+
+## 模块
+
+### 算子
+
+我目前理解的一个计算图中，最重要的组成部分就是算子，也可以称为节点（node），算子的信息以及相互连接关系构成了一个完成的计算图。要描述算子，需要确定以下2个类型：
+
+- operation：操作符，也就是一般的op，存储网络节点的信息
+- operator：操作数，这个也可以称为tensor，就是网络中的数据
