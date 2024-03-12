@@ -6,7 +6,7 @@ New-Item -ItemType Directory -Path .\build | Out-Null
 Set-Location .\build
 
 # 3. cmake
-cmake ..
+cmake -D WITHGTEST=ON ..
 
 # 4. make
 make
