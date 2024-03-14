@@ -48,6 +48,10 @@ int Tensor::size() const {
     return size_;
 }
 
+std::vector<float> Tensor::data() const {
+    return data_;
+}
+
 void Tensor::check_shape(const std::vector<int>& other_shape) const {
     if (shape_ != other_shape) {
         throw std::invalid_argument("Invalid shapes for element-wise operation");

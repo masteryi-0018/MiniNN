@@ -5,7 +5,7 @@ Remove-Item -Path .\build -Recurse -Force
 New-Item -ItemType Directory -Path .\build | Out-Null
 Set-Location .\build
 
-# 3. cmake
+# 3. cmake，-D变量=ON/OFF
 cmake -D WITHGTEST=ON ..
 
 # 4. make

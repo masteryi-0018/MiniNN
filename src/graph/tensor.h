@@ -13,6 +13,7 @@ public:
 
     Tensor operator-(const Tensor& other) const;
 
+    // 点积
     Tensor operator*(const Tensor& other) const;
 
     Tensor operator/(const Tensor& other) const;
@@ -20,6 +21,8 @@ public:
     std::vector<int> shape() const;
 
     int size() const;
+
+    std::vector<float> data() const;
 
 private:
     std::vector<int> shape_;
