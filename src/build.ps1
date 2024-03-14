@@ -6,7 +6,7 @@ New-Item -ItemType Directory -Path .\build | Out-Null
 Set-Location .\build
 
 # 3. cmake，-D变量=ON/OFF
-cmake -D WITHGTEST=ON ..
+cmake -D WITH_GTEST=ON ..
 
 # 4. make
 make
