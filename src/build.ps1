@@ -7,9 +7,12 @@ Set-Location .\build
 
 # 3. cmake，-D变量=ON/OFF
 cmake -D WITH_GTEST=ON ..
+# cmake -D WITH_GTEST=ON .. -G "MSYS Makefiles"
+# cmake -D WITH_GTEST=ON .. -G "MinGW Makefiles"
 
 # 4. make
-make
+ninja
+# make
 
 # 5.返回
 Set-Location ..
