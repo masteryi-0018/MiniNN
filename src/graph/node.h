@@ -1,3 +1,6 @@
+#ifndef NODE_H
+#define NODE_H
+
 #include <vector>
 
 class Node {
@@ -16,3 +19,5 @@ private:
     std::vector<int> inputs_;
     std::vector<int> outputs_;
 };
+
+#endif // NODE_H

@@ -6,10 +6,10 @@ New-Item -ItemType Directory -Path .\build | Out-Null
 Set-Location .\build
 
 # 3. cmake，-D变量=ON/OFF
-cmake -D WITH_GTEST=ON ..
-# cmake -D WITH_GTEST=ON .. -G "MSYS Makefiles"
-# cmake -D WITH_GTEST=ON .. -G "MinGW Makefiles"
-# cmake -D WITH_GTEST=ON .. -G Ninja
+cmake ..
+# cmake .. -G "MSYS Makefiles"
+# cmake .. -G "MinGW Makefiles"
+# cmake .. -G Ninja
 
 # 4. ninja or make
 cmake --build .

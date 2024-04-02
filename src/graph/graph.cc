@@ -1,8 +1,16 @@
 #include "graph.h"
 
-Graph::Graph(std::vector<Node*>& nodes, std::vector<Tensor*>& tensors) {
-    nodes_ = nodes;
-    tensors_ = tensors;
+Graph::Graph() {}
+
+void Graph::add_node(std::shared_ptr<Node> node, std::vector<int> inputs, std::vector<int> outputs) {
+    nodes_.emplace_back(node);
+    node->set_inputs(inputs);
+    node->set_outputs(outputs);
+    return;
+}
+
+std::vector<std::shared_ptr<Node>> Graph::get_nodes() {
+    return nodes_;
 }
 
 std::vector<int> Graph::get_inputs() const {
