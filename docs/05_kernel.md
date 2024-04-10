@@ -23,3 +23,9 @@ graph持有node和tensor，能够完整的表示深度学习的网络模型。�
 需求是：在遍历graph的时候，根据每个op，创建对应的kernel，这是需要从注册器中创建的。
 
 实际在注册的时候，是将op与创建kernel的`函数/方法`成对放在了map中，并不是真的创建了一个kernel，在准备阶段，使用注册器，根据op来创建kernel，运行时直接执行kernel的方法就可以。
+
+## 参考资料
+
+- <https://cloud.baidu.com/article/3275457>
+- <https://zhuanlan.zhihu.com/p/594087648>
+- <https://zhuanlan.zhihu.com/p/100418869>

@@ -8,7 +8,7 @@
 class OpFactory {
 public:
     // 通过op_type注册op
-    void RegisterCreator(std::string type, std::function<std::shared_ptr<Node>()> func) {
+    void RegisterCreator(Op type, std::function<std::shared_ptr<Node>()> func) {
         op_registry_[type] = func;
         return;
     }
@@ -18,7 +18,7 @@ public:
         return *x;
     }
 
-    std::shared_ptr<Node> Create(std::string type) {
+    std::shared_ptr<Node> Create(Op type) {
         auto it = op_registry_.find(type);
         if (it == op_registry_.end()) {
             return nullptr;
@@ -27,20 +27,20 @@ public:
     }
 
 private:
-    std::map<std::string, std::function<std::shared_ptr<Node>()>> op_registry_;
+    std::map<Op, std::function<std::shared_ptr<Node>()>> op_registry_;
 };
 
-class OpLiteRegistrar {
+class OpRegistrar {
 public:
-    OpLiteRegistrar(std::string type, std::function<std::shared_ptr<Node>()> func) {
+    OpRegistrar(Op type, std::function<std::shared_ptr<Node>()> func) {
         OpFactory::Global().RegisterCreator(type, func);
     }
 };
 
 
 // register an op
-#define REGISTER_OP(op_type__, OpClass)                                       \
-    static OpLiteRegistrar op_type__##__registry(                             \
-        #op_type__, []() {                                                    \
-            return std::unique_ptr<Node>(new OpClass());                      \
-        });                                                                   \
+#define REGISTER_OP(op_type_, OpClass)                                         \
+    static OpRegistrar op_type_##_registrar(                                   \
+        op_type_, []() {                                                       \
+            return std::unique_ptr<Node>(new OpClass());                       \
+        });

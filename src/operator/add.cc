@@ -4,4 +4,4 @@ Add::Add() {}
 
 void Add::set_kernel() {}
 
-REGISTER_OP(add, Add);
+REGISTER_OP(ADD, Add);
