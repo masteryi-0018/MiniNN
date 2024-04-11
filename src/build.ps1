@@ -10,6 +10,7 @@ cmake ..
 # cmake .. -G "MSYS Makefiles"
 # cmake .. -G "MinGW Makefiles"
 # cmake .. -G Ninja
+# cmake .. -G "Unix Makefiles"
 
 # 4. ninja or make
 cmake --build .
