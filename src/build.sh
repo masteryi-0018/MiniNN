@@ -7,9 +7,13 @@ cd ./build
 
 # 3. cmake
 cmake ..
+# cmake .. -G Ninja
+# cmake .. -G "MinGW Makefiles"
+# cmake .. -G "Unix Makefiles"
+# cmake .. -G "MSYS Makefiles"
 
-# 4. make
-make
+# 4. make or ninja
+cmake --build .
 
 # 5.返回
 cd ..

@@ -7,12 +7,12 @@ Set-Location .\build
 
 # 3. cmake，-D变量=ON/OFF
 cmake ..
-# cmake .. -G "MSYS Makefiles"
-# cmake .. -G "MinGW Makefiles"
 # cmake .. -G Ninja
+# cmake .. -G "MinGW Makefiles"
 # cmake .. -G "Unix Makefiles"
+# cmake .. -G "NMake Makefiles"
 
-# 4. ninja or make
+# 4. ninja，make or nmake
 cmake --build .
 
 # 5.返回
