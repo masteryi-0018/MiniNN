@@ -24,3 +24,24 @@
 set(GTEST_BUILD third_party/googletest)
 add_subdirectory(../third_party/googletest ${GTEST_BUILD})
 ```
+
+另一种方式是使用cmake的模块，`ExternalProject_Add`，具体来说，有2种方式使用`ExternalProject_Add`：
+
+- 直接在项目的cmakelists种添加对应代码
+- 新建自己的cmake模块（以.cmake结尾的文件夹），添加对应代码
+
+```sh
+include(ExternalProject)
+
+# 设置glog的源码和构建目录
+set(GLOG_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/glog)
+set(GLOG_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/glog)
+
+# 使用ExternalProject_Add来构建glog
+ExternalProject_Add(
+    glog
+    PREFIX ${GLOG_BINARY_DIR}
+    SOURCE_DIR ${GLOG_SOURCE_DIR}
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${GLOG_BINARY_DIR}
+)
+```

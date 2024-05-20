@@ -5,7 +5,7 @@ Remove-Item -Path .\build -Recurse -Force
 New-Item -ItemType Directory -Path .\build | Out-Null
 Set-Location .\build
 
-# 3. cmake，-D变量=ON/OFF
+# 3. cmake
 cmake ..
 # cmake .. -G Ninja
 # cmake .. -G "MinGW Makefiles"
