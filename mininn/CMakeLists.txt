@@ -10,11 +10,14 @@ option(WITH_GTEST "build with gtest" ON)
 include_directories(graph)
 include_directories(operator)
 include_directories(runtime)
+include_directories(utils)
 
 add_library(graph SHARED graph/tensor.cc graph/node.cc graph/graph.cc)
 add_library(operator SHARED operator/add.cc)
+add_library(utils SHARED utils/log.cc)
 
-target_link_libraries(operator graph)
+target_link_libraries(graph operator)
+target_link_libraries(graph utils)
 
 # 三、可执行文件
 if(WITH_GTEST)
@@ -24,12 +27,12 @@ if(WITH_GTEST)
 
     target_link_libraries(${TENSOR_GTEST} gtest gtest_main graph)
     target_link_libraries(${NODE_GTEST} gtest gtest_main graph)
-    target_link_libraries(${GRAPH_GTEST} gtest gtest_main graph operator)
+    target_link_libraries(${GRAPH_GTEST} gtest gtest_main graph)
 
     add_executable(${TEST} test.cc)
-    target_link_libraries(${TEST})
+    target_link_libraries(${TEST} utils)
 
 else()
     add_executable(${TEST} test.cc)
-    target_link_libraries(${TEST})
+    target_link_libraries(${TEST} utils)
 endif()

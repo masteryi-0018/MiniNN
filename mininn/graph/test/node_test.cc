@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
-
 #include "node.h"
+
+#include <gtest/gtest.h>
 
 TEST(nodeTest, createNode) {
     Node* node = new Node();

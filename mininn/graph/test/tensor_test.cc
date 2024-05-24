@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
-
 #include "tensor.h"
+
+#include <gtest/gtest.h>
 
 TEST(tensorTest, createTensor) {
     std::vector<int> shape = {1, 3, 224, 224};

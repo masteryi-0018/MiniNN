@@ -1,13 +1,12 @@
 #ifndef ADD_H
 #define ADD_H
 
-#include <vector>
-
 #include "node.h"
 #include "type.h"
 #include "param.h"
-
 #include "register.h"
+
+#include <vector>
 
 class Add : public Node {
 public:

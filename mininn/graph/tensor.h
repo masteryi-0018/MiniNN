@@ -1,3 +1,6 @@
+#ifndef TENSOR_H
+#define TENSOR_H
+
 #include <iostream>
 #include <vector>
 #include <numeric>
@@ -31,3 +34,5 @@ private:
 
     void check_shape(const std::vector<int>& other_shape) const;
 };
+
+#endif // TENSOR_H

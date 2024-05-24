@@ -1,8 +1,12 @@
-#include <vector>
-#include <memory>
+#ifndef GRAPH_H
+#define GRAPH_H
 
 #include "node.h"
 #include "tensor.h"
+#include "log.h"
+
+#include <vector>
+#include <memory>
 
 class Graph {
 public:
@@ -28,3 +32,5 @@ private:
     std::vector<int> inputs_;
     std::vector<int> outputs_;
 };
+
+#endif // GRAPH_H

@@ -1,9 +1,11 @@
-#include <gtest/gtest.h>
+#include "use_op.h"
 
 #include "graph.h"
 #include "node.h"
-
 #include "register.h"
+#include "type.h"
+
+#include <gtest/gtest.h>
 
 TEST(graphTest, add_node) {
     Graph* graph = new Graph();
