@@ -1,38 +1,32 @@
 # 一、环境变量
-set(TEST main-test)
-set(TENSOR_GTEST tensor-gtest)
-set(NODE_GTEST node-gtest)
-set(GRAPH_GTEST graph-gtest)
+set(TEST test-main)
+set(GTEST gtest-main)
 
 option(WITH_GTEST "build with gtest" ON)
 
-# 二、库文件
+# 二、头文件，库文件
 include_directories(graph)
 include_directories(operator)
 include_directories(runtime)
 include_directories(utils)
 
-add_library(graph SHARED graph/tensor.cc graph/node.cc graph/graph.cc)
-add_library(operator SHARED operator/add.cc)
-add_library(utils SHARED utils/log.cc)
+file(GLOB GRAPH_SRC "graph/*.cc")
+file(GLOB OPERATOR_SRC "operator/*.cc")
+file(GLOB UTILS_SRC "utils/*.cc")
+set(MININN_SRC ${GRAPH_SRC} ${OPERATOR_SRC} ${UTILS_SRC})
 
-target_link_libraries(graph operator)
-target_link_libraries(graph utils)
+add_library(mininn SHARED ${MININN_SRC})
 
 # 三、可执行文件
 if(WITH_GTEST)
-    add_executable(${TENSOR_GTEST} graph/test/tensor_test.cc)
-    add_executable(${NODE_GTEST} graph/test/node_test.cc)
-    add_executable(${GRAPH_GTEST} graph/test/graph_test.cc)
-
-    target_link_libraries(${TENSOR_GTEST} gtest gtest_main graph)
-    target_link_libraries(${NODE_GTEST} gtest gtest_main graph)
-    target_link_libraries(${GRAPH_GTEST} gtest gtest_main graph)
+    file(GLOB GTEST_SRC "graph/test/*.cc")
+    add_executable(${GTEST} ${GTEST_SRC})
+    target_link_libraries(${GTEST} gtest gtest_main mininn)
 
     add_executable(${TEST} test.cc)
-    target_link_libraries(${TEST} utils)
+    target_link_libraries(${TEST} mininn)
 
 else()
     add_executable(${TEST} test.cc)
-    target_link_libraries(${TEST} utils)
+    target_link_libraries(${TEST} mininn)
 endif()

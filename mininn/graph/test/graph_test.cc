@@ -17,8 +17,3 @@ TEST(graphTest, add_node) {
     int size = graph->get_nodes().size();
     EXPECT_EQ(size, 1);
 }
-
-int main(int argc, char** argv) {
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}

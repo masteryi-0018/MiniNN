@@ -139,8 +139,3 @@ TEST(tensorTest, dataTensor) {
     std::vector<float> result(size, 1.0f);
     EXPECT_EQ(tensor->data(), result);
 }
-
-int main(int argc, char** argv) {
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}

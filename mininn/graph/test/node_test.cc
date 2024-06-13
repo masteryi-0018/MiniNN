@@ -34,8 +34,3 @@ TEST(nodeTest, set_outputs) {
     node->set_outputs(indices);
     EXPECT_EQ(node->get_outputs(), indices);
 }
-
-int main(int argc, char** argv) {
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
