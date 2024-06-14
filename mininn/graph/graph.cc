@@ -13,6 +13,15 @@ std::vector<std::shared_ptr<Node>> Graph::get_nodes() {
     return nodes_;
 }
 
+void Graph::add_tensor(Tensor* tensor) {
+    tensors_.emplace_back(tensor);
+    return;
+}
+
+std::vector<Tensor*> Graph::get_tensors() {
+    return tensors_;
+}
+
 std::vector<int> Graph::get_inputs() const {
     return inputs_;
 }

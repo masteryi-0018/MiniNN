@@ -16,6 +16,8 @@ public:
 
     std::vector<std::shared_ptr<Node>> get_nodes();
 
+    void add_tensor(Tensor* tensor);
+
     std::vector<Tensor*> get_tensors();
 
     std::vector<int> get_inputs() const;

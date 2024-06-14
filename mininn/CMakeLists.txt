@@ -15,6 +15,7 @@ file(GLOB OPERATOR_SRC "operator/*.cc")
 file(GLOB UTILS_SRC "utils/*.cc")
 set(MININN_SRC ${GRAPH_SRC} ${OPERATOR_SRC} ${UTILS_SRC})
 
+# TODO: split shared lib to graph, operator, utils...
 add_library(mininn SHARED ${MININN_SRC})
 
 # 三、可执行文件
