@@ -7,13 +7,15 @@ option(WITH_GTEST "build with gtest" ON)
 # 二、头文件，库文件
 include_directories(graph)
 include_directories(operator)
+include_directories(kernel)
 include_directories(runtime)
 include_directories(utils)
 
 file(GLOB GRAPH_SRC "graph/*.cc")
 file(GLOB OPERATOR_SRC "operator/*.cc")
+file(GLOB KERNEL_SRC "kernel/*.cc")
 file(GLOB UTILS_SRC "utils/*.cc")
-set(MININN_SRC ${GRAPH_SRC} ${OPERATOR_SRC} ${UTILS_SRC})
+set(MININN_SRC ${GRAPH_SRC} ${OPERATOR_SRC} ${KERNEL_SRC} ${UTILS_SRC})
 
 # TODO: split shared lib to graph, operator, utils...
 add_library(mininn SHARED ${MININN_SRC})

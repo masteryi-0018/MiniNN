@@ -1,6 +1,9 @@
 #include "node.h"
+#include "register.h"
 
 Node::Node() {}
+
+Node::Node(Op type): op_type_(type) {}
 
 std::vector<int> Node::get_inputs() const {
     return inputs_;
@@ -16,4 +19,9 @@ std::vector<int> Node::get_outputs() const {
 
 void Node::set_outputs(std::vector<int>& indices) {
     outputs_ = indices;
+}
+
+std::shared_ptr<Kernel> Node::create_kernel() {
+    std::shared_ptr<Kernel> kernel = KernelFactory::Global().Create(op_type_);
+    return kernel;
 }

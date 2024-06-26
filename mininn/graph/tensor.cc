@@ -1,5 +1,7 @@
 #include "tensor.h"
 
+Tensor::Tensor() {}
+
 Tensor::Tensor(const std::vector<int>& shape) {
     shape_ = shape;
     size_ = std::accumulate(shape.begin(), shape.end(), 1, std::multiplies<int>());

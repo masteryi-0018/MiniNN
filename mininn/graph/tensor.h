@@ -8,6 +8,8 @@
 
 class Tensor {
 public:
+    Tensor();
+    
     Tensor(const std::vector<int>& shape);
 
     Tensor(const std::vector<int>& shape, const std::vector<float>& data);

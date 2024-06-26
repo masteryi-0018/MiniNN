@@ -1,6 +1,7 @@
 #include "add.h"
+#include "register.h"
 
-Add::Add() {}
+Add::Add(Op type): Node(type) {}
 
 void Add::set_kernel() {}
 

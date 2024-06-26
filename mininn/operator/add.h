@@ -4,14 +4,10 @@
 #include "node.h"
 #include "type.h"
 #include "param.h"
-#include "register.h"
 
-#include <vector>
-
-class Add : public Node {
+class Add: public Node {
 public:
-
-    Add();
+    Add(Op type);
 
     void set_kernel();
 

@@ -3,6 +3,11 @@
 #include <gtest/gtest.h>
 
 TEST(tensorTest, createTensor) {
+    Tensor* tensor = new Tensor();
+    ASSERT_TRUE(tensor != nullptr);
+}
+
+TEST(tensorTest, createTensorFromShape) {
     std::vector<int> shape = {1, 3, 224, 224};
     Tensor* tensor = new Tensor(shape);
     ASSERT_TRUE(tensor != nullptr);
@@ -20,7 +25,7 @@ TEST(tensorTest, createTensorFromData) {
     ASSERT_TRUE(tensor != nullptr);
 }
 
-TEST(tensorTest, plusTensor) {
+TEST(tensorTest, plus) {
     std::vector<int> shape1 = {2, 3, 4};
     int size1 = std::accumulate(shape1.begin(), shape1.end(), 1, std::multiplies<int>());
     std::vector<float> data1(size1, 0);
@@ -43,7 +48,7 @@ TEST(tensorTest, plusTensor) {
     EXPECT_EQ(tensor3->data(), result);
 }
 
-TEST(tensorTest, minusTensor) {
+TEST(tensorTest, minus) {
     std::vector<int> shape1 = {2, 3, 4};
     int size1 = std::accumulate(shape1.begin(), shape1.end(), 1, std::multiplies<int>());
     std::vector<float> data1(size1, 0);
@@ -66,7 +71,7 @@ TEST(tensorTest, minusTensor) {
     EXPECT_EQ(tensor3->data(), result);
 }
 
-TEST(tensorTest, dotTensor) {
+TEST(tensorTest, dot) {
     std::vector<int> shape1 = {2, 3, 4};
     int size1 = std::accumulate(shape1.begin(), shape1.end(), 1, std::multiplies<int>());
     std::vector<float> data1(size1, 0);
@@ -89,7 +94,7 @@ TEST(tensorTest, dotTensor) {
     EXPECT_EQ(tensor3->data(), result);
 }
 
-TEST(tensorTest, divTensor) {
+TEST(tensorTest, div) {
     std::vector<int> shape1 = {2, 3, 4};
     int size1 = std::accumulate(shape1.begin(), shape1.end(), 1, std::multiplies<int>());
     std::vector<float> data1(size1, 0);
@@ -112,21 +117,21 @@ TEST(tensorTest, divTensor) {
     EXPECT_EQ(tensor3->data(), result);
 }
 
-TEST(tensorTest, shapeTensor) {
+TEST(tensorTest, shape) {
     std::vector<int> shape = {2, 3, 4};
     Tensor* tensor = new Tensor(shape);
     std::vector<int> result = {2, 3, 4};
     EXPECT_EQ(tensor->shape(), result);
 }
 
-TEST(tensorTest, sizeTensor) {
+TEST(tensorTest, size) {
     std::vector<int> shape = {2, 3, 4};
     Tensor* tensor = new Tensor(shape);
     int result = 24;
     EXPECT_EQ(tensor->size(), result);
 }
 
-TEST(tensorTest, dataTensor) {
+TEST(tensorTest, data) {
     std::vector<int> shape = {2, 3, 4};
     int size = std::accumulate(shape.begin(), shape.end(), 1, std::multiplies<int>());
     std::vector<float> data;
