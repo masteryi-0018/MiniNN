@@ -20,16 +20,17 @@ add_library(graph SHARED ${GRAPH_SRC})
 add_library(operator SHARED ${OPERATOR_SRC})
 add_library(kernel SHARED ${KERNEL_SRC})
 add_library(utils SHARED ${UTILS_SRC})
+# add_library(mininn SHARED ${MININN_SRC})
 
-target_link_libraries(operator utils)
 target_link_libraries(kernel utils)
+# this do not establish link between so, when ${GTEST} link graph, operator and kernel linked to ${GTEST}
 target_link_libraries(graph operator kernel)
 
 # 3. gtest
 if(WITH_GTEST)
     file(GLOB GTEST_SRC "test/*.cc")
     add_executable(${GTEST} ${GTEST_SRC})
-    target_link_libraries(${GTEST} gtest gtest_main graph)
+    target_link_libraries(${GTEST} gtest graph)
 
     add_executable(${TEST} test.cc)
     target_link_libraries(${TEST} utils)
