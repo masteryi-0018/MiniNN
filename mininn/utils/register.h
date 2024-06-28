@@ -11,44 +11,6 @@
 #include <functional>
 #include <string>
 
-class OpKernelInfoCollector {
-public:
-    static OpKernelInfoCollector& Global() {
-        static OpKernelInfoCollector* x = new OpKernelInfoCollector;
-        return *x;
-    }
-
-    // TODO: to understand
-    void AddOp2path(Op type, const std::string& op_path) {
-    int index = op_path.find_last_of('/');
-    if (index != std::string::npos) {
-        op_path_.insert(std::pair<Op, std::string>(
-        type, op_path.substr(index + 1)));
-        }
-    }
-
-    // TODO: to understand
-    void AddKernel2path(Op type, const std::string& kernel_path) {
-    int index = kernel_path.find_last_of('/');
-    if (index != std::string::npos) {
-        kernel_path_.insert(std::pair<Op, std::string>(
-        type, kernel_path.substr(index + 1)));
-        }
-    }
-
-    const std::map<Op, std::string>& GetOp2PathDict() {
-        return op_path_;
-    }
-
-    const std::map<Op, std::string>& GetKernel2PathDict() {
-        return kernel_path_;
-    }
-
-private:
-    std::map<Op, std::string> op_path_;
-    std::map<Op, std::string> kernel_path_;
-};
-
 class OpFactory {
 public:
     void RegisterCreator(Op type, std::function<std::shared_ptr<Node>()> func) {
@@ -125,7 +87,6 @@ public:
         });                                                                    \
     int touch_op_##op_type_() {                                                \
         op_type_##_registrar.touch();                                          \
-        OpKernelInfoCollector::Global().AddOp2path(op_type_, __FILE__);        \
         return 0;                                                              \
     }
 
@@ -137,7 +98,6 @@ public:
         });                                                                    \
     int touch_kernel_##kernel_type_() {                                        \
         kernel_type_##_registrar.touch();                                      \
-        OpKernelInfoCollector::Global().AddKernel2path(kernel_type_, __FILE__);\
         return 0;                                                              \
     }
 
