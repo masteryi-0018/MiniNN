@@ -1,4 +1,5 @@
 #include "use_op.h"
+#include "use_kernel.h"
 
 #include "graph.h"
 #include "node.h"
