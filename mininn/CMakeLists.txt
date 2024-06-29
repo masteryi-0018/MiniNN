@@ -5,21 +5,23 @@ set(GTEST gtest-main)
 option(WITH_GTEST "build with gtest" ON)
 
 # 2. head file, source file and so
-include_directories(graph)
-include_directories(operator)
-include_directories(kernel)
 include_directories(utils)
-
-file(GLOB GRAPH_SRC "graph/*.cc")
-file(GLOB OPERATOR_SRC "operator/*.cc")
-file(GLOB KERNEL_SRC "kernel/*.cc")
 file(GLOB UTILS_SRC "utils/*.cc")
-# set(MININN_SRC ${GRAPH_SRC} ${OPERATOR_SRC} ${KERNEL_SRC} ${UTILS_SRC})
-
-add_library(graph SHARED ${GRAPH_SRC})
-add_library(operator SHARED ${OPERATOR_SRC})
-add_library(kernel SHARED ${KERNEL_SRC})
 add_library(utils SHARED ${UTILS_SRC})
+
+include_directories(kernel)
+file(GLOB KERNEL_SRC "kernel/*.cc")
+add_library(kernel SHARED ${KERNEL_SRC})
+
+include_directories(operator)
+file(GLOB OPERATOR_SRC "operator/*.cc")
+add_library(operator SHARED ${OPERATOR_SRC})
+
+include_directories(graph)
+file(GLOB GRAPH_SRC "graph/*.cc")
+add_library(graph SHARED ${GRAPH_SRC})
+
+# set(MININN_SRC ${GRAPH_SRC} ${OPERATOR_SRC} ${KERNEL_SRC} ${UTILS_SRC})
 # add_library(mininn SHARED ${MININN_SRC})
 
 target_link_libraries(kernel utils)
