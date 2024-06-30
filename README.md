@@ -12,7 +12,7 @@ git clone --recursive https://github.com/masteryi-0018/MiniNN.git
 git clone --recursive git@github.com:masteryi-0018/MiniNN.git
 ```
 
-## build
+## build(cmake)
 
 ### windows
 
@@ -138,3 +138,21 @@ ninja
 ```
 
 Linux只支持"Unix Makefiles"和"Ninja"，没有那么多花里胡哨的
+
+## build(bazel)
+
+施工中...
+
+## quick start
+
+### windows
+
+bugfix中...
+
+### linux
+
+```sh
+./build/mininn/gtest-main
+```
+
+应该可以看到gtest全部通过
