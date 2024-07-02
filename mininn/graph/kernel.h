@@ -5,7 +5,8 @@ class Kernel {
 public:
     Kernel();
 
-    void run();
+    // must be a virtual func
+    virtual void run();
 };
 
 #endif // KERNEL_H
