@@ -1,4 +1,4 @@
-#include "kernel.h"
+#include "mininn/graph/kernel.h"
 
 Kernel::Kernel() {}
 

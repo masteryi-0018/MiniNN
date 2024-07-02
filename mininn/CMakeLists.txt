@@ -1,43 +1,19 @@
 # 1. environment
-set(TEST test-main)
-set(GTEST gtest-main)
+set(TEST_MAIN test-main)
 
 option(WITH_GTEST "build with gtest" ON)
 
-# 2. head file, source file and so
-include_directories(utils)
-file(GLOB UTILS_SRC "utils/*.cc")
-add_library(utils SHARED ${UTILS_SRC})
+# 2. subdirectory
+add_subdirectory(utils)
+add_subdirectory(graph)
+add_subdirectory(operator)
+add_subdirectory(kernel)
+add_subdirectory(runtime)
 
-include_directories(kernel)
-file(GLOB KERNEL_SRC "kernel/*.cc")
-add_library(kernel SHARED ${KERNEL_SRC})
+# 3. bin
+add_executable(${TEST_MAIN} test.cc)
+target_link_libraries(${TEST_MAIN} utils)
 
-include_directories(operator)
-file(GLOB OPERATOR_SRC "operator/*.cc")
-add_library(operator SHARED ${OPERATOR_SRC})
-
-include_directories(graph)
-file(GLOB GRAPH_SRC "graph/*.cc")
-add_library(graph SHARED ${GRAPH_SRC})
-
-# set(MININN_SRC ${GRAPH_SRC} ${OPERATOR_SRC} ${KERNEL_SRC} ${UTILS_SRC})
-# add_library(mininn SHARED ${MININN_SRC})
-
-target_link_libraries(kernel utils)
-# this do not establish link between so, when ${GTEST} link graph, operator and kernel linked to ${GTEST}
-target_link_libraries(graph operator kernel)
-
-# 3. gtest
 if(WITH_GTEST)
-    file(GLOB GTEST_SRC "test/*.cc")
-    add_executable(${GTEST} ${GTEST_SRC})
-    target_link_libraries(${GTEST} gtest graph)
-
-    add_executable(${TEST} test.cc)
-    target_link_libraries(${TEST} utils)
-
-else()
-    add_executable(${TEST} test.cc)
-    target_link_libraries(${TEST} utils)
+    add_subdirectory(test)
 endif()

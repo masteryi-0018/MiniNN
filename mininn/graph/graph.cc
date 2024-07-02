@@ -1,4 +1,4 @@
-#include "graph.h"
+#include "mininn/graph/graph.h"
 
 Graph::Graph() {}
 
@@ -14,12 +14,12 @@ std::vector<std::shared_ptr<Node>> Graph::get_nodes() {
 }
 
 void Graph::add_tensor() {
-    Tensor* tensor = new Tensor();
+    auto tensor = std::make_shared<Tensor>();
     tensors_.emplace_back(tensor);
     return;
 }
 
-std::vector<Tensor*> Graph::get_tensors() {
+std::vector<std::shared_ptr<Tensor>> Graph::get_tensors() {
     return tensors_;
 }
 
@@ -37,21 +37,4 @@ void Graph::set_outputs(std::vector<int>& indices) {
 
 std::vector<int> Graph::get_outputs() const {
     return outputs_;
-}
-
-void Graph::prepare() {
-    for (auto node: nodes_) {
-        std::shared_ptr<Kernel> kernel = node->create_kernel();
-        kernels_.emplace_back(kernel);
-    }
-}
-
-std::vector<std::shared_ptr<Kernel>> Graph::get_kernels() const {
-    return kernels_;
-}
-
-void Graph::run() {
-    for (auto kernel: kernels_) {
-        kernel->run();
-    }
 }

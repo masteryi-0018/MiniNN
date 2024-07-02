@@ -1,8 +1,8 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include "node.h"
-#include "tensor.h"
+#include "mininn/graph/node.h"
+#include "mininn/graph/tensor.h"
 
 #include <vector>
 #include <memory>
@@ -17,7 +17,7 @@ public:
 
     void add_tensor();
 
-    std::vector<Tensor*> get_tensors();
+    std::vector<std::shared_ptr<Tensor>> get_tensors();
     
     void set_inputs(std::vector<int>& indices);
 
@@ -27,18 +27,11 @@ public:
 
     std::vector<int> get_outputs() const;
 
-    void prepare();
-
-    std::vector<std::shared_ptr<Kernel>> get_kernels() const;
-
-    void run();
-
 private:
     std::vector<std::shared_ptr<Node>> nodes_;
-    std::vector<Tensor*> tensors_;
+    std::vector<std::shared_ptr<Tensor>> tensors_;
     std::vector<int> inputs_;
     std::vector<int> outputs_;
-    std::vector<std::shared_ptr<Kernel>> kernels_;
 };
 
 #endif // GRAPH_H

@@ -5,7 +5,7 @@ class Kernel {
 public:
     Kernel();
 
-    virtual void run();
+    void run();
 };
 
 #endif // KERNEL_H

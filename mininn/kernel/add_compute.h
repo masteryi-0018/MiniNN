@@ -1,7 +1,7 @@
 #ifndef ADD_COMPUTE_H
 #define ADD_COMPUTE_H
 
-#include "kernel.h"
+#include "mininn/graph/kernel.h"
 
 class AddCompute: public Kernel {
 public:

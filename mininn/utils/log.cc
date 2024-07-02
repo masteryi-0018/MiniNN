@@ -1,4 +1,4 @@
-#include "log.h"
+#include "mininn/utils/log.h"
 
 #include <ctime>
 #include <iostream>

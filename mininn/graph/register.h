@@ -1,10 +1,9 @@
 #ifndef REGISTER_H
 #define REGISTER_H
 
-#include "type.h"
-#include "node.h"
-#include "kernel.h"
-#include "log.h"
+#include "mininn/graph/type.h"
+#include "mininn/graph/node.h"
+#include "mininn/graph/kernel.h"
 
 #include <map>
 #include <memory> // shared_ptr needs
@@ -79,6 +78,7 @@ public:
     void touch() {}
 };
 
+// why below is a unique_ptr?
 // register an op
 #define REGISTER_OP(op_type_, OpClass)                                         \
     static OpRegistrar op_type_##_registrar(                                   \
