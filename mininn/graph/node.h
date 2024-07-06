@@ -21,6 +21,8 @@ public:
 
     std::shared_ptr<Kernel> create_kernel();
 
+    virtual void init_kernel(std::shared_ptr<Kernel> kernel);
+
 private:
     Op op_type_;
     std::vector<int> inputs_;

@@ -1,5 +1,6 @@
 #include "mininn/graph/node.h"
 #include "mininn/graph/register.h"
+#include "mininn/utils/log.h"
 
 Node::Node(Op type): op_type_(type) {}
 
@@ -21,5 +22,10 @@ std::vector<int> Node::get_outputs() const {
 
 std::shared_ptr<Kernel> Node::create_kernel() {
     std::shared_ptr<Kernel> kernel = KernelFactory::Global().Create(op_type_);
+    init_kernel(kernel);
     return kernel;
+}
+
+void Node::init_kernel(std::shared_ptr<Kernel> kernel) {
+    LOG("shouldn't be printed\n");
 }

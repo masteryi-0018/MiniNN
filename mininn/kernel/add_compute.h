@@ -8,6 +8,12 @@ public:
     AddCompute();
 
     void run();
+
+    void set_params(AddParams* params);
+
+    AddParams* get_params();
+private:
+    AddParams* params_;
 };
 
 #endif // ADD_COMPUTE_H
