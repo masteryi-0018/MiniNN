@@ -1,3 +1,29 @@
 #include "mininn/graph/tensor.h"
 
+#include <stdlib.h>
+#include <numeric> // std::accumulate
+#include <functional> // std::multiplies
+
 Tensor::Tensor() {}
+
+void Tensor::set_shape(std::vector<int> shape) {
+    shape_ = shape;
+    size_ = std::accumulate(shape.begin(), shape.end(), 1, std::multiplies<int>());
+    buffer_ = malloc(size_);
+}
+
+std::vector<int> Tensor::get_shape() {
+    return shape_;
+}
+
+int Tensor::get_size() {
+    return size_;
+}
+
+void* Tensor::get_buffer() {
+    return buffer_;
+}
+
+int Tensor::get_length() {
+    return size_ * sizeof(float);
+}

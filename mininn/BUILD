@@ -16,6 +16,9 @@ cc_library(
     hdrs = glob([
         "graph/*.h",
     ]),
+    deps = [
+        ":utils",
+    ],
 )
 
 cc_library(
@@ -28,6 +31,7 @@ cc_library(
     ]),
     deps = [
         ":graph",
+        ":utils",
     ],
 )
 
