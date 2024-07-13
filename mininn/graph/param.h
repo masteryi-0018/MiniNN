@@ -3,12 +3,14 @@
 
 #include "mininn/graph/tensor.h"
 
+#include <memory>
+
 struct Params {};
 
 struct AddParams: Params {
-    Tensor* input1;
-    Tensor* input2;
-    Tensor* output;
+    std::shared_ptr<Tensor> input1;
+    std::shared_ptr<Tensor> input2;
+    std::shared_ptr<Tensor> output;
 };
 
 #endif // PARAM_H

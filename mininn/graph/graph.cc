@@ -4,8 +4,19 @@ Graph::Graph() {}
 
 void Graph::add_node(std::shared_ptr<Node> node, std::vector<int> inputs, std::vector<int> outputs) {
     nodes_.emplace_back(node);
-    node->set_inputs(inputs);
-    node->set_outputs(outputs);
+    std::vector<std::shared_ptr<Tensor>> tensors = get_tensors();
+
+    std::vector<std::shared_ptr<Tensor>> input_tensors;
+    for (int i = 0; i < inputs.size(); ++i) {
+        input_tensors.emplace_back(tensors[inputs[i]]);
+    }
+    node->set_input_tensors(input_tensors);
+
+    std::vector<std::shared_ptr<Tensor>> output_tensors;
+    for (int i = 0; i < outputs.size(); ++i) {
+        output_tensors.emplace_back(tensors[outputs[i]]);
+    }
+    node->set_output_tensors(output_tensors);
     return;
 }
 
@@ -13,9 +24,8 @@ std::vector<std::shared_ptr<Node>> Graph::get_nodes() {
     return nodes_;
 }
 
-void Graph::add_tensor() {
+void Graph::add_tensor(std::vector<int> shape) {
     auto tensor = std::make_shared<Tensor>();
-    std::vector<int> shape = {1, 3, 224, 224};
     tensor->set_shape(shape);
     tensors_.emplace_back(tensor);
     return;

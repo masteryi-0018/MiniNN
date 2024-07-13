@@ -8,9 +8,9 @@ AddCompute::AddCompute() {}
 void AddCompute::run() {
     LOG("kernel run start");
     AddParams* params = get_params();
-    Tensor* x = params->input1;
-    Tensor* y = params->input2;
-    Tensor* out = params->output;
+    std::shared_ptr<Tensor> x = params->input1;
+    std::shared_ptr<Tensor> y = params->input2;
+    std::shared_ptr<Tensor> out = params->output;
 
     int size = x->get_size();
 

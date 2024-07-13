@@ -29,3 +29,7 @@ std::shared_ptr<Kernel> Node::create_kernel() {
 void Node::init_kernel(std::shared_ptr<Kernel> kernel) {
     LOG("shouldn't be printed\n");
 }
+
+void Node::set_input_tensors(std::vector<std::shared_ptr<Tensor>> tensors) {}
+
+void Node::set_output_tensors(std::vector<std::shared_ptr<Tensor>> tensors) {}

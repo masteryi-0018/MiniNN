@@ -23,6 +23,10 @@ public:
 
     virtual void init_kernel(std::shared_ptr<Kernel> kernel);
 
+    virtual void set_input_tensors(std::vector<std::shared_ptr<Tensor>> tensors);
+
+    virtual void set_output_tensors(std::vector<std::shared_ptr<Tensor>> tensors);
+
 private:
     Op op_type_;
     std::vector<int> inputs_;

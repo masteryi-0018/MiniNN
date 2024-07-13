@@ -4,10 +4,15 @@
 
 Add::Add(Op type): Node(type) {
     params_ = new AddParams;
-    // todo: params_ should point to graph's tensor
-    params_->input1 = new Tensor();
-    params_->input2 = new Tensor();
-    params_->output = new Tensor();
+}
+
+void Add::set_input_tensors(std::vector<std::shared_ptr<Tensor>> tensors) {
+    params_->input1 = tensors[0];
+    params_->input2 = tensors[1];
+}
+
+void Add::set_output_tensors(std::vector<std::shared_ptr<Tensor>> tensors) {
+    params_->output = tensors[0];
 }
 
 void Add::init_kernel(std::shared_ptr<Kernel> kernel) {
