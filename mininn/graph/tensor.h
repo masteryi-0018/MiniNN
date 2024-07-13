@@ -7,9 +7,9 @@ class Tensor {
 public:
     Tensor();
 
-    void set_shape(std::vector<int> shape);
+    void set_shape(std::vector<int>& shape);
 
-    std::vector<int> get_shape();
+    std::vector<int>& get_shape();
 
     int get_size();
 

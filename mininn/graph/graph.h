@@ -11,7 +11,7 @@ class Graph {
 public:
     Graph();
 
-    void add_node(std::shared_ptr<Node> node, std::vector<int> inputs, std::vector<int> outputs);
+    void add_node(std::shared_ptr<Node> node, std::vector<int>& inputs, std::vector<int>& outputs);
 
     std::vector<std::shared_ptr<Node>> get_nodes();
 
@@ -21,11 +21,11 @@ public:
     
     void set_inputs(std::vector<int>& inputs);
 
-    std::vector<int> get_inputs();
+    std::vector<int>& get_inputs();
 
     void set_outputs(std::vector<int>& outputs);
 
-    std::vector<int> get_outputs();
+    std::vector<int>& get_outputs();
 
 private:
     std::vector<std::shared_ptr<Node>> nodes_;

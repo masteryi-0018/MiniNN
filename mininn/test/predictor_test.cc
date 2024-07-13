@@ -18,7 +18,7 @@ bool is_equal(float* tensor1, float* tensor2, int size) {
     return true;
 }
 
-TEST(graphTest, prepare) {
+std::shared_ptr<Graph> make_graph() {
     auto graph = std::make_shared<Graph>();
     
     // 1. set tensor first
@@ -28,7 +28,7 @@ TEST(graphTest, prepare) {
     graph->add_tensor(shape);
 
     // 2. set node
-    std::shared_ptr<Node> node = OpFactory::Global().Create(ADD);
+    std::shared_ptr<Node> node = OpFactory::global().create(ADD);
     std::vector<int> inputs = {0, 1};
     std::vector<int> outputs = {2};
     graph->add_node(node, inputs, outputs);
@@ -37,30 +37,29 @@ TEST(graphTest, prepare) {
     graph->set_inputs(inputs);
     graph->set_outputs(outputs);
 
-    auto predictor = std::make_shared<Predictor>(graph);
-    predictor->prepare();
-    int kernel_num = predictor->get_kernels().size();
-    EXPECT_EQ(kernel_num, 1);
+    return graph;
 }
 
-TEST(graphTest, run) {
-    auto graph = std::make_shared<Graph>();
-    
-    // 1. set tensor first
-    std::vector<int> shape = {1, 3, 224, 224};
-    graph->add_tensor(shape);
-    graph->add_tensor(shape);
-    graph->add_tensor(shape);
+TEST(Predictor, get_input_tensors) {
+    auto graph = make_graph();
 
-    // 2. set node
-    std::shared_ptr<Node> node = OpFactory::Global().Create(ADD);
-    std::vector<int> inputs = {0, 1};
-    std::vector<int> outputs = {2};
-    graph->add_node(node, inputs, outputs);
+    auto predictor = std::make_shared<Predictor>(graph);
+    std::vector<std::shared_ptr<Tensor>> input_tensors = predictor->get_input_tensors();
+    int input_num = input_tensors.size();
+    EXPECT_EQ(input_num, 2);
+}
 
-    // 3. set graph input and output
-    graph->set_inputs(inputs);
-    graph->set_outputs(outputs);
+TEST(Predictor, get_output_tensors) {
+    auto graph = make_graph();
+
+    auto predictor = std::make_shared<Predictor>(graph);
+    std::vector<std::shared_ptr<Tensor>> output_tensors = predictor->get_output_tensors();
+    int output_num = output_tensors.size();
+    EXPECT_EQ(output_num, 1);
+}
+
+TEST(Predictor, run) {
+    auto graph = make_graph();
 
     auto predictor = std::make_shared<Predictor>(graph);
     predictor->prepare();

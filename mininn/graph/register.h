@@ -12,17 +12,17 @@
 
 class OpFactory {
 public:
-    void RegisterCreator(Op type, std::function<std::shared_ptr<Node>()> func) {
+    void register_creator(Op type, std::function<std::shared_ptr<Node>()> func) {
         op_registry_[type] = func;
         return;
     }
 
-    static OpFactory& Global(){
+    static OpFactory& global(){
         static OpFactory* x = new OpFactory;
         return *x;
     }
 
-    std::shared_ptr<Node> Create(Op type) {
+    std::shared_ptr<Node> create(Op type) {
         auto it = op_registry_.find(type);
         if (it == op_registry_.end()) {
             return nullptr;
@@ -37,7 +37,7 @@ private:
 class OpRegistrar {
 public:
     OpRegistrar(Op type, std::function<std::shared_ptr<Node>()> func) {
-        OpFactory::Global().RegisterCreator(type, func);
+        OpFactory::global().register_creator(type, func);
     }
     // it is IMPORTANT!
     // Touch function is used to guarantee registrar was initialized.
@@ -46,17 +46,17 @@ public:
 
 class KernelFactory {
 public:
-    void RegisterCreator(Op type, std::function<std::shared_ptr<Kernel>()> func) {
+    void register_creator(Op type, std::function<std::shared_ptr<Kernel>()> func) {
         kernel_registry_[type] = func;
         return;
     }
 
-    static KernelFactory& Global(){
+    static KernelFactory& global(){
         static KernelFactory* x = new KernelFactory;
         return *x;
     }
 
-    std::shared_ptr<Kernel> Create(Op type) {
+    std::shared_ptr<Kernel> create(Op type) {
         auto it = kernel_registry_.find(type);
         if (it == kernel_registry_.end()) {
             return nullptr;
@@ -71,14 +71,14 @@ private:
 class KernelRegistrar {
 public:
     KernelRegistrar(Op type, std::function<std::shared_ptr<Kernel>()> func) {
-        KernelFactory::Global().RegisterCreator(type, func);
+        KernelFactory::global().register_creator(type, func);
     }
     // it is IMPORTANT!
     // Touch function is used to guarantee registrar was initialized.
     void touch() {}
 };
 
-// why below is a unique_ptr?
+// todo: why below is a unique_ptr?
 // register an op
 #define REGISTER_OP(op_type_, OpClass)                                         \
     static OpRegistrar op_type_##_registrar(                                   \

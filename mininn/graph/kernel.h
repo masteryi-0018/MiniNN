@@ -7,13 +7,11 @@ class Kernel {
 public:
     Kernel();
 
-    // must be a virtual func
-    virtual void run();
+    virtual void run() = 0;
 
-    // must be a virtual func
-    virtual void set_params(Params* params);
+    virtual void set_params(Params* params) = 0;
 
-    Params* get_params();
+    virtual Params* get_params() = 0;
 };
 
 #endif // KERNEL_H

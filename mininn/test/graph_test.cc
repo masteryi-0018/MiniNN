@@ -19,8 +19,10 @@ TEST(Graph, add_node) {
     int tensor_num = graph->get_tensors().size();
     EXPECT_EQ(tensor_num, 3);
 
-    std::shared_ptr<Node> node = OpFactory::Global().Create(ADD);
-    graph->add_node(node, {0, 1}, {2});
+    std::shared_ptr<Node> node = OpFactory::global().create(ADD);
+    std::vector<int> inputs = {0, 1};
+    std::vector<int> outputs = {2};
+    graph->add_node(node, inputs, outputs);
     int node_num = graph->get_nodes().size();
     EXPECT_EQ(node_num, 1);
 }

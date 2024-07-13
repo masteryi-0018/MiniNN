@@ -1,3 +1,5 @@
+bazel clean
+
 bazel build //mininn:utils
 bazel build //mininn:graph
 bazel build //mininn:operator

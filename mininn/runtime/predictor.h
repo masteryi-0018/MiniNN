@@ -13,8 +13,6 @@ public:
 
     void prepare();
 
-    std::vector<std::shared_ptr<Kernel>> get_kernels();
-
     void run();
 
     std::vector<std::shared_ptr<Tensor>> get_input_tensors();

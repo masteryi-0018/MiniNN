@@ -2,7 +2,7 @@
 
 Graph::Graph() {}
 
-void Graph::add_node(std::shared_ptr<Node> node, std::vector<int> inputs, std::vector<int> outputs) {
+void Graph::add_node(std::shared_ptr<Node> node, std::vector<int>& inputs, std::vector<int>& outputs) {
     nodes_.emplace_back(node);
     std::vector<std::shared_ptr<Tensor>> tensors = get_tensors();
 
@@ -24,7 +24,7 @@ std::vector<std::shared_ptr<Node>> Graph::get_nodes() {
     return nodes_;
 }
 
-void Graph::add_tensor(std::vector<int> shape) {
+void Graph::add_tensor(std::vector<int>& shape) {
     auto tensor = std::make_shared<Tensor>();
     tensor->set_shape(shape);
     tensors_.emplace_back(tensor);
@@ -39,7 +39,7 @@ void Graph::set_inputs(std::vector<int>& inputs) {
     inputs_ = inputs;
 }
 
-std::vector<int> Graph::get_inputs() {
+std::vector<int>& Graph::get_inputs() {
     return inputs_;
 }
 
@@ -47,6 +47,6 @@ void Graph::set_outputs(std::vector<int>& outputs) {
     outputs_ = outputs;
 }
 
-std::vector<int> Graph::get_outputs() {
+std::vector<int>& Graph::get_outputs() {
     return outputs_;
 }

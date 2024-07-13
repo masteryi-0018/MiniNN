@@ -10,10 +10,6 @@ void Predictor::prepare() {
     }
 }
 
-std::vector<std::shared_ptr<Kernel>> Predictor::get_kernels() {
-    return kernels_;
-}
-
 void Predictor::run() {
     for (auto kernel: kernels_) {
         kernel->run();
@@ -21,21 +17,21 @@ void Predictor::run() {
 }
 
 std::vector<std::shared_ptr<Tensor>> Predictor::get_input_tensors() {
+    std::vector<std::shared_ptr<Tensor>> tensors = graph_->get_tensors();
     std::vector<int> inputs = graph_->get_inputs();
-    std::vector<std::shared_ptr<Tensor>> tensors;
+    std::vector<std::shared_ptr<Tensor>> input_tensors;
     for (int i = 0; i < inputs.size(); ++i) {
-        std::shared_ptr<Tensor> tensor = graph_->get_tensors()[inputs[i]];
-        tensors.emplace_back(tensor);
+        input_tensors.emplace_back(tensors[inputs[i]]);
     }
-    return tensors;
+    return input_tensors;
 }
 
 std::vector<std::shared_ptr<Tensor>> Predictor::get_output_tensors() {
+    std::vector<std::shared_ptr<Tensor>> tensors = graph_->get_tensors();
     std::vector<int> outputs = graph_->get_outputs();
-    std::vector<std::shared_ptr<Tensor>> tensors;
+    std::vector<std::shared_ptr<Tensor>> output_tensors;
     for (int i = 0; i < outputs.size(); ++i) {
-        std::shared_ptr<Tensor> tensor = graph_->get_tensors()[outputs[i]];
-        tensors.emplace_back(tensor);
+        output_tensors.emplace_back(tensors[outputs[i]]);
     }
-    return tensors;
+    return output_tensors;
 }
