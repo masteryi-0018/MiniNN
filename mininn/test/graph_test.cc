@@ -8,32 +8,41 @@
 
 #include <gtest/gtest.h>
 
-// TODO: windows can not pass this gtest
-TEST(graphTest, add_node) {
-    Graph* graph = new Graph();
+// todo: windows can not pass this gtest
+TEST(Graph, add_node) {
+    // you should add_tensor before add_node
+    auto graph = std::make_shared<Graph>();
+    std::vector<int> shape = {1, 3, 224, 224};
+    graph->add_tensor(shape);
+    graph->add_tensor(shape);
+    graph->add_tensor(shape);
+    int tensor_num = graph->get_tensors().size();
+    EXPECT_EQ(tensor_num, 3);
+
     std::shared_ptr<Node> node = OpFactory::Global().Create(ADD);
     graph->add_node(node, {0, 1}, {2});
     int node_num = graph->get_nodes().size();
     EXPECT_EQ(node_num, 1);
 }
 
-TEST(graphTest, add_tensor) {
-    Graph* graph = new Graph();
-    graph->add_tensor();
+TEST(Graph, add_tensor) {
+    auto graph = std::make_shared<Graph>();
+    std::vector<int> shape = {1, 3, 224, 224};
+    graph->add_tensor(shape);
     int tensor_num = graph->get_tensors().size();
     EXPECT_EQ(tensor_num, 1);
 }
 
-TEST(graphTest, set_inputs) {
-    Graph* graph = new Graph();
+TEST(Graph, set_inputs) {
+    auto graph = std::make_shared<Graph>();
     std::vector<int> inputs = {0, 1};
     graph->set_inputs(inputs);
     std::vector<int> inputs_ = graph->get_inputs();
     EXPECT_EQ(inputs_, inputs);
 }
 
-TEST(graphTest, set_outputs) {
-    Graph* graph = new Graph();
+TEST(Graph, set_outputs) {
+    auto graph = std::make_shared<Graph>();
     std::vector<int> outputs = {2};
     graph->set_outputs(outputs);
     std::vector<int> outputs_ = graph->get_outputs();

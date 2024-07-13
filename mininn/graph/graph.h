@@ -15,17 +15,17 @@ public:
 
     std::vector<std::shared_ptr<Node>> get_nodes();
 
-    void add_tensor(std::vector<int> shape);
+    void add_tensor(std::vector<int>& shape);
 
     std::vector<std::shared_ptr<Tensor>> get_tensors();
     
-    void set_inputs(std::vector<int>& indices);
+    void set_inputs(std::vector<int>& inputs);
 
-    std::vector<int> get_inputs() const;
+    std::vector<int> get_inputs();
 
-    void set_outputs(std::vector<int>& indices);
+    void set_outputs(std::vector<int>& outputs);
 
-    std::vector<int> get_outputs() const;
+    std::vector<int> get_outputs();
 
 private:
     std::vector<std::shared_ptr<Node>> nodes_;

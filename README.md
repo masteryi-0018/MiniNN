@@ -141,7 +141,15 @@ Linux只支持"Unix Makefiles"和"Ninja"，没有那么多花里胡哨的
 
 ## build(bazel)
 
-施工中...
+### linux
+
+1. Ubuntu 20.04
+
+> 使用bazel: 7.2.1
+
+```sh
+./build_bazel.sh
+```
 
 ## quick start
 
@@ -151,8 +159,27 @@ bugfix中...
 
 ### linux
 
+1. cmake
+
 ```sh
-./build/mininn/gtest-main
+./build/mininn/test-main
+./build/mininn/test/gtest-ut
+./build/mininn/test/gtest-predictor
+```
+
+2. bazel
+
+```sh
+./bazel-bin/mininn/test-main
+./bazel-bin/mininn/gtest-ut
+./bazel-bin/mininn/gtest-predictor
 ```
 
 应该可以看到gtest全部通过
+
+## roadmap
+
+1. 开发convertor，支持模型转换
+2. 支持从文件读取模型，并解析为图
+3. 增加opencl后端
+4. 增加示例程序，链接mininn.so

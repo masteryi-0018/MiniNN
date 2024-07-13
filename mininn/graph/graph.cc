@@ -35,18 +35,18 @@ std::vector<std::shared_ptr<Tensor>> Graph::get_tensors() {
     return tensors_;
 }
 
-void Graph::set_inputs(std::vector<int>& indices) {
-    inputs_ = indices;
+void Graph::set_inputs(std::vector<int>& inputs) {
+    inputs_ = inputs;
 }
 
-std::vector<int> Graph::get_inputs() const {
+std::vector<int> Graph::get_inputs() {
     return inputs_;
 }
 
-void Graph::set_outputs(std::vector<int>& indices) {
-    outputs_ = indices;
+void Graph::set_outputs(std::vector<int>& outputs) {
+    outputs_ = outputs;
 }
 
-std::vector<int> Graph::get_outputs() const {
+std::vector<int> Graph::get_outputs() {
     return outputs_;
 }

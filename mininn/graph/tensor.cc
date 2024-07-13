@@ -4,7 +4,10 @@
 #include <numeric> // std::accumulate
 #include <functional> // std::multiplies, bazel needs
 
-Tensor::Tensor() {}
+Tensor::Tensor() {
+    buffer_ = nullptr;
+    size_ = 0;
+}
 
 void Tensor::set_shape(std::vector<int> shape) {
     shape_ = shape;
