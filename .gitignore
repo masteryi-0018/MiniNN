@@ -1,5 +1,14 @@
 .vscode/
+
+# cmake
 build/
 
+# bazel
 bazel*
 MODULE*
+
+# py
+__pycache__
+
+# model
+*.gynn

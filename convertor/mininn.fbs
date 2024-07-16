@@ -1,0 +1,27 @@
+// IDL file for mininn's schema
+
+namespace mininn;
+
+enum Op: byte {
+  ADD = 0,
+}
+
+table Node {
+  type: Op;
+  inputs: [int];
+  outputs: [int];
+}
+
+table Tensor {
+  shape: [int];
+  data: [ubyte];
+}
+
+table Graph {
+  nodes: [Node];
+  tensors: [Tensor];
+  inputs: [int];
+  outputs: [int];
+}
+
+root_type Graph;
