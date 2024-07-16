@@ -77,7 +77,7 @@ TEST(Predictor, run) {
 
     std::vector<std::shared_ptr<Tensor>> output_tensors = predictor->get_output_tensors();
     float* output = reinterpret_cast<float*>(output_tensors[0]->get_buffer());
-    float* golden = reinterpret_cast<float*>(std::malloc(size));
+    float* golden = reinterpret_cast<float*>(std::malloc(size * sizeof(float)));
     for (int i = 0; i < size; ++i) {
         golden[i] = 3.0f;
     }

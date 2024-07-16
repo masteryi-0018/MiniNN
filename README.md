@@ -157,6 +157,8 @@ Linux只支持"Unix Makefiles"和"Ninja"，没有那么多花里胡哨的
 
 bugfix中...
 
+gtest链接不成功，测试未打印任何日志
+
 ### linux
 
 1. cmake

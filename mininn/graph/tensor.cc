@@ -12,7 +12,8 @@ Tensor::Tensor() {
 void Tensor::set_shape(std::vector<int>& shape) {
     shape_ = shape;
     size_ = std::accumulate(shape.begin(), shape.end(), 1, std::multiplies<int>());
-    buffer_ = std::malloc(size_);
+    // todo: find the ptr and heap malloc order
+    buffer_ = std::malloc(size_ * sizeof(float));
 }
 
 std::vector<int>& Tensor::get_shape() {
