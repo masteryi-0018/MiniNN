@@ -179,9 +179,20 @@ gtest链接不成功，测试未打印任何日志
 
 应该可以看到gtest全部通过
 
-## roadmap
+## TODO
 
-1. 开发convertor，支持模型转换
-2. 支持从文件读取模型，并解析为图
-3. 增加opencl后端
-4. 增加示例程序，链接mininn.so
+1. mininn convertor
+- [X] 基于flatbuffers，定义.fbs文件，拥有c++与py接口，支持读写文件
+- [X] 支持将tflite模型转换为gynn格式
+
+2. model parser
+- [X] 支持从文件读取模型，并解析为图
+
+3. backend
+- [X] 增加opencl后端
+
+4. tools
+- [X] 增加示例程序，链接mininn.so
+
+5. 疑问
+- [X] 堆上申请内存的示意图

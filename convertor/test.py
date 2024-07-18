@@ -21,12 +21,12 @@ def main():
     mininn.Node.NodeStartInputsVector(builder, 2)
     for i in range(2):
         builder.PrependInt32(i)
-    inputs = builder.EndVector(2)
+    inputs = builder.EndVector()
 
     mininn.Node.NodeStartOutputsVector(builder, 1)
     for i in range(1):
         builder.PrependInt32(2)
-    outputs = builder.EndVector(1)
+    outputs = builder.EndVector()
 
     mininn.Node.NodeStart(builder)
     mininn.Node.NodeAddType(builder, mininn.Op.Op().ADD)
@@ -41,7 +41,7 @@ def main():
     builder.PrependInt32(3)
     builder.PrependInt32(224)
     builder.PrependInt32(224)
-    shape = builder.EndVector(4)
+    shape = builder.EndVector()
 
     tensors_list = []
     mininn.Tensor.TensorStart(builder)
@@ -66,24 +66,24 @@ def main():
     mininn.Graph.GraphStartInputsVector(builder, 2)
     for i in range(2):
         builder.PrependInt32(i)
-    graph_inputs = builder.EndVector(2)
+    graph_inputs = builder.EndVector()
 
     mininn.Graph.GraphStartOutputsVector(builder, 1)
     for i in range(1):
         builder.PrependInt32(2)
-    graph_outputs = builder.EndVector(1)
+    graph_outputs = builder.EndVector()
 
     mininn.Graph.GraphStartNodesVector(builder, len(nodes_list))
     # todo: why reversed?
+    # Note: Since we prepend the bytes, this loop iterates in reverse order.
     for i in reversed(range(len(nodes_list))):
         builder.PrependUOffsetTRelative(nodes_list[i])
-    nodes = builder.EndVector(len(nodes_list))
+    nodes = builder.EndVector()
 
     mininn.Graph.GraphStartTensorsVector(builder, len(tensors_list))
-    # todo: why reversed?
     for i in reversed(range(len(tensors_list))):
         builder.PrependUOffsetTRelative(tensors_list[i])
-    tensors = builder.EndVector(len(tensors_list))
+    tensors = builder.EndVector()
 
     mininn.Graph.GraphStart(builder)
     mininn.Graph.GraphAddNodes(builder, nodes)
