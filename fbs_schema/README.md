@@ -16,12 +16,3 @@ run:
 ```sh
 ../third_party/flatbuffers/build/flatc --python --cpp mininn.fbs
 ```
-
-## step3: run test
-
-run:
-```sh
-python3 test.py
-```
-
-you will get a "mininn_test.gynn"
