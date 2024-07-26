@@ -13,7 +13,7 @@ import mininn.Node
 
 # Example of how to use FlatBuffers to create and read binary buffers.
 
-def main():
+def write():
     builder = flatbuffers.Builder(74741)
 
     # node
@@ -94,8 +94,50 @@ def main():
 
     builder.Finish(graph)
     buf = builder.Output()
-    with open("mininn_test.gynn", 'wb') as of:
-        of.write(buf)
+    with open("mininn_test.gynn", 'wb') as f:
+        f.write(buf)
+
+def read():
+    # read
+    with open("mininn_test.gynn", "rb") as f:
+        buf = f.read()
+    
+    graph = mininn.Graph.Graph.GetRootAsGraph(buf)
+
+    # graph
+    output = [2]
+    for i in range(graph.OutputsLength()):
+        assert graph.Outputs(i) == output[i]
+    
+    input = [1, 0]
+    for i in range(graph.InputsLength()):
+        assert graph.Inputs(i) == input[i]
+    
+    assert graph.NodesLength() == 1
+    assert graph.TensorsLength() == 3
+
+    # node
+    node = graph.Nodes(0)
+    assert node.Type() == mininn.Op.Op.ADD
+
+    output = [2]
+    for i in range(node.OutputsLength()):
+        assert node.Outputs(i) == output[i]
+    
+    input = [1, 0]
+    for i in range(node.InputsLength()):
+        assert node.Inputs(i) == input[i]
+    
+    # tensor
+    for i in range(graph.TensorsLength()):
+        tensor = graph.Tensors(i)
+        # use xxxAsNumpy, you should pip install numpy
+        shape = tensor.ShapeAsNumpy()
+        print(shape)
+        data = tensor.DataAsNumpy()
+        print(data)
+
 
 if __name__ == '__main__':
-    main()
+    write()
+    read()
