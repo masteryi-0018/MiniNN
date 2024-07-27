@@ -1,6 +1,8 @@
 #ifndef REGISTER_HELPER_H
 #define REGISTER_HELPER_H
 
+// todo: don't definition variable in head file
+// try other method to use op and kernel, avoid being optimized by compiler
 #define UNUSED __attribute__((unused))
 
 #define USE_OP(op_type_)                                                       \

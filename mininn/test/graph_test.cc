@@ -1,6 +1,3 @@
-#include "mininn/graph/use_op.h"
-#include "mininn/graph/use_kernel.h"
-
 #include "mininn/graph/graph.h"
 #include "mininn/graph/node.h"
 #include "mininn/graph/type.h"

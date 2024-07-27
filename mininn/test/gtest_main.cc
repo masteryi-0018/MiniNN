@@ -1,3 +1,6 @@
+#include "mininn/graph/use_op.h"
+#include "mininn/graph/use_kernel.h"
+
 #include <gtest/gtest.h>
 
 int main(int argc, char** argv) {
