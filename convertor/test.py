@@ -19,13 +19,15 @@ def write():
     # node
     nodes_list = []
     mininn.Node.NodeStartInputsVector(builder, 2)
-    for i in range(2):
-        builder.PrependInt32(i)
+    input_list = [0, 1]
+    for i in reversed(range(len(input_list))):
+        builder.PrependInt32(input_list[i])
     inputs = builder.EndVector()
 
     mininn.Node.NodeStartOutputsVector(builder, 1)
-    for i in range(1):
-        builder.PrependInt32(2)
+    output_list = [2]
+    for i in reversed(range(len(output_list))):
+        builder.PrependInt32(output_list[i])
     outputs = builder.EndVector()
 
     mininn.Node.NodeStart(builder)
@@ -37,10 +39,9 @@ def write():
 
     # tensor
     mininn.Tensor.TensorStartShapeVector(builder, 4)
-    builder.PrependInt32(1)
-    builder.PrependInt32(3)
-    builder.PrependInt32(224)
-    builder.PrependInt32(224)
+    shape_list = [1, 3, 224, 224]
+    for i in reversed(range(len(shape_list))):
+        builder.PrependInt32(shape_list[i])
     shape = builder.EndVector()
 
     tensors_list = []
@@ -64,13 +65,15 @@ def write():
 
     # graph
     mininn.Graph.GraphStartInputsVector(builder, 2)
-    for i in range(2):
-        builder.PrependInt32(i)
+    input_list = [0, 1]
+    for i in reversed(range(len(input_list))):
+        builder.PrependInt32(input_list[i])
     graph_inputs = builder.EndVector()
 
     mininn.Graph.GraphStartOutputsVector(builder, 1)
-    for i in range(1):
-        builder.PrependInt32(2)
+    output_list = [2]
+    for i in reversed(range(len(output_list))):
+        builder.PrependInt32(output_list[i])
     graph_outputs = builder.EndVector()
 
     mininn.Graph.GraphStartNodesVector(builder, len(nodes_list))
@@ -109,7 +112,7 @@ def read():
     for i in range(graph.OutputsLength()):
         assert graph.Outputs(i) == output[i]
     
-    input = [1, 0]
+    input = [0, 1]
     for i in range(graph.InputsLength()):
         assert graph.Inputs(i) == input[i]
     
@@ -124,7 +127,7 @@ def read():
     for i in range(node.OutputsLength()):
         assert node.Outputs(i) == output[i]
     
-    input = [1, 0]
+    input = [0, 1]
     for i in range(node.InputsLength()):
         assert node.Inputs(i) == input[i]
     
@@ -133,9 +136,9 @@ def read():
         tensor = graph.Tensors(i)
         # use xxxAsNumpy, you should pip install numpy
         shape = tensor.ShapeAsNumpy()
-        print(shape)
+        assert (shape == [1, 3, 224, 224]).all()
         data = tensor.DataAsNumpy()
-        print(data)
+        assert data == 0
 
 
 if __name__ == '__main__':

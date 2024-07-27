@@ -9,6 +9,7 @@ add_subdirectory(graph)
 add_subdirectory(operator)
 add_subdirectory(kernel)
 add_subdirectory(runtime)
+add_subdirectory(parser)
 
 # 3. bin
 add_executable(${TEST_MAIN} test.cc)
