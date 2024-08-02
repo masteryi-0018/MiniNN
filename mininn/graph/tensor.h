@@ -11,6 +11,8 @@ public:
 
     std::vector<int>& get_shape();
 
+    // 这里使用int是因为int最大为2,147,483,647，取10 0000 0000为例
+    // 这个长度对应内存字节为40 0000 0000，也就是4G，所以在size溢出前内存已经超了
     int get_size();
 
     void* get_buffer();
