@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <memory>
+#include <future> // async
 
 class Predictor {
 public:
@@ -14,6 +15,10 @@ public:
     void prepare();
 
     void run();
+
+    std::future<void> async_run_future();
+
+    void async_run_callback(std::function<void()> callback);
 
     std::vector<std::shared_ptr<Tensor>> get_input_tensors();
 

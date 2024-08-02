@@ -4,6 +4,8 @@
 #include "mininn/graph/type.h"
 #include "mininn/graph/register.h"
 
+#include "mininn/utils/log.h"
+
 #include <gtest/gtest.h>
 
 bool is_equal(float* tensor1, float* tensor2, int size) {
@@ -78,6 +80,74 @@ TEST(Predictor, run) {
     for (int i = 0; i < size; ++i) {
         golden[i] = 3.0f;
     }
+    bool result = is_equal(output, golden, size);
+    EXPECT_EQ(result, true);
+}
+
+TEST(Predictor, async_run_future) {
+    auto graph = make_graph();
+
+    auto predictor = std::make_shared<Predictor>(graph);
+    predictor->prepare();
+
+    std::vector<std::shared_ptr<Tensor>> input_tensors = predictor->get_input_tensors();
+    float* input1 = reinterpret_cast<float*>(input_tensors[0]->get_buffer());
+    float* input2 = reinterpret_cast<float*>(input_tensors[1]->get_buffer());
+    int size = input_tensors[0]->get_size();
+    for (int i = 0; i < size; ++i) {
+        input1[i] = 1.0f;
+        input2[i] = 2.0f;
+    }
+    // this is slower than async_run_future, so we should do it before async_run_future
+    float* golden = reinterpret_cast<float*>(std::malloc(size * sizeof(float)));
+    for (int i = 0; i < size; ++i) {
+        golden[i] = 3.0f;
+    }
+
+    std::future<void> future = predictor->async_run_future();
+    LOG("do something in main thread");
+    future.get();
+
+    std::vector<std::shared_ptr<Tensor>> output_tensors = predictor->get_output_tensors();
+    float* output = reinterpret_cast<float*>(output_tensors[0]->get_buffer());
+
+    bool result = is_equal(output, golden, size);
+    EXPECT_EQ(result, true);
+}
+
+
+
+TEST(Predictor, async_run_callback) {
+    auto graph = make_graph();
+
+    auto predictor = std::make_shared<Predictor>(graph);
+    predictor->prepare();
+
+    std::vector<std::shared_ptr<Tensor>> input_tensors = predictor->get_input_tensors();
+    float* input1 = reinterpret_cast<float*>(input_tensors[0]->get_buffer());
+    float* input2 = reinterpret_cast<float*>(input_tensors[1]->get_buffer());
+    int size = input_tensors[0]->get_size();
+    for (int i = 0; i < size; ++i) {
+        input1[i] = 1.0f;
+        input2[i] = 2.0f;
+    }
+
+    float* golden = reinterpret_cast<float*>(std::malloc(size * sizeof(float)));
+    for (int i = 0; i < size; ++i) {
+        golden[i] = 3.0f;
+    }
+
+    std::function<void()> callback = []() {
+        LOG("do something in callback");
+    };
+
+    predictor->async_run_callback(callback);
+    LOG("do something in main thread");
+
+    sleep(3);
+
+    std::vector<std::shared_ptr<Tensor>> output_tensors = predictor->get_output_tensors();
+    float* output = reinterpret_cast<float*>(output_tensors[0]->get_buffer());
     bool result = is_equal(output, golden, size);
     EXPECT_EQ(result, true);
 }

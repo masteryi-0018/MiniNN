@@ -16,6 +16,24 @@ void Predictor::run() {
     }
 }
 
+std::future<void> Predictor::async_run_future() {
+    std::future<void> future = std::async(std::launch::async,
+                                          &Predictor::run,
+                                          this);
+    return future;
+}
+
+void Predictor::async_run_callback(std::function<void()> callback) {
+    auto thread_func = [this, callback]() {
+        this->run();
+        callback();
+    };
+
+    std::thread t(thread_func);
+    t.detach();
+    return;
+}
+
 std::vector<std::shared_ptr<Tensor>> Predictor::get_input_tensors() {
     std::vector<std::shared_ptr<Tensor>> tensors = graph_->get_tensors();
     std::vector<int> inputs = graph_->get_inputs();
