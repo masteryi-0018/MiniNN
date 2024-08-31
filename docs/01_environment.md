@@ -27,6 +27,27 @@
 
 - 解决方法，在powershell中运行`.\MiniNN-test.exe`，可以看到结果
 
+3. Windows下将各模块解耦，即libutils，libgraph，libkernel等dll分开编译，去除彼此的依赖关系，产物分散在各个目录，导致在命令行执行`.\build\mininn\test\gtest-main.exe`没有任何输出，日志也无法打印
+
+- 问题原因：因为缺少依赖库。在dll找不到的情况下，ps1命令行不会输出任何信息，造成了上述的诡异问题，回到窗口中双击exe启动，提示缺少dll库，此问题被记录在Windows的事件查看器中
+- 解决方法：针对找不到dll的问题，Windows没有像Linux一样记录了动态库链接的路径，然后寻找，Windows只会在exe的同级目录寻找，所以可以复制dll到当前目录，exe成功启动
+
+4. Windows下执行gtest-main，涉及到虚函数动态绑定的接口，程序直接崩溃，没有段错误等日志打印；涉及到注册kernel的接口，程序直接崩溃，没有段错误等日志打印
+
+- 问题原因：未知
+- 解决方法：将多个dll合成一个dll，发现问题依旧存在，应该和多个dll或者一个dll没有关系，将dll修改为a的静态库，测试成功通过
+
+```ps1
+# 6. 拷贝dll文件至可执行文件中
+$destinationFolderPath = ".\build\mininn\test"
+Copy-Item -Path .\build\mininn\graph\libgraph.dll -Destination $destinationFolderPath -Force
+Copy-Item -Path .\build\mininn\kernel\libkernel.dll -Destination $destinationFolderPath -Force
+Copy-Item -Path .\build\mininn\operator\liboperator.dll -Destination $destinationFolderPath -Force
+Copy-Item -Path .\build\mininn\parser\libparser.dll -Destination $destinationFolderPath -Force
+Copy-Item -Path .\build\mininn\runtime\libruntime.dll -Destination $destinationFolderPath -Force
+Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolderPath -Force
+```
+
 
 # 第三方库
 
