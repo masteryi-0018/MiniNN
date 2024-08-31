@@ -11,9 +11,9 @@
 
 那么一个端侧深度学习推理框架应该具备的最基本的能力应该是：
 
-1. 既然不自己训练模型，那么就需要将其他训练框架训练得到的模型（pytorch，tensorflow），或者业界通用的一些模型（onnx）转换为自己可以处理的格式（本框架的IR，intermediate representation），这就是一个框架的第一个功能：convertor。这个接口一般是python，需要用到pytorch，tensorflow，onnx的py库，解析模型，转换模型，并保存为自己的文件格式。
-2. 这时候得到的模型是一个文件，需要解析成为C++的IR，也是整个推理框架的核心部分：使用C++语言表示的模型（图），这个功能一般叫做模型解析器（model parser），这一步就是使用C++将文件变为待计算的图表示。接口一般不单独使用，被上层执行器调用。
-3. 核心的IR部分，需要涉及类与结构体，能够表示神经网络的图结构（op、tensor，以及拓扑关系）。
+1. convertor部分，既然不自己训练模型，那么就需要将其他训练框架训练得到的模型（pytorch，tensorflow），或者业界通用的一些模型（onnx）转换为自己可以处理的格式（本框架的IR，intermediate representation），这就是一个框架的第一个功能：convertor。这个接口一般是python，需要用到pytorch，tensorflow，onnx的py库，解析模型，转换模型，并保存为自己的文件格式。
+2. 核心的IR部分，需要涉及类与结构体，能够表示神经网络的图结构（op、tensor，以及拓扑关系）。这时候得到的模型是一个文件，需要解析成为C++的IR，使用C++语言表示的模型（图），这个功能一般叫做模型解析器（model parser），这一步就是使用C++将文件变为待计算的图表示。
+3. runtime部分，这是框架的承上启下的部分，运用多后端的算力，整体调度计算资源，安排一次运行。
 4. kernel部分，决定跑在什么后端，每个op都会对应具体的kernel，描述这个算子具体的计算行为。
 
 以上，理论上就可以将一个onnx conv2d单算子网络跑出一个结果。
@@ -27,6 +27,7 @@
 3. 上游生态对接，框架可能会提供被其他框架使用的能力，这时候就不需要显式的序列化模型了，可以直接进行IR的mapping，也就是图级别的接入，也可以采取delegate的方式（如果上层框架提供了这种能力）
 4. 量化，这也是框架重要的能力之一。因为端侧设备的内存限制和算力限制，以及低时延高速度的要求，float32（fp32）的模型往往不能满足要求，基本都会走一下量化的步骤，得到int8的模型。再加上目前大模型的出现，int4的量化重要性逐渐增加。
 5. 异构。如何发挥各个后端的性能，统一调配计算资源，发挥SoC的最大性能。
+6. 几个难点：动态形状，控制流算子等
 
 ![MiniNN](../assets/mininn.svg)
 
@@ -34,19 +35,148 @@
 # 开发中
 
 > 本项目作者受tensorflow lite，paddle-lite，Android NNAPI影响较大，一些设计可能借鉴上述项目
+> 
 > 本项目实践过程跟随项目：https://github.com/zjhellofss/KuiperInfer，在此表示感谢
 
-## 环境问题
+## 构建
 
-大家都知道，程序开发中半数人卡在了环境配置上面：新手基本都是从Windows开发的，不愿意折腾Linux，更不用提docker了；老手即使只有一份源码，自己也可以进行一定的平台迁移。所以本项目优先在Windows下开发。
+### Windows
 
-这里首先搬上来经典的“hello world”来走一遍编译流程，目前先使用cmake，后续会迁移到bazel。
+#### cmake
 
-## 模块
+1. power shell
 
-### 算子
+> 使用mingw：gcc+ld
 
-我目前理解的一个计算图中，最重要的组成部分就是算子，也可以称为节点（node），算子的信息以及相互连接关系构成了一个完成的计算图。要描述算子，需要确定以下2个类型：
+```ps1
+.\build.ps1
+```
 
-- operation：操作符，也就是一般的op，存储网络节点的信息
-- operator：操作数，这个也可以称为tensor，就是网络中的数据
+如需修改生成器：
+
+- ninja（默认）
+
+```ps1
+# choose one of follows, depend on you
+cmake ..
+cmake .. -G Ninja
+
+# choose one of follows, depend on you
+cmake --build .
+ninja
+```
+
+- make
+
+```ps1
+# choose one of follows, depend on you
+cmake .. -G "MinGW Makefiles"
+cmake .. -G "Unix Makefiles"
+
+# choose one of follows, depend on you
+cmake --build .
+make
+mingw32-make
+```
+
+2. VS power shell中
+
+> 使用msvc：cl+link
+
+```ps1
+.\build.ps1
+```
+
+如需修改生成器：
+
+- ninja（默认）
+  - 同上
+- make
+  - 同上
+  - 注意：使用"Unix Makefiles"生成器时，编译器使用gcc
+- nmake（msvc特有）
+
+```ps1
+cmake .. -G "NMake Makefiles"
+
+# choose one of follows, depend on you
+cmake --build .
+nmake
+```
+
+总的来说就是多了一个nmake，剩下和mingw是一样的。不推荐msvc的编译器，有错误还未解决
+
+3. msys2 ucrt shell
+
+> 使用mingw：gcc+ld
+
+```sh
+./build.sh
+```
+
+如需修改生成器：
+
+- ninja（默认）
+  - 同上
+- make
+  - 同上，增加以下：
+
+```sh
+cmake .. -G "MSYS Makefiles"
+
+# choose one of follows, depend on you
+cmake --build .
+make
+```
+
+只是多了"MSYS Makefiles"生成器，其他都一样，更接近Linux
+
+#### bazel
+
+### Linux
+
+#### cmake
+
+1. Ubuntu 20.04
+
+> 使用gnu：gcc+ld
+
+```sh
+./build.sh
+```
+
+如需修改生成器：
+
+- make（默认）
+
+```sh
+# choose one of follows, depend on you
+cmake ..
+cmake .. -G "Unix Makefiles"
+
+# choose one of follows, depend on you
+cmake --build .
+make
+```
+
+- ninja
+
+```sh
+cmake .. -G Ninja
+
+# choose one of follows, depend on you
+cmake --build .
+ninja
+```
+
+Linux只支持"Unix Makefiles"和"Ninja"，没有那么多花里胡哨的
+
+#### bazel
+
+1. Ubuntu 20.04
+
+> 使用bazel: 7.2.1
+
+```sh
+./build_bazel.sh
+```
