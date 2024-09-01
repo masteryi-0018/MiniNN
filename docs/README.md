@@ -90,11 +90,13 @@ mingw32-make
 如需修改生成器：
 
 - ninja（默认）
-  - 同上
+  - 同上【bugfix...】
 - make
   - 同上
+  - MinGW【bugfix...】
+  - Unix
   - 注意：使用"Unix Makefiles"生成器时，编译器使用gcc
-- nmake（msvc特有）
+- nmake（msvc特有）【bugfix...】
 
 ```ps1
 cmake .. -G "NMake Makefiles"
@@ -105,6 +107,8 @@ nmake
 ```
 
 总的来说就是多了一个nmake，剩下和mingw是一样的。不推荐msvc的编译器，有错误还未解决
+
+目前使用**msvc的编译器都不能通过**，唯一通过的是使用gcc编译器
 
 3. msys2 ucrt shell
 
@@ -132,6 +136,8 @@ make
 只是多了"MSYS Makefiles"生成器，其他都一样，更接近Linux
 
 #### bazel
+
+bugfix...
 
 ### Linux
 

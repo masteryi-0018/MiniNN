@@ -112,7 +112,7 @@ TEST(Predictor, async_run_future) {
     }
 
     std::future<void> future = predictor->async_run_future();
-    LOG("do something in main thread");
+    LOG(INFO) << "do something in main thread";
     future.get();
 
     std::vector<std::shared_ptr<Tensor>> output_tensors = predictor->get_output_tensors();
@@ -145,11 +145,11 @@ TEST(Predictor, async_run_callback) {
     }
 
     std::function<void()> callback = []() {
-        LOG("do something in callback");
+        LOG(INFO) << "do something in callback";
     };
 
     predictor->async_run_callback(callback);
-    LOG("do something in main thread");
+    LOG(INFO) << "do something in main thread";
 
     sleep(3);
 

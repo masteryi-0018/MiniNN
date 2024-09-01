@@ -94,6 +94,8 @@ bugfix中...
 
 5. 构建系统
 - [ ] 引入flatbuffers头文件，集成到bazel脚本中
+- [ ] Windows使用bazel构建
+- [ ] Windows使用msvc编译问题解决
 
 6. 疑问
 - [ ] 堆上申请内存的示意图

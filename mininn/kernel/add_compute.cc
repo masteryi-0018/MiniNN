@@ -16,7 +16,7 @@ void add_func(float* x_buffer, float* y_buffer, float* out_buffer, int start, in
 }
 
 void AddCompute::run() {
-    LOG("kernel run start");
+    LOG(INFO) << "kernel run start";
     auto start_time = std::chrono::high_resolution_clock::now();
 
     AddParams* params = get_params();
@@ -35,12 +35,12 @@ void AddCompute::run() {
 
     auto end_time = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed_seconds = end_time - start_time;
-    std::cout << "Elapsed time: " << elapsed_seconds.count() << " seconds" << std::endl;
-    LOG("kernel run end");
+    LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
+    LOG(INFO) << "kernel run end";
 
 
     // multi-threads
-    LOG("kernel run start in multi-threads");
+    LOG(INFO) << "kernel run start in multi-threads";
     start_time = std::chrono::high_resolution_clock::now();
 
     params = get_params();
@@ -54,7 +54,7 @@ void AddCompute::run() {
     out_buffer = reinterpret_cast<float*>(out->get_buffer());
 
     const size_t num_threads = std::thread::hardware_concurrency();
-    std::cout << "num_threads: " << num_threads << std::endl;
+    LOG(INFO) << "num_threads: " << num_threads;
     std::vector<std::thread> threads;
     int chunk_size = size / num_threads;
     
@@ -72,8 +72,8 @@ void AddCompute::run() {
 
     end_time = std::chrono::high_resolution_clock::now();
     elapsed_seconds = end_time - start_time;
-    std::cout << "Elapsed time: " << elapsed_seconds.count() << " seconds" << std::endl;
-    LOG("kernel run end in multi-threads");
+    LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
+    LOG(INFO) << "kernel run end in multi-threads";
 }
 
 void AddCompute::set_params(Params* params) {
