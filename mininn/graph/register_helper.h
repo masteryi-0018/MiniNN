@@ -3,7 +3,12 @@
 
 // todo: don't definition variable in head file
 // try other method to use op and kernel, avoid being optimized by compiler
+#ifdef _MSC_VER
+#define UNUSED
+#else
+// __attribute__ is a gcc extension, it can not be used in windows
 #define UNUSED __attribute__((unused))
+#endif
 
 #define USE_OP(op_type_)                                                       \
     extern int touch_op_##op_type_();                                          \

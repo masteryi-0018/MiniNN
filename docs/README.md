@@ -90,13 +90,13 @@ mingw32-make
 如需修改生成器：
 
 - ninja（默认）
-  - 同上【bugfix...】
+  - 同上
 - make
   - 同上
-  - MinGW【bugfix...】
+  - MinGW
   - Unix
   - 注意：使用"Unix Makefiles"生成器时，编译器使用gcc
-- nmake（msvc特有）【bugfix...】
+- nmake（msvc特有）
 
 ```ps1
 cmake .. -G "NMake Makefiles"
@@ -106,9 +106,7 @@ cmake --build .
 nmake
 ```
 
-总的来说就是多了一个nmake，剩下和mingw是一样的。不推荐msvc的编译器，有错误还未解决
-
-目前使用**msvc的编译器都不能通过**，唯一通过的是使用gcc编译器
+总的来说就是多了一个nmake，剩下和mingw是一样的。不推荐msvc的编译器，经常有一些奇怪的错误
 
 3. msys2 ucrt shell
 

@@ -188,4 +188,10 @@ Copy-Item -Path .\build\mininn\runtime\libruntime.dll -Destination $destinationF
 Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolderPath -Force
 ```
 
+6. msvc的编译问题，报错__attribute__，还有报错error LNK2038
+
+- 问题原因：Windows的msvc没有__attribute__这个属性；在Windows编译gtest需要打开gtest_force_shared_crt选项，否则就会有问题
+- 解决方案：使用条件宏控制，打开宏开关就可以
+
+
 ## Linux，x86
