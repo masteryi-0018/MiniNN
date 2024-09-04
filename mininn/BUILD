@@ -62,23 +62,19 @@ cc_library(
     ],
 )
 
-# todo: use bazel to build flatbuffers
-# cc_library(
-#     name = "parser",
-#     srcs = glob([
-#         "parser/*.cc",
-#     ]),
-#     hdrs = glob([
-#         "parser/*.h",
-#     ]),
-#     includes = [
-#         "//third_party/flatbuffers/include",
-#     ],
-#     deps = [
-#         ":graph",
-#         "//third_party/flatbuffers:flatbuffers",
-#     ],
-# )
+cc_library(
+    name = "parser",
+    srcs = glob([
+        "parser/*.cc",
+    ]),
+    hdrs = glob([
+        "parser/*.h",
+    ]),
+    deps = [
+        ":graph",
+        "@flatbuffers//:flatbuffers",
+    ],
+)
 
 cc_binary(
     name = "test-main",
@@ -92,18 +88,14 @@ cc_binary(
 
 cc_binary(
     name = "gtest-main",
-    srcs = glob(
-        include = [
-            "test/*.cc",
-        ],
-        exclude = [
-            "test/parser_test.cc",
-        ],
-    ),
+    srcs = glob([
+        "test/*.cc",
+    ]),
     deps = [
         ":runtime",
         ":operator",
         ":kernel",
+        ":parser",
         "//third_party/googletest:gtest",
     ],
 )
