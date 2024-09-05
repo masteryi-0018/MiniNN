@@ -135,7 +135,13 @@ make
 
 #### bazel
 
-bugfix...
+1. power shell
+
+> 默认使用msvc工具链
+
+```ps1
+.\bazel.ps1
+```
 
 ### Linux
 
@@ -179,8 +185,8 @@ Linux只支持"Unix Makefiles"和"Ninja"，没有那么多花里胡哨的
 
 1. Ubuntu 20.04
 
-> 使用bazel: 7.2.1
+> 默认使用gcc工具链
 
 ```sh
-./build_bazel.sh
+./bazel.sh
 ```

@@ -24,7 +24,9 @@ git clone --recursive git@github.com:masteryi-0018/MiniNN.git
 
 2. bazel
 
-bugfix中...
+```ps1
+.\bazel.ps1
+```
 
 更多请查看：<https://github.com/masteryi-0018/MiniNN/blob/main/docs/README.md>
 
@@ -39,7 +41,7 @@ bugfix中...
 2. bazel
 
 ```sh
-./build_bazel.sh
+./bazel.sh
 ```
 
 更多请查看：<https://github.com/masteryi-0018/MiniNN/blob/main/docs/README.md>
@@ -51,13 +53,16 @@ bugfix中...
 1. cmake
 
 ```ps1
-.\build\mininn\gtest-main.exe
 .\build\mininn\test-main.exe
+.\build\mininn\test\gtest-main.exe
 ```
 
 2. bazel
 
-还未调试成功...
+```ps1
+.\bazel-bin\mininn\test-main.exe
+.\bazel-bin\mininn\gtest-main.exe
+```
 
 ### linux
 
@@ -93,9 +98,10 @@ bugfix中...
 - [ ] 增加示例程序，链接mininn.so
 
 5. 构建系统
-- [ ] 引入flatbuffers头文件，集成到bazel脚本中
-- [ ] Windows使用bazel构建
-- [ ] Windows使用msvc编译问题解决
+- [x] 引入flatbuffers头文件，集成到bazel脚本中
+- [x] Windows使用bazel构建
+- [x] Windows使用msvc编译问题解决
+- [ ] 使用clang编译器
 
 6. 疑问
 - [ ] 堆上申请内存的示意图

@@ -193,5 +193,14 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
 - 问题原因：Windows的msvc没有__attribute__这个属性；在Windows编译gtest需要打开gtest_force_shared_crt选项，否则就会有问题
 - 解决方案：使用条件宏控制，打开宏开关就可以
 
+7. Windows下使用bazel构建的问题，安装了msvc编译器，但是依然找不到vc++构建工具
+
+- 问题原因：bazel不是单独使用编译器链接器等工具，而是使用一整套工具链
+- 解决方法：不能只安装vs build tools，一定要安装VS IDE，IDE中有一些脚本，能够让bazel找到使用msvc的方式，也不需要在vs power shell中，普通的power shell就可以找到cl等工具
+
+8. Windows下日志无法打印，程序崩溃，commit id`d23620646c5cbcef24dc2e46ed42092b1ba36756`之前
+
+- 问题原因：Windows下不同级别的目录使用反斜杠而不是斜杠，代码对斜杠进行操作导致问题
+- 解决方法：对`#define __FILENAME__ (strrchr(__FILE__, '/') + 1)`进行修改
 
 ## Linux，x86
