@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(MININN)
+project(MININN LANGUAGES CXX CUDA)
 
 # 1. environment
 set(MININN_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})

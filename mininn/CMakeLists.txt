@@ -14,6 +14,7 @@ add_subdirectory(operator)
 add_subdirectory(kernel)
 add_subdirectory(runtime)
 add_subdirectory(parser)
+add_subdirectory(backend)
 
 # 3. bin
 set(TEST_MAIN test-main)
