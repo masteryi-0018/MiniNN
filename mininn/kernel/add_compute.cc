@@ -3,6 +3,8 @@
 
 #include "mininn/utils/log.h" // todo
 
+#include "mininn/backend/cuda.cuh"
+
 #include <thread>
 #include <chrono>
 #include <iostream> // todo
@@ -74,6 +76,27 @@ void AddCompute::run() {
     elapsed_seconds = end_time - start_time;
     LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
     LOG(INFO) << "kernel run end in multi-threads";
+
+    // cuda kernel
+    LOG(INFO) << "kernel run start in cuda kernel";
+    start_time = std::chrono::high_resolution_clock::now();
+
+    params = get_params();
+    x = params->input1;
+    y = params->input2;
+    out = params->output;
+
+    size = x->get_size();
+    x_buffer = reinterpret_cast<float*>(x->get_buffer());
+    y_buffer = reinterpret_cast<float*>(y->get_buffer());
+    out_buffer = reinterpret_cast<float*>(out->get_buffer());
+
+    cuda_add_wrapper(x_buffer, y_buffer, out_buffer, size);
+
+    end_time = std::chrono::high_resolution_clock::now();
+    elapsed_seconds = end_time - start_time;
+    LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
+    LOG(INFO) << "kernel run end in cuda kernel";
 }
 
 void AddCompute::set_params(Params* params) {
