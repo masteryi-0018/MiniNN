@@ -29,7 +29,10 @@ sudo apt-get -y install cuda-toolkit-12-6
 2. 不同平台实现后会有自己的opencl.so和头文件，在安装对应SDK（例如cuda）的时候，会一并安装
 3. KhronosGroup提供了一个示例的实现OpenCL-SDK，和上面的厂商实现类似，但是非常简单
 4. ocl-icd-opencl-dev是一个管理多个opencl平台的工具
+5. 根据参考资料3显示，目前无法通过clinfo发现cuda设备
 
 ## 参考资料
 
 1. <https://github.com/KhronosGroup/OpenCL-Guide>
+2. 一个博客，用来在WSL中发现opencl的cuda设备，还没有验证有效性，<https://medium.com/@tackboon97_98523/how-to-install-opencl-on-wsl-ubuntu-to-detect-a-cuda-gpu-device-30f334a415ec>
+3. 一个GitHub Issue，讨论在WSL中使用clinfo发现cuda设备的问题，讨论的很火热，并且目前还没有关闭：<https://github.com/microsoft/WSL/issues/6951>
