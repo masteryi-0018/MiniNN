@@ -203,4 +203,9 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
 - 问题原因：Windows下不同级别的目录使用反斜杠而不是斜杠，代码对斜杠进行操作导致问题
 - 解决方法：对`#define __FILENAME__ (strrchr(__FILE__, '/') + 1)`进行修改
 
+9. cmake选择特定的编译器
+
+- 方式1：命令行传递参数`-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++`。不需要绝对路径
+- 方式2：cmakelists中设置环境变量，需要写绝对路径，并且Windows下也需要用正斜杠
+
 ## Linux，x86

@@ -78,6 +78,7 @@ void AddCompute::run() {
     LOG(INFO) << "kernel run end in multi-threads";
 
     // cuda kernel
+#ifdef __linux__
     LOG(INFO) << "kernel run start in cuda kernel";
     start_time = std::chrono::high_resolution_clock::now();
 
@@ -97,6 +98,7 @@ void AddCompute::run() {
     elapsed_seconds = end_time - start_time;
     LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
     LOG(INFO) << "kernel run end in cuda kernel";
+#endif // __linux__
 }
 
 void AddCompute::set_params(Params* params) {

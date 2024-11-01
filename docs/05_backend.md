@@ -23,6 +23,12 @@ sudo apt-get -y install cuda-toolkit-12-6
 4. 将cu文件编译为库，并链接
 5. 暴露cuh头文件，被kernel包含
 
+## CUDA in Windows
+
+Windows下的CUDA编译，默认使用MSVC的cl编译器，使用`-ccbin`传递参数，必须传递路径，否则不能识别；经实验，即使传递路径，也会有报错提示：Host compiler targets unsupported OS.
+
+所以只能用cl编译器，那么就意味着需要在VS powershel中编译，即使这样，也会因为CUDA和NSVC的版本不匹配，需要添加`-allow-unsupported-compiler`来保证启用cl编译器，但是即使这样，开始编译后依旧会有代码中的错误检查`error: static assertion failed`。综合来看，不建议在Windows下编译CUDA程序。
+
 ## opencl
 
 1. opencl是一个标准，不同硬件平台（cuda，intel等）的实现不尽相同
