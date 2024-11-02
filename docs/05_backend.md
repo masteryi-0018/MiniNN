@@ -37,6 +37,18 @@ Windows下的CUDA编译，默认使用MSVC的cl编译器，使用`-ccbin`传递�
 4. ocl-icd-opencl-dev是一个管理多个opencl平台的工具
 5. 根据参考资料3显示，目前无法通过clinfo发现cuda设备
 
+## opencl in WSL
+
+1. 因为wsl中不支持CUDA的opencl接口，所以使用intel的opencl SDK进行测试
+2. 官网的开发工具中，有针对opencl的页面：
+   1. <https://www.intel.cn/content/www/cn/zh/developer/tools/opencl-cpu-runtime/overview.html>
+   2. <https://www.intel.cn/content/www/cn/zh/developer/tools/opencl/overview.html>
+3. 这是一个介绍整个英特尔的opencl的页面，包括了cpu、gpu和fpga，其中，cpu的界面跳转依旧是上面的链接：<https://www.intel.cn/content/www/cn/zh/developer/articles/tool/opencl-drivers.html#cpu-section>
+4. WSL中按照Linux的安装指导：
+   1. 使用`sudo apt install intel-oneapi-runtime-opencl`，发现没有这个包
+   2. 需要看着文档设置一些东西：[ubuntu APT](https://www.intel.com/content/www/us/en/docs/oneapi/installation-guide-linux/2023-0/apt.html#GUID-560A487B-1B5B-4406-BB93-22BC7B526BCD)
+   3. 再次执行就可以了
+
 ## 参考资料
 
 1. <https://github.com/KhronosGroup/OpenCL-Guide>

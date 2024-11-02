@@ -1,8 +1,13 @@
 cmake_minimum_required(VERSION 3.0)
 
 # set compiler before call project()
-set(CMAKE_C_COMPILER "E:/LLVM/bin/clang.exe")
-set(CMAKE_CXX_COMPILER "E:/LLVM/bin/clang++.exe")
+if(WIN32)
+    set(CMAKE_C_COMPILER "clang.exe")
+    set(CMAKE_CXX_COMPILER "clang++.exe")
+elseif(UNIX)
+    set(CMAKE_C_COMPILER "clang")
+    set(CMAKE_CXX_COMPILER "clang++")
+endif()
 
 # Clang with CUDA is not yet supported on Windows.  See CMake issue #20776.
 # set(CMAKE_CUDA_COMPILER "E:/LLVM/bin/clang.exe")
@@ -21,8 +26,14 @@ set(MININN_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 # include_directories(${OpenCL_INCLUDE_DIRS})
 
 # custom opencl
-set(OPENCL_INCLUDE_DIR "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.2/include")
-set(OPENCL_LIB_DIR "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.2/lib/x64")
+if(WIN32)
+    set(OPENCL_INCLUDE_DIR "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.2/include")
+    set(OPENCL_LIB_DIR "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.2/lib/x64")
+elseif(UNIX)
+    set(OPENCL_INCLUDE_DIR "/usr/local/cuda/include/")
+    set(OPENCL_LIB_DIR "/usr/local/cuda/lib64")
+endif()
+
 include_directories(${OPENCL_INCLUDE_DIR})
 
 # 2. subdirectory

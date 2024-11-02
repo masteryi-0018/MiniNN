@@ -4,6 +4,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <cstring> // strcpy
 
 const char* readKernelSource(std::string& filename) {
     std::ifstream file(filename);
@@ -27,7 +28,12 @@ void opencl_add_wrapper(float* h_A, float* h_B, float* h_C, int numElements) {
     clGetPlatformIDs(1, &platform, nullptr);
 
     cl_device_id device;
+    
+#ifdef __linux__
+    clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 1, &device, nullptr);
+#elif defined(_WIN32)
     clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, nullptr);
+#endif
 
     cl_context context = clCreateContext(nullptr, 1, &device, nullptr, nullptr, nullptr);
     cl_command_queue queue = clCreateCommandQueue(context, device, 0, nullptr);
