@@ -5,4 +5,6 @@ if(UNIX)
     target_link_libraries(kernel cuda)
 endif()
 
+target_link_libraries(kernel opencl)
+
 message(STATUS "Source files for kernel library: ${KERNEL_SRC}")

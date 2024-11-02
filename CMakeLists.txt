@@ -16,6 +16,15 @@ endif()
 # 1. environment
 set(MININN_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
+# stander opencl
+# find_package(OpenCL REQUIRED)
+# include_directories(${OpenCL_INCLUDE_DIRS})
+
+# custom opencl
+set(OPENCL_INCLUDE_DIR "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.2/include")
+set(OPENCL_LIB_DIR "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.2/lib/x64")
+include_directories(${OPENCL_INCLUDE_DIR})
+
 # 2. subdirectory
 include_directories("${MININN_SOURCE_DIR}")
 include_directories("third_party/flatbuffers/include")
