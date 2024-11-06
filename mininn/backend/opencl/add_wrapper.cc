@@ -33,6 +33,8 @@ void opencl_add_wrapper(float* h_A, float* h_B, float* h_C, int numElements) {
     clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 1, &device, nullptr);
 #elif defined(_WIN32)
     clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, nullptr);
+    // todo: use intel opencl in windows, error: SEH exception with code 0xc0000005 thrown in the test body.
+    // clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 1, &device, nullptr);
 #endif
 
     cl_context context = clCreateContext(nullptr, 1, &device, nullptr, nullptr, nullptr);
