@@ -63,6 +63,53 @@ sudo apt-get -y install cuda-toolkit-12-6
    2. 需要看着文档设置一些东西：[ubuntu APT](https://www.intel.com/content/www/us/en/docs/oneapi/installation-guide-linux/2023-0/apt.html#GUID-560A487B-1B5B-4406-BB93-22BC7B526BCD)
    3. 再次执行就可以了
 
+## AVX
+
+查看当前系统的指令集支持`cat /proc/cpuinfo | grep flags`，进一步查看关于AVX的支持：`cat /proc/cpuinfo | grep avx`
+
+AVX的指令集，分为：
+- avx：256位寄存器
+- avx2：256位寄存器
+- avx512：512位寄存器，目前intel的CPU支持，AMD的CPU不支持
+  - avx_vnni：avx512的子集，只能处理int8的数据；本机只显示这个，说明不能使用完整的avx512的指令，计算float的时候，只能退回到avx/avx2的256bit长度
+
+## AVX的测试
+
+```cpp
+    #ifdef __AVX__
+    std::cout << "AVX is supported!" << std::endl;
+    #else
+    std::cout << "AVX is not supported." << std::endl;
+    #endif
+
+    #ifdef __AVX2__
+    std::cout << "AVX2 is supported!" << std::endl;
+    #else
+    std::cout << "AVX2 is not supported." << std::endl;
+    #endif
+
+    #ifdef __AVX512F__
+    std::cout << "AVX512F is supported." << std::endl;
+    #else
+    std::cout << "AVX512F is not supported." << std::endl;
+    #endif
+
+    #ifdef __AVX512VNNI__
+    std::cout << "AVX512VNNI is supported." << std::endl;
+    #else
+    std::cout << "AVX512VNNI is not supported." << std::endl;
+    #endif
+```
+
+使用g++编译时，加上`-mavx`，`-mavx2`，`-mavx512f`或者`-mavx512vnni`；是向下兼容的，所以编译时加上`-mavx512vnni`，前面的也都可以使用
+
+编译命令：
+```
+g++ test.cc -o test -mavx512vnni
+```
+
+查看编译器支持的指令集选项：`g++ --target-help`
+
 ## 参考资料
 
 1. <https://github.com/KhronosGroup/OpenCL-Guide>
