@@ -5,7 +5,7 @@
 void avx_add_wrapper(const float* h_A, const float* h_B, float* h_C, int numElements) {
     size_t i = 0;
     // 32bit(float) * 8 = 256bit
-    for (; i + 8 < numElements; i += 8) {
+    for (; i + 7 < numElements; i += 8) {
         // load 8 number of float32 to register
         __m256 vec_a = _mm256_loadu_ps(&h_A[i]);  // unaligned load
         __m256 vec_b = _mm256_loadu_ps(&h_B[i]);  // unaligned load

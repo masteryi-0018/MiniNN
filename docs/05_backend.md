@@ -65,7 +65,9 @@ sudo apt-get -y install cuda-toolkit-12-6
 
 ## AVX
 
-查看当前系统的指令集支持`cat /proc/cpuinfo | grep flags`，进一步查看关于AVX的支持：`cat /proc/cpuinfo | grep avx`
+查看当前系统的指令集支持`cat /proc/cpuinfo | grep flags`
+进一步查看关于AVX的支持：`cat /proc/cpuinfo | grep avx`
+查看编译器支持的指令集选项：`g++ --target-help`
 
 AVX的指令集，分为：
 - avx：256位寄存器
@@ -104,11 +106,65 @@ AVX的指令集，分为：
 使用g++编译时，加上`-mavx`，`-mavx2`，`-mavx512f`或者`-mavx512vnni`；是向下兼容的，所以编译时加上`-mavx512vnni`，前面的也都可以使用
 
 编译命令：
-```
+```sh
 g++ test.cc -o test -mavx512vnni
 ```
 
-查看编译器支持的指令集选项：`g++ --target-help`
+## SSE
+
+有以下SSE的指令集：
+- sse
+- sse2
+- ssse3
+- sse4_1
+- sse4_2
+
+## SSE的测试
+
+```cpp
+    #ifdef __SSE__
+    std::cout << "SSE is supported!" << std::endl;
+    #else
+    std::cout << "SSE is not supported." << std::endl;
+    #endif
+
+    #ifdef __SSE2__
+    std::cout << "SSE2 is supported!" << std::endl;
+    #else
+    std::cout << "SSE2 is not supported." << std::endl;
+    #endif
+
+    #ifdef __SSE3__
+    std::cout << "SSE3 is supported." << std::endl;
+    #else
+    std::cout << "SSE3 is not supported." << std::endl;
+    #endif
+
+    #ifdef __SSSE3__
+    std::cout << "SSSE3 is supported." << std::endl;
+    #else
+    std::cout << "SSSE3 is not supported." << std::endl;
+    #endif
+
+    #ifdef __SSE4_1__
+    std::cout << "SSE4_1 is supported." << std::endl;
+    #else
+    std::cout << "SSE4_1 is not supported." << std::endl;
+    #endif
+
+    #ifdef __SSE4_2__
+    std::cout << "SSE4_2 is supported." << std::endl;
+    #else
+    std::cout << "SSE4_2 is not supported." << std::endl;
+    #endif
+```
+
+使用g++编译时，加上`-msse`，`-msse2`，`-msse3`，`-mssse3`，-`msse4.1`，-`msse4.2`；是向下兼容的，所以编译时加上`-msse4.2`，前面的也都可以使用
+
+编译命令：
+```sh
+g++ test.cc -o test -msse4.2
+```
 
 ## 参考资料
 
