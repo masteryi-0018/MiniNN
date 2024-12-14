@@ -91,8 +91,11 @@ git clone --recursive git@github.com:masteryi-0018/MiniNN.git
 - [ ] 支持多算子构图
 
 3. mininn kernel
-- [ ] 增加opencl后端
-- [ ] 增加cuda后端
+- [x] 增加opencl后端
+- [x] 增加cuda后端
+- [x] 增加avx后端
+- [x] 增加sse后端
+- [x] 增加mkl后端
 
 4. 工具类
 - [ ] 增加示例程序，链接mininn.so

@@ -209,3 +209,11 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
 - 方式2：cmakelists中设置环境变量，需要写绝对路径，并且Windows下也需要用正斜杠
 
 ## Linux，x86
+
+1. 额外安装的SDK运行时出现`cannot open shared object file: No such file or directory`
+
+- 问题原因：在手动安装的SDK中，头文件和库文件都不在编译器默认的寻找路径中，所以需要手动指定路径，例如：
+  - `-I/opt/intel/oneapi/mkl/latest/include`
+  - `-L/opt/intel/oneapi/mkl/latest/lib`
+  - 但是在运行时依然需要对应的打开库文件，这里只是让编译器编译时不出错
+- 解决方法：使用`-Wl,-rpath,/opt/intel/oneapi/mkl/latest/lib`让编译产物链接到绝对路径，从而正确运行

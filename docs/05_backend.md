@@ -166,6 +166,25 @@ g++ test.cc -o test -mavx512vnni
 g++ test.cc -o test -msse4.2
 ```
 
+## intel MKL
+
+安装页面：[官网](https://www.intel.cn/content/www/cn/zh/developer/tools/oneapi/onemkl-download.html?operatingsystem=linux&linux-install=apt)
+
+和opencl是一样的，都被集成到了oneapi中，但是opencl藏得更深
+
+前面的环境变量配置和安装opencl应该是一样的，我在opencl安装的过程中已经配置了，所以这里可以直接安装
+
+```sh
+sudo apt install intel-oneapi-mkl-devel
+```
+
+## intel MKL的测试
+
+编译命令：
+```sh
+g++ test.cc -o test -I/opt/intel/oneapi/mkl/latest/include -L/opt/intel/oneapi/mkl/latest/lib -lmkl_rt -lpthread -Wl,-rpath,/opt/intel/oneapi/mkl/latest/lib
+```
+
 ## 参考资料
 
 1. <https://github.com/KhronosGroup/OpenCL-Guide>

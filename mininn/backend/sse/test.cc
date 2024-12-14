@@ -61,7 +61,7 @@ int main() {
     std::cout << "SSE4_2 is not supported." << std::endl;
     #endif
 
-    const size_t size = 500;
+    const size_t size = 250;
     float A[size], B[size], C[size];
 
     // initialize
