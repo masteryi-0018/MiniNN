@@ -185,6 +185,22 @@ sudo apt install intel-oneapi-mkl-devel
 g++ test.cc -o test -I/opt/intel/oneapi/mkl/latest/include -L/opt/intel/oneapi/mkl/latest/lib -lmkl_rt -lpthread -Wl,-rpath,/opt/intel/oneapi/mkl/latest/lib
 ```
 
+## opengl
+
+## opengl in Windows
+
+## opengl in WSL
+
+1. 依赖：`sudo apt install mesa-utils`
+2. 执行：`glxinfo | grep "OpenGL version"`，安装了NV的cuda后，这个就直接有了
+3. 依赖：`sudo apt-get install libglfw3 libglfw3-dev`，`glfw`不是 OpenGL 本身的必需部分，但它是一个非常流行且实用的库[https://github.com/glfw/glfw](https://github.com/glfw/glfw)，通常用来简化一些与窗口管理、输入处理、上下文创建等相关的工作。简单来说，GLFW 为 OpenGL 提供了一个平台无关的窗口管理和输入处理的框架，方便开发者进行图形编程
+4. 与opencl类似，在WSL中，即使安装了NV的驱动（使用nvidia-smi有输出），opengl也是只能借助MS的虚拟机实现
+
+编译命令：
+```sh
+g++ -o test test.cc -lGLEW -lGL -lglfw
+```
+
 ## 参考资料
 
 1. <https://github.com/KhronosGroup/OpenCL-Guide>
