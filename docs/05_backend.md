@@ -195,6 +195,10 @@ g++ test.cc -o test -I/opt/intel/oneapi/mkl/latest/include -L/opt/intel/oneapi/m
 
 ## opengl in Windows
 
+1. 一般来说，安装了NV的driver就会有opengl，但实际发现并没有，opengl也不是跟随CUDA安装的，这一点和opencl不同。
+2. 链接：<https://developer.nvidia.com/opengl>，虽然说NV支持opengl，但是下面的更新到2016年就没有了，驱动链接点进去也是NV的driver官网，合理推测希望大家都使用cuda的接口。
+3. 在Windows上依靠NV进行opengl开发应该不可行
+
 ## opengl in WSL
 
 1. 依赖：`sudo apt install mesa-utils`
