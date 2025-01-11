@@ -198,6 +198,8 @@ g++ test.cc -o test -I/opt/intel/oneapi/mkl/latest/include -L/opt/intel/oneapi/m
 1. 一般来说，安装了NV的driver就会有opengl，但实际发现并没有，opengl也不是跟随CUDA安装的，这一点和opencl不同。
 2. 链接：<https://developer.nvidia.com/opengl>，虽然说NV支持opengl，但是下面的更新到2016年就没有了，驱动链接点进去也是NV的driver官网，合理推测希望大家都使用cuda的接口。
 3. 在Windows上依靠NV进行opengl开发应该不可行
+4. 被逼无奈，下载专门的软件来查看一下：GL view（GPU Extensions Viewer）<https://www.realtech-vr.com/home/?page_id=142>：发现是有的，版本4.6也很新，BTW，这软件还挺不错的，能看很多系统信息。
+5. 重新在官网寻找，发现了nsight-graphics：<https://developer.nvidia.com/nsight-graphics>，似乎opengl等图形相关的被打包进这里面了。nsight-graphics是属于NVIDIA Nsight Developer Tools<https://developer.nvidia.com/tools-overview>的一部分，可以单独下载。文档链接：<https://docs.nvidia.com/nsight-graphics/index.html>
 
 ## opengl in WSL
 
