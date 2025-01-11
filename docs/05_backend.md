@@ -187,6 +187,12 @@ g++ test.cc -o test -I/opt/intel/oneapi/mkl/latest/include -L/opt/intel/oneapi/m
 
 ## opengl
 
+有以下opengl的分类：
+1. OpenGL Core Profile
+2. OpenGL Compatibility Profile
+3. OpenGL ES（Embedded Systems）
+4. OpenGL Vulkan
+
 ## opengl in Windows
 
 ## opengl in WSL
