@@ -45,4 +45,6 @@ if(WIN32)
 endif()
 
 add_subdirectory(third_party/googletest)
+add_subdirectory(third_party/pybind11)
 add_subdirectory(mininn)
+add_subdirectory(python)
