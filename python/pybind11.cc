@@ -1,17 +1,16 @@
-#include "mininn/runtime/predictor.h"
+#include "mininn/graph/tensor.h"
 
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 
 namespace py = pybind11;
 
 PYBIND11_MODULE(mininn, m) {
-    py::class_<Predictor>(m, "Predictor")
-        .def(py::init<std::shared_ptr<Graph>>(),
-             py::arg("graph"))
-        .def("prepare", &Predictor::prepare)
-        .def("run", &Predictor::run)
-        .def("async_run_future", &Predictor::async_run_future)
-        .def("async_run_callback", &Predictor::async_run_callback)
-        .def("get_input_tensors", &Predictor::get_input_tensors)
-        .def("get_output_tensors", &Predictor::get_output_tensors);
+    py::class_<Tensor>(m, "Tensor")
+        .def(py::init())
+        .def("set_shape", &Tensor::set_shape)
+        .def("get_shape", &Tensor::get_shape)
+        .def("get_size", &Tensor::get_size)
+        .def("get_buffer", &Tensor::get_buffer)
+        .def("get_length", &Tensor::get_length);
 }

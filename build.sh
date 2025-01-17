@@ -17,3 +17,5 @@ cmake --build .
 
 # 5.返回
 cd ..
+
+cp build/python/mininn.cpython-311-x86_64-linux-gnu.so python/test/mininn.so
