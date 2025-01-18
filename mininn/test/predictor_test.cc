@@ -3,6 +3,7 @@
 #include "mininn/graph/node.h"
 #include "mininn/graph/type.h"
 #include "mininn/graph/register.h"
+#include "mininn/parser/parser.h"
 
 #include "mininn/utils/log.h"
 
@@ -25,6 +26,7 @@ bool is_equal(float* tensor1, float* tensor2, int size) {
 }
 
 std::shared_ptr<Graph> make_graph() {
+    /*
     auto graph = std::make_shared<Graph>();
     
     // 1. set tensor first
@@ -43,6 +45,13 @@ std::shared_ptr<Graph> make_graph() {
     graph->set_inputs(inputs);
     graph->set_outputs(outputs);
 
+    return graph;
+    */
+
+    // method2, make graph use parser
+    std::string filename = "convertor/mininn_test.gynn";
+    auto graph = std::make_shared<Graph>();
+    load_model(filename, graph);
     return graph;
 }
 
