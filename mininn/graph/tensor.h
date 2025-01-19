@@ -19,6 +19,12 @@ public:
 
     int get_length();
 
+    // pybind
+    void set_data(std::vector<float>& data);
+
+    // pybind
+    std::vector<float> get_data();
+
 private:
     std::vector<int> shape_;
     void* buffer_;

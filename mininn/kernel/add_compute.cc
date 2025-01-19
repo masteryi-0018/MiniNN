@@ -101,6 +101,7 @@ void AddCompute::run() {
     LOG(INFO) << "kernel run end in cuda kernel";
 #endif // __linux__
 
+/*
     // opencl kernel
     LOG(INFO) << "kernel run start in opencl kernel";
     start_time = std::chrono::high_resolution_clock::now();
@@ -121,6 +122,7 @@ void AddCompute::run() {
     elapsed_seconds = end_time - start_time;
     LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
     LOG(INFO) << "kernel run end in opencl kernel";
+*/
 }
 
 void AddCompute::set_params(Params* params) {

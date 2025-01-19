@@ -3,6 +3,7 @@
 #include <cstdlib> // std::malloc
 #include <numeric> // std::accumulate
 #include <functional> // std::multiplies, bazel needs
+#include <cstring> // std::memcpy
 
 Tensor::Tensor() {
     buffer_ = nullptr;
@@ -30,4 +31,19 @@ void* Tensor::get_buffer() {
 
 int Tensor::get_length() {
     return size_ * sizeof(float);
+}
+
+// pybind
+void Tensor::set_data(std::vector<float>& data) {
+    if (data.size() != size_) {
+        throw std::runtime_error("Data size mismatch");
+    }
+    std::memcpy(buffer_, data.data(), size_ * sizeof(float));
+}
+
+// pybind
+std::vector<float> Tensor::get_data() {
+    std::vector<float> data(size_);
+    std::memcpy(data.data(), buffer_, size_ * sizeof(float));
+    return data;
 }
