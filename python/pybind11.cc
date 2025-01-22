@@ -54,7 +54,7 @@ void bind_class(py::module_ &m) {
         .def("get_output_tensors", &Predictor::get_output_tensors);
 }
 
-PYBIND11_MODULE(mininn, m) {
+PYBIND11_MODULE(mininn_capi, m) {
     bind_function(m);
     bind_enum(m);
     bind_class(m);

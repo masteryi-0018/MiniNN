@@ -1,8 +1,8 @@
-import mininn
+import mininn_capi
 
 def main():
     # Tensor
-    tensor = mininn.Tensor()
+    tensor = mininn_capi.Tensor()
     tensor.set_shape([1, 3, 224, 224])
     print(tensor.get_shape())
     print(tensor.get_size())
@@ -11,8 +11,8 @@ def main():
 
     # parser
     filename = "../../convertor/mininn_test.gynn"
-    graph = mininn.Graph()
-    mininn.load_model(filename, graph)
+    graph = mininn_capi.Graph()
+    mininn_capi.load_model(filename, graph)
 
     # graph
     node_num = len(graph.get_nodes())
@@ -26,7 +26,7 @@ def main():
     print(graph.get_outputs())
 
     # predictor
-    predictor = mininn.Predictor(graph)
+    predictor = mininn_capi.Predictor(graph)
     input = predictor.get_input_tensors()
     output = predictor.get_output_tensors()
     for i in range(len(input)):

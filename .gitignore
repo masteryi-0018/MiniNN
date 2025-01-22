@@ -9,6 +9,7 @@ MODULE*
 
 # py
 __pycache__
+*.egg-info
 
 # model
 *.gynn

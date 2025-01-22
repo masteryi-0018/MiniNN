@@ -15,11 +15,11 @@ def main():
     
     outputs = my_predictor.get_output()
     c = outputs[0]
-    print(c[0], c.get_shape())
+    print(c.get_data()[0], c.get_shape())
 
     output_size = c.get_size()
     golden = [3.0] * output_size
-    assert c == golden
+    assert c.get_data() == golden
     return
 
 

@@ -1,10 +1,10 @@
-import mininn
+from mininn import mininn_capi
 
 class Predictor():
     def __init__(self, filename):
-        graph = mininn.Graph()
-        mininn.load_model(filename, graph)
-        self.Predictor = mininn.Predictor(graph)
+        graph = mininn_capi.Graph()
+        mininn_capi.load_model(filename, graph)
+        self.Predictor = mininn_capi.Predictor(graph)
 
     def get_input(self):
         inputs = self.Predictor.get_input_tensors()
