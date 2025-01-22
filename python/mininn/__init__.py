@@ -1,1 +1,1 @@
-import predictor
+from .predictor import Predictor
