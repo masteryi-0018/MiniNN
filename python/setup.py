@@ -4,7 +4,7 @@ from setuptools.command.build_py import build_py
 import os
 import shutil
 
-VERSION = '0.0.1' 
+VERSION = '0.0.3'
 DESCRIPTION = 'python interface of MiniNN'
 LONG_DESCRIPTION = 'Build a deep learning inference framework from scratch'
 

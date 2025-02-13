@@ -5,8 +5,13 @@
 #include "mininn/graph/graph.h"
 #include "mininn/runtime/predictor.h"
 
+#include "mininn/graph/register_helper.h"
+
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+
+USE_OP(ADD);
+USE_KERNEL(ADD);
 
 namespace py = pybind11;
 
