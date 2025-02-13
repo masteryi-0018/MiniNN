@@ -2,7 +2,7 @@
 option(WITH_GTEST "build with gtest" ON)
 
 if(UNIX)
-    set(LIB_TYPE SHARED)
+    set(LIB_TYPE STATIC)
 else(WIN32)
     set(LIB_TYPE STATIC)
 endif()

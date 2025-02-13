@@ -9,6 +9,8 @@ elseif(UNIX)
     set(CMAKE_CXX_COMPILER "clang++")
 endif()
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 # Clang with CUDA is not yet supported on Windows.  See CMake issue #20776.
 # set(CMAKE_CUDA_COMPILER "E:/LLVM/bin/clang.exe")
 
