@@ -34,9 +34,12 @@ if(WIN32)
 elseif(UNIX)
     set(OPENCL_INCLUDE_DIR "/usr/local/cuda/include/")
     set(OPENCL_LIB_DIR "/usr/local/cuda/lib64")
+    set(MKL_INCLUDE_DIR "/opt/intel/oneapi/mkl/latest/include")
+    set(MKL_LIB_DIR "/opt/intel/oneapi/mkl/latest/lib")
 endif()
 
 include_directories(${OPENCL_INCLUDE_DIR})
+include_directories(${MKL_INCLUDE_DIR})
 
 # 2. subdirectory
 include_directories("${MININN_SOURCE_DIR}")

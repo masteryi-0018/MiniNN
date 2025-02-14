@@ -7,6 +7,7 @@
 #include "mininn/backend/opencl/opencl.h"
 #include "mininn/backend/avx/avx.h"
 #include "mininn/backend/sse/sse.h"
+#include "mininn/backend/mkl/mkl.h"
 
 #include <thread>
 #include <chrono>
@@ -167,6 +168,27 @@ void AddCompute::run() {
     elapsed_seconds = end_time - start_time;
     LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
     LOG(INFO) << "kernel run end in sse kernel";
+
+    // mkl kernel
+    LOG(INFO) << "kernel run start in mkl kernel";
+    start_time = std::chrono::high_resolution_clock::now();
+
+    params = get_params();
+    x = params->input1;
+    y = params->input2;
+    out = params->output;
+
+    size = x->get_size();
+    x_buffer = reinterpret_cast<float*>(x->get_buffer());
+    y_buffer = reinterpret_cast<float*>(y->get_buffer());
+    out_buffer = reinterpret_cast<float*>(out->get_buffer());
+
+    mkl_add_wrapper(x_buffer, y_buffer, out_buffer, size);
+
+    end_time = std::chrono::high_resolution_clock::now();
+    elapsed_seconds = end_time - start_time;
+    LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
+    LOG(INFO) << "kernel run end in mkl kernel";
 }
 
 void AddCompute::set_params(Params* params) {
