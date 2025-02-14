@@ -2,6 +2,19 @@
 
 Build a deep learning inference framework from scratch
 
+## quick start
+
+环境需求：
+- conda，python=3.11
+- mininn_test.gynn [下载](https://github.com/masteryi-0018/MiniNN/releases/download/mininn-0.0.1/mininn_test.gynn)
+
+```sh
+conda create -n mininn python=3.11
+conda activate mininn
+pip install mininn
+python python/test/pip_test.py
+```
+
 ## download
 
 ```sh
@@ -46,7 +59,7 @@ git clone --recursive git@github.com:masteryi-0018/MiniNN.git
 
 更多请查看：<https://github.com/masteryi-0018/MiniNN/blob/main/docs/README.md>
 
-## quick start
+## unit test
 
 ### windows
 
@@ -104,7 +117,7 @@ git clone --recursive git@github.com:masteryi-0018/MiniNN.git
 - [x] 引入flatbuffers头文件，集成到bazel脚本中
 - [x] Windows使用bazel构建
 - [x] Windows使用msvc编译问题解决
-- [ ] 使用clang编译器
+- [x] 使用clang编译器
 
 6. 疑问
 - [ ] 堆上申请内存的示意图
