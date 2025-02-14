@@ -1,0 +1,1 @@
+void sse_add_wrapper(const float* h_A, const float* h_B, float* h_C, int numElements);
