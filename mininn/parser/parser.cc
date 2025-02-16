@@ -13,7 +13,7 @@ void load_model(std::string& filename, std::shared_ptr<Graph> graph) {
     }
     std::vector<uint8_t> buffer((std::istreambuf_iterator<char>(file)),
                                  std::istreambuf_iterator<char>());
-    const mininn::Graph* fbs_graph = mininn::GetGraph(buffer.data());
+    const mininn_fbs::Graph* fbs_graph = mininn_fbs::GetGraph(buffer.data());
 
     // inputs
     const flatbuffers::Vector<int32_t>* fbs_inputs = fbs_graph->inputs();
@@ -33,7 +33,7 @@ void load_model(std::string& filename, std::shared_ptr<Graph> graph) {
 
     // tensors
     // consider use auto to handle fbs type
-    const flatbuffers::Vector<flatbuffers::Offset<mininn::Tensor>>* tensors = fbs_graph->tensors();
+    const flatbuffers::Vector<flatbuffers::Offset<mininn_fbs::Tensor>>* tensors = fbs_graph->tensors();
     for (int i = 0; i < tensors->size(); ++i) {
         auto fbs_tensor = tensors->Get(i);
         const flatbuffers::Vector<int32_t>* fbs_shape = fbs_tensor->shape();
@@ -46,7 +46,7 @@ void load_model(std::string& filename, std::shared_ptr<Graph> graph) {
 
     // nodes
     // consider use auto to handle fbs type
-    const flatbuffers::Vector<flatbuffers::Offset<mininn::Node>>* nodes = fbs_graph->nodes();
+    const flatbuffers::Vector<flatbuffers::Offset<mininn_fbs::Node>>* nodes = fbs_graph->nodes();
     for (int i = 0; i < nodes->size(); ++i) {
         auto fbs_node = nodes->Get(i);
         Op type = static_cast<Op>(fbs_node->type());

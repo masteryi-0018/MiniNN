@@ -5,10 +5,10 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../third_party/flatbuff
 import flatbuffers
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
-import mininn.Op
-import mininn.Node
-import mininn.Tensor
-import mininn.Graph
+import mininn_fbs.Op
+import mininn_fbs.Node
+import mininn_fbs.Tensor
+import mininn_fbs.Graph
 
 import onnx
 import numpy as np
@@ -51,11 +51,11 @@ def build_node(builder, onnx_graph):
         node_inputs = builder.CreateNumpyVector(np.array(inputs, dtype=np.int32))
         node_outputs = builder.CreateNumpyVector(np.array(outputs, dtype=np.int32))
 
-        mininn.Node.NodeStart(builder)
-        mininn.Node.NodeAddType(builder, mininn.Op.Op().ADD)
-        mininn.Node.NodeAddInputs(builder, node_inputs)
-        mininn.Node.NodeAddOutputs(builder, node_outputs)
-        node = mininn.Node.NodeEnd(builder)
+        mininn_fbs.Node.NodeStart(builder)
+        mininn_fbs.Node.NodeAddType(builder, mininn_fbs.Op.Op().ADD)
+        mininn_fbs.Node.NodeAddInputs(builder, node_inputs)
+        mininn_fbs.Node.NodeAddOutputs(builder, node_outputs)
+        node = mininn_fbs.Node.NodeEnd(builder)
         nodes_list.append(node)
 
     return nodes_list
@@ -70,10 +70,10 @@ def build_tensor(builder, onnx_graph):
 
         shape = builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
 
-        mininn.Tensor.TensorStart(builder)
-        mininn.Tensor.TensorAddShape(builder, shape)
-        mininn.Tensor.TensorAddData(builder, 0)
-        tensor = mininn.Tensor.TensorEnd(builder)
+        mininn_fbs.Tensor.TensorStart(builder)
+        mininn_fbs.Tensor.TensorAddShape(builder, shape)
+        mininn_fbs.Tensor.TensorAddData(builder, 0)
+        tensor = mininn_fbs.Tensor.TensorEnd(builder)
         tensors_list.append(tensor)
 
     for o in onnx_graph.output:
@@ -83,10 +83,10 @@ def build_tensor(builder, onnx_graph):
 
         shape = builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
 
-        mininn.Tensor.TensorStart(builder)
-        mininn.Tensor.TensorAddShape(builder, shape)
-        mininn.Tensor.TensorAddData(builder, 0)
-        tensor = mininn.Tensor.TensorEnd(builder)
+        mininn_fbs.Tensor.TensorStart(builder)
+        mininn_fbs.Tensor.TensorAddShape(builder, shape)
+        mininn_fbs.Tensor.TensorAddData(builder, 0)
+        tensor = mininn_fbs.Tensor.TensorEnd(builder)
         tensors_list.append(tensor) 
 
     return tensors_list
@@ -96,23 +96,23 @@ def build_graph(builder, nodes_list, tensors_list):
     graph_inputs = builder.CreateNumpyVector(np.array([0, 1], dtype=np.int32))
     graph_outputs = builder.CreateNumpyVector(np.array([2], dtype=np.int32))
     
-    mininn.Graph.GraphStartNodesVector(builder, len(nodes_list))
+    mininn_fbs.Graph.GraphStartNodesVector(builder, len(nodes_list))
     for i in reversed(range(len(nodes_list))):
         builder.PrependUOffsetTRelative(nodes_list[i])
     nodes = builder.EndVector()
 
-    mininn.Graph.GraphStartTensorsVector(builder, len(tensors_list))
+    mininn_fbs.Graph.GraphStartTensorsVector(builder, len(tensors_list))
     for i in reversed(range(len(tensors_list))):
         builder.PrependUOffsetTRelative(tensors_list[i])
     tensors = builder.EndVector()
 
     # 创建 Graph
-    mininn.Graph.GraphStart(builder)
-    mininn.Graph.GraphAddNodes(builder, nodes)
-    mininn.Graph.GraphAddTensors(builder, tensors)
-    mininn.Graph.GraphAddInputs(builder, graph_inputs)
-    mininn.Graph.GraphAddOutputs(builder, graph_outputs)
-    graph = mininn.Graph.GraphEnd(builder)
+    mininn_fbs.Graph.GraphStart(builder)
+    mininn_fbs.Graph.GraphAddNodes(builder, nodes)
+    mininn_fbs.Graph.GraphAddTensors(builder, tensors)
+    mininn_fbs.Graph.GraphAddInputs(builder, graph_inputs)
+    mininn_fbs.Graph.GraphAddOutputs(builder, graph_outputs)
+    graph = mininn_fbs.Graph.GraphEnd(builder)
     
     return graph
 
@@ -126,7 +126,7 @@ def read(model_path):
     with open(model_path, "rb") as f:
         buf = f.read()
     
-    graph = mininn.Graph.Graph.GetRootAsGraph(buf)
+    graph = mininn_fbs.Graph.Graph.GetRootAsGraph(buf)
 
     # graph
     output = [2]
@@ -142,7 +142,7 @@ def read(model_path):
 
     # node
     node = graph.Nodes(0)
-    assert node.Type() == mininn.Op.Op.ADD
+    assert node.Type() == mininn_fbs.Op.Op.ADD
 
     output = [2]
     for i in range(node.OutputsLength()):

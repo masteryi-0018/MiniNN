@@ -1,6 +1,6 @@
-// IDL file for mininn's schema
+// IDL file for mininn_fbs's schema
 
-namespace mininn;
+namespace mininn_fbs;
 
 enum Op: byte {
   ADD = 0,
