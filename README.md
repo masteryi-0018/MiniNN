@@ -96,7 +96,7 @@ git clone --recursive git@github.com:masteryi-0018/MiniNN.git
 ## TODO
 
 1. mininn convertor
-- [ ] 支持将onnx模型转换为gynn格式
+- [x] 支持将onnx模型转换为gynn格式
 - [ ] 支持将pytorch模型转换为gynn格式
 - [ ] 支持将tensorflow模型转换为gynn格式
 
