@@ -9,7 +9,6 @@ import mininn.Op
 import mininn.Node
 import mininn.Tensor
 import mininn.Graph
-import mininn.Node
 
 # Example of how to use FlatBuffers to create and read binary buffers.
 
@@ -100,9 +99,9 @@ def write():
     with open("mininn_test.gynn", 'wb') as f:
         f.write(buf)
 
-def read():
+def read(model_path):
     # read
-    with open("mininn_test.gynn", "rb") as f:
+    with open(model_path, "rb") as f:
         buf = f.read()
     
     graph = mininn.Graph.Graph.GetRootAsGraph(buf)
@@ -143,4 +142,4 @@ def read():
 
 if __name__ == '__main__':
     write()
-    read()
+    read("mininn_test.gynn")

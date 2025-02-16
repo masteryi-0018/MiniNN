@@ -1,7 +1,7 @@
 import mininn
 
 def main():
-    filename = "../../convertor/mininn_test.gynn"
+    filename = "../../convertor/onnx/onnx_add_100_3_224_224.gynn"
     my_predictor= mininn.Predictor(filename)
 
     inputs = my_predictor.get_input()

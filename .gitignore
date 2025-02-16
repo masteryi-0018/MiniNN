@@ -14,6 +14,7 @@ dist
 
 # model
 *.gynn
+*.onnx
 
 # lib
 *.so
