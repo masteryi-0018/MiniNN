@@ -5,6 +5,10 @@ Add::Add(Op type): Node(type) {
     params_ = new AddParams;
 }
 
+Add::~Add() {
+    delete params_;
+}
+
 void Add::set_input_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {
     params_->input1 = tensors[0];
     params_->input2 = tensors[1];

@@ -15,6 +15,10 @@
 
 AddCompute::AddCompute() {}
 
+AddCompute::~AddCompute() {
+    delete params_;
+}
+
 void add_func(float* x_buffer, float* y_buffer, float* out_buffer, int start, int end) {
     for (int i = start; i < end; ++i) {
         out_buffer[i] = x_buffer[i] + y_buffer[i];

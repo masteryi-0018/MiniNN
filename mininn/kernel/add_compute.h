@@ -7,6 +7,8 @@ class AddCompute: public Kernel {
 public:
     AddCompute();
 
+    ~AddCompute();
+
     void run();
 
     // and use reinterpret_cast to AddParams

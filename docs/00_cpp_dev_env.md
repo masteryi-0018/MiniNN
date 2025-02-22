@@ -122,6 +122,14 @@ ExternalProject_Add(
 
 使用模板函数的时候，要在头文件中实现。模板函数的实现需要在编译时可见，因为编译器需要根据具体的模板参数生成代码。如果你把模板函数的实现放在`.cpp`文件中，那么在编译其他文件时，编译器就无法看到模板函数的实现，因此会导致链接错误。
 
+2. 内存泄漏
+
+debug到一定程度就会关注这个问题，除了用肉眼观察以外，还有一些工具可以帮忙：
+  1. Valgrind（sudo apt install valgrind）：valgrind --leak-check=full ./gtest-main
+  2. AddressSanitizer（ASan）：g++ -fsanitize=address -g -o your_program your_program.cpp
+  3. Dr. Memory：drmemory -- your_program
+  4. 静态分析工具：sudo apt install cppcheck/clang-tidy
+
 ## Git
 
 1. 第三方库的维护

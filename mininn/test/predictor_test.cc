@@ -49,7 +49,7 @@ std::shared_ptr<Graph> make_graph() {
     */
 
     // method2, make graph use parser
-    std::string filename = "convertor/mininn_test.gynn";
+    std::string filename = "/home/gy/proj/MiniNN/convertor/mininn_test.gynn";
     auto graph = std::make_shared<Graph>();
     load_model(filename, graph);
     return graph;
@@ -97,6 +97,7 @@ TEST(Predictor, run) {
         golden[i] = 3.0f;
     }
     bool result = is_equal(output, golden, size);
+    free(golden);
     EXPECT_EQ(result, true);
 }
 
@@ -128,6 +129,7 @@ TEST(Predictor, async_run_future) {
     float* output = reinterpret_cast<float*>(output_tensors[0]->get_buffer());
 
     bool result = is_equal(output, golden, size);
+    free(golden);
     EXPECT_EQ(result, true);
 }
 
@@ -165,5 +167,6 @@ TEST(Predictor, async_run_callback) {
     std::vector<std::shared_ptr<Tensor>> output_tensors = predictor->get_output_tensors();
     float* output = reinterpret_cast<float*>(output_tensors[0]->get_buffer());
     bool result = is_equal(output, golden, size);
+    free(golden);
     EXPECT_EQ(result, true);
 }

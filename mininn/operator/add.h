@@ -9,6 +9,8 @@ class Add: public Node {
 public:
     Add(Op type);
 
+    ~Add();
+
     void set_input_tensors(std::vector<std::shared_ptr<Tensor>>& tensors);
 
     void set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors);

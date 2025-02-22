@@ -10,6 +10,13 @@ Tensor::Tensor() {
     size_ = 0;
 }
 
+Tensor::~Tensor() {
+    if (buffer_) {
+        free(buffer_);
+        buffer_ = nullptr;
+    }
+}
+
 void Tensor::set_shape(std::vector<int>& shape) {
     shape_ = shape;
     size_ = std::accumulate(shape.begin(), shape.end(), 1, std::multiplies<int>());
