@@ -20,7 +20,7 @@ Tensor::~Tensor() {
 void Tensor::set_shape(std::vector<int>& shape) {
     shape_ = shape;
     size_ = std::accumulate(shape.begin(), shape.end(), 1, std::multiplies<int>());
-    // todo: find the ptr and heap malloc order
+    // in Linux, heap usually grow to low address memory
     buffer_ = std::malloc(size_ * sizeof(float));
 }
 

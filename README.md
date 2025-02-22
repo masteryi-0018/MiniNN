@@ -118,6 +118,3 @@ git clone --recursive git@github.com:masteryi-0018/MiniNN.git
 - [x] Windows使用bazel构建
 - [x] Windows使用msvc编译问题解决
 - [x] 使用clang编译器
-
-6. 疑问
-- [ ] 堆上申请内存的示意图
