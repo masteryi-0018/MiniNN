@@ -68,159 +68,154 @@ def print_graph_info(onnx_graph):
     # print("metadata_props:", onnx_graph.metadata_props)
 
 
-def load_onnx_model():
-    onnx_model = onnx.load("/home/gy/proj/MiniNN/mobilenetv2-10.onnx")
-    onnx_model_shape = onnx.shape_inference.infer_shapes(onnx_model)
-    onnx_graph = onnx_model_shape.graph
-    print_graph_info(onnx_graph)
-
-    return onnx_graph
-
-
-def build_mininn(onnx_graph):
-    builder = flatbuffers.Builder(74741)
-
-    nodes_list = []
-    tensors_list = []
-    build_node(builder, onnx_graph, nodes_list, tensors_list)
-    graph = build_graph(builder, nodes_list, tensors_list)
-    
-    builder.Finish(graph)
-    with open("onnx_add_100_3_224_224.gynn", "wb") as f:
-        f.write(builder.Output())
-    print("add_model.onnx 模型已转换为 onnx_add_100_3_224_224.gynn")
+class convertor():
+    def __init__(self):
+        self.onnx_graph = None
+        self.builder = flatbuffers.Builder(74741)
+        self.tensor_idx = 0
+        self.nodes_list = []
+        self.tensors_list = []
+        self.tensor_dict = {}
+        self.input_list = []
+        self.output_list = []
 
 
-def build_node(builder, onnx_graph, nodes_list, tensors_list):
-    tensor_idx = 0
-    for onnx_node in onnx_graph.node[:1]:
-        # print_node_info(onnx_node)
-
-        inputs = build_tensor(builder, onnx_node.input, tensors_list, tensor_idx)
-        tensor_idx += len(inputs)
-        print(inputs)
-        outputs = build_tensor(builder, onnx_node.output, tensors_list, tensor_idx)
-        tensor_idx += len(outputs)
-        print(outputs)
-
-        node_inputs = builder.CreateNumpyVector(np.array(inputs, dtype=np.int32))
-        node_outputs = builder.CreateNumpyVector(np.array(outputs, dtype=np.int32))
-
-        mininn_fbs.Node.NodeStart(builder)
-        mininn_fbs.Node.NodeAddType(builder, mininn_fbs.Op.Op().ADD)
-        mininn_fbs.Node.NodeAddInputs(builder, node_inputs)
-        mininn_fbs.Node.NodeAddOutputs(builder, node_outputs)
-        node = mininn_fbs.Node.NodeEnd(builder)
-        nodes_list.append(node)
+    def load_onnx_model(self):
+        onnx_model = onnx.load("/home/gy/proj/MiniNN/mobilenetv2-10.onnx")
+        onnx_model_shape = onnx.shape_inference.infer_shapes(onnx_model)
+        onnx_graph = onnx_model_shape.graph
+        print_graph_info(onnx_graph)
+        self.onnx_graph = onnx_graph
 
 
-def build_tensor(builder, tensors, tensors_list, tensor_idx):
-    idx_list = []
-    for onnx_tensor in tensors:
-        print(onnx_tensor)
-        for i in onnx_graph.initializer:
-            if i.name == onnx_tensor:
-                # print_tensor_info(i)
-                print("i from initializer")
-                shape_list = i.dims
-                shape = builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
-                raw_data = i.raw_data
-                data = builder.CreateNumpyVector(np.frombuffer(raw_data, dtype=np.uint8))
-
-                mininn_fbs.Tensor.TensorStart(builder)
-                mininn_fbs.Tensor.TensorAddShape(builder, shape)
-                mininn_fbs.Tensor.TensorAddData(builder, data)
-                tensor = mininn_fbs.Tensor.TensorEnd(builder)
-                tensors_list.append(tensor)
-                idx_list.append(tensor_idx)
-                tensor_idx += 1
-
-        for v in onnx_graph.value_info:
-            if v.name == onnx_tensor:
-                # print_value_info(v)
-                print("v from value_info")
-                shape_list = []
-                for dim in v.type.tensor_type.shape.dim:
-                    if dim.dim_param == "batch_size":
-                        shape_list.append(1)
-                    else:
-                        shape_list.append(dim.dim_value)
-                shape = builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
-
-                mininn_fbs.Tensor.TensorStart(builder)
-                mininn_fbs.Tensor.TensorAddShape(builder, shape)
-                mininn_fbs.Tensor.TensorAddData(builder, 0)
-                tensor = mininn_fbs.Tensor.TensorEnd(builder)
-                tensors_list.append(tensor)
-                idx_list.append(tensor_idx)
-                tensor_idx += 1
-
-        for i in onnx_graph.input:
-            if i.name == onnx_tensor:
-                # print_value_info(i)
-                print("i from input")
-                shape_list = []
-                for dim in i.type.tensor_type.shape.dim:
-                    if dim.dim_param == "batch_size":
-                        shape_list.append(1)
-                    else:
-                        shape_list.append(dim.dim_value)
-                shape = builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
-
-                mininn_fbs.Tensor.TensorStart(builder)
-                mininn_fbs.Tensor.TensorAddShape(builder, shape)
-                mininn_fbs.Tensor.TensorAddData(builder, 0)
-                tensor = mininn_fbs.Tensor.TensorEnd(builder)
-                tensors_list.append(tensor)
-                idx_list.append(tensor_idx)
-                tensor_idx += 1
-    
-        for o in onnx_graph.output:
-            if o.name == onnx_tensor:
-                # print_value_info(o)
-                print("o from output")
-                shape_list = []
-                for dim in o.type.tensor_type.shape.dim:
-                    if dim.dim_param == "batch_size":
-                        shape_list.append(1)
-                    else:
-                        shape_list.append(dim.dim_value)
-                shape = builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
-
-                mininn_fbs.Tensor.TensorStart(builder)
-                mininn_fbs.Tensor.TensorAddShape(builder, shape)
-                mininn_fbs.Tensor.TensorAddData(builder, 0)
-                tensor = mininn_fbs.Tensor.TensorEnd(builder)
-                tensors_list.append(tensor) 
-                idx_list.append(tensor_idx)
-                tensor_idx += 1
-
-    return idx_list
+    def build_mininn(self):
+        self.build_node_and_tensor()
+        graph = self.build_graph()
+        
+        self.builder.Finish(graph)
+        with open("onnx_add_100_3_224_224.gynn", "wb") as f:
+            f.write(self.builder.Output())
+        print("add_model.onnx 模型已转换为 onnx_add_100_3_224_224.gynn \n")
 
 
-def build_graph(builder, nodes_list, tensors_list):
-    graph_inputs = builder.CreateNumpyVector(np.array([0, 1], dtype=np.int32))
-    graph_outputs = builder.CreateNumpyVector(np.array([2], dtype=np.int32))
-    
-    mininn_fbs.Graph.GraphStartNodesVector(builder, len(nodes_list))
-    for i in reversed(range(len(nodes_list))):
-        builder.PrependUOffsetTRelative(nodes_list[i])
-    nodes = builder.EndVector()
+    def build_node_and_tensor(self):
+        for onnx_node in self.onnx_graph.node:
+            # print_node_info(onnx_node)
+            inputs = self.build_tensor(onnx_node.input)
+            outputs = self.build_tensor(onnx_node.output)
+            # print(f"node {onnx_node.name} inputs is: {onnx_node.input}")
+            # print(f"node {onnx_node.name} outputs is: {onnx_node.output}")
 
-    mininn_fbs.Graph.GraphStartTensorsVector(builder, len(tensors_list))
-    for i in reversed(range(len(tensors_list))):
-        builder.PrependUOffsetTRelative(tensors_list[i])
-    tensors = builder.EndVector()
+            node_inputs = self.builder.CreateNumpyVector(np.array(inputs, dtype=np.int32))
+            node_outputs = self.builder.CreateNumpyVector(np.array(outputs, dtype=np.int32))
 
-    # 创建 Graph
-    mininn_fbs.Graph.GraphStart(builder)
-    mininn_fbs.Graph.GraphAddNodes(builder, nodes)
-    mininn_fbs.Graph.GraphAddTensors(builder, tensors)
-    mininn_fbs.Graph.GraphAddInputs(builder, graph_inputs)
-    mininn_fbs.Graph.GraphAddOutputs(builder, graph_outputs)
-    graph = mininn_fbs.Graph.GraphEnd(builder)
-    
-    return graph
+            mininn_fbs.Node.NodeStart(self.builder)
+            mininn_fbs.Node.NodeAddType(self.builder, mininn_fbs.Op.Op().ADD)
+            mininn_fbs.Node.NodeAddInputs(self.builder, node_inputs)
+            mininn_fbs.Node.NodeAddOutputs(self.builder, node_outputs)
+            node = mininn_fbs.Node.NodeEnd(self.builder)
+            self.nodes_list.append(node)
+
+
+    def add_tensor(self, shape, data, idx_list, onnx_tensor):
+        mininn_fbs.Tensor.TensorStart(self.builder)
+        mininn_fbs.Tensor.TensorAddShape(self.builder, shape)
+        mininn_fbs.Tensor.TensorAddData(self.builder, data)
+        tensor = mininn_fbs.Tensor.TensorEnd(self.builder)
+        self.tensors_list.append(tensor)
+        idx_list.append(self.tensor_idx)
+        self.tensor_dict[onnx_tensor] = self.tensor_idx
+        self.tensor_idx += 1
+
+
+    def build_tensor(self, tensors):
+        idx_list = []
+        for onnx_tensor in tensors:
+            # print(onnx_tensor)
+            if onnx_tensor in self.tensor_dict:
+                idx_list.append(self.tensor_dict[onnx_tensor])
+                continue
+            
+            for i in self.onnx_graph.initializer:
+                if i.name == onnx_tensor:
+                    # print_tensor_info(i)
+                    # print("i from initializer")
+                    shape_list = i.dims
+                    shape = self.builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
+                    raw_data = i.raw_data
+                    data = self.builder.CreateNumpyVector(np.frombuffer(raw_data, dtype=np.uint8))
+                    self.add_tensor(shape, data, idx_list, onnx_tensor)
+
+            for v in self.onnx_graph.value_info:
+                if v.name == onnx_tensor:
+                    # print_value_info(v)
+                    # print("v from value_info")
+                    shape_list = []
+                    for dim in v.type.tensor_type.shape.dim:
+                        if dim.dim_param == "batch_size":
+                            shape_list.append(1)
+                        else:
+                            shape_list.append(dim.dim_value)
+                    shape = self.builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
+                    data = 0
+                    self.add_tensor(shape, data, idx_list, onnx_tensor)
+
+            for i in self.onnx_graph.input:
+                if i.name == onnx_tensor:
+                    self.input_list.append(self.tensor_idx)
+                    # print_value_info(i)
+                    # print("i from input")
+                    shape_list = []
+                    for dim in i.type.tensor_type.shape.dim:
+                        if dim.dim_param == "batch_size":
+                            shape_list.append(1)
+                        else:
+                            shape_list.append(dim.dim_value)
+                    shape = self.builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
+                    data = 0
+                    self.add_tensor(shape, data, idx_list, onnx_tensor)
+        
+            for o in self.onnx_graph.output:
+                if o.name == onnx_tensor:
+                    self.output_list.append(self.tensor_idx)
+                    # print_value_info(o)
+                    # print("o from output")
+                    shape_list = []
+                    for dim in o.type.tensor_type.shape.dim:
+                        if dim.dim_param == "batch_size":
+                            shape_list.append(1)
+                        else:
+                            shape_list.append(dim.dim_value)
+                    shape = self.builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
+                    data = 0
+                    self.add_tensor(shape, data, idx_list, onnx_tensor)
+
+        return idx_list
+
+
+    def build_graph(self):
+        graph_inputs = self.builder.CreateNumpyVector(np.array(self.input_list, dtype=np.int32))
+        graph_outputs = self.builder.CreateNumpyVector(np.array(self.output_list, dtype=np.int32))
+        
+        mininn_fbs.Graph.GraphStartNodesVector(self.builder, len(self.nodes_list))
+        for i in reversed(range(len(self.nodes_list))):
+            self.builder.PrependUOffsetTRelative(self.nodes_list[i])
+        nodes = self.builder.EndVector()
+
+        mininn_fbs.Graph.GraphStartTensorsVector(self.builder, len(self.tensors_list))
+        for i in reversed(range(len(self.tensors_list))):
+            self.builder.PrependUOffsetTRelative(self.tensors_list[i])
+        tensors = self.builder.EndVector()
+
+        # 创建 Graph
+        mininn_fbs.Graph.GraphStart(self.builder)
+        mininn_fbs.Graph.GraphAddNodes(self.builder, nodes)
+        mininn_fbs.Graph.GraphAddTensors(self.builder, tensors)
+        mininn_fbs.Graph.GraphAddInputs(self.builder, graph_inputs)
+        mininn_fbs.Graph.GraphAddOutputs(self.builder, graph_outputs)
+        graph = mininn_fbs.Graph.GraphEnd(self.builder)
+        
+        return graph
 
 
 def check_mininn():
@@ -235,47 +230,48 @@ def read(model_path):
     graph = mininn_fbs.Graph.Graph.GetRootAsGraph(buf)
 
     # graph
-    # output = [2]
-    # for i in range(graph.OutputsLength()):
-    #     assert graph.Outputs(i) == output[i]
+    output = [212]
+    for i in range(graph.OutputsLength()):
+        assert graph.Outputs(i) == output[i]
     
-    # input = [0, 1]
-    # for i in range(graph.InputsLength()):
-    #     assert graph.Inputs(i) == input[i]
+    input = [0]
+    for i in range(graph.InputsLength()):
+        assert graph.Inputs(i) == input[i]
     
-    # assert graph.NodesLength() == 1
-    # assert graph.TensorsLength() == 3
+    assert graph.NodesLength() == 105
+    # initializer num + value_info num + input num + output num
+    assert graph.TensorsLength() == 107 + 104 + 1 + 1
 
-    # # node
-    # node = graph.Nodes(0)
-    # assert node.Type() == mininn_fbs.Op.Op.ADD
+    # node
+    node = graph.Nodes(0)
+    assert node.Type() == mininn_fbs.Op.Op.ADD
 
-    # output = [2]
-    # for i in range(node.OutputsLength()):
-    #     assert node.Outputs(i) == output[i]
+    output = [3]
+    for i in range(node.OutputsLength()):
+        assert node.Outputs(i) == output[i]
     
-    # input = [0, 1]
-    # for i in range(node.InputsLength()):
-    #     assert node.Inputs(i) == input[i]
+    input = [0, 1, 2]
+    for i in range(node.InputsLength()):
+        assert node.Inputs(i) == input[i]
     
     # tensor
     for i in range(graph.TensorsLength()):
         tensor = graph.Tensors(i)
         # use xxxAsNumpy, you should pip install numpy
         shape = tensor.ShapeAsNumpy()
-        print(shape)
+        # print(shape)
         # assert (shape == [100, 3, 224, 224]).all()
         data_numpy = tensor.DataAsNumpy()
-        if isinstance(data_numpy, int) and data_numpy == 0:
-            print("No data available.")
-            print(data_numpy)
-        else:
-            data_bytes = data_numpy.tobytes()
-            data = np.frombuffer(data_bytes, dtype=np.float32)
-            print(data[0])
+        # if isinstance(data_numpy, int) and data_numpy == 0:
+        #     print("No data available.")
+        # else:
+        #     data_bytes = data_numpy.tobytes()
+        #     data = np.frombuffer(data_bytes, dtype=np.float32)
+        #     print(data[0])
         # assert data == 0
 
 if __name__ == '__main__':
-    onnx_graph = load_onnx_model()
-    build_mininn(onnx_graph)
+    my_convertor = convertor()
+    my_convertor.load_onnx_model()
+    my_convertor.build_mininn()
     check_mininn()
