@@ -15,6 +15,9 @@ static_assert(FLATBUFFERS_VERSION_MAJOR == 24 &&
 
 namespace mininn_fbs {
 
+struct Attribute;
+struct AttributeBuilder;
+
 struct Node;
 struct NodeBuilder;
 
@@ -26,40 +29,139 @@ struct GraphBuilder;
 
 enum Op : int8_t {
   Op_ADD = 0,
+  Op_CONV = 1,
+  Op_CLIP = 2,
+  Op_SHAPE = 3,
+  Op_GATHER = 4,
+  Op_UNSQUEEZE = 5,
+  Op_CONCAT = 6,
+  Op_GLOBALAVERAGEPOOL = 7,
+  Op_RESHAPE = 8,
+  Op_GEMM = 9,
+  Op_CONSTANT = 10,
   Op_MIN = Op_ADD,
-  Op_MAX = Op_ADD
+  Op_MAX = Op_CONSTANT
 };
 
-inline const Op (&EnumValuesOp())[1] {
+inline const Op (&EnumValuesOp())[11] {
   static const Op values[] = {
-    Op_ADD
+    Op_ADD,
+    Op_CONV,
+    Op_CLIP,
+    Op_SHAPE,
+    Op_GATHER,
+    Op_UNSQUEEZE,
+    Op_CONCAT,
+    Op_GLOBALAVERAGEPOOL,
+    Op_RESHAPE,
+    Op_GEMM,
+    Op_CONSTANT
   };
   return values;
 }
 
 inline const char * const *EnumNamesOp() {
-  static const char * const names[2] = {
+  static const char * const names[12] = {
     "ADD",
+    "CONV",
+    "CLIP",
+    "SHAPE",
+    "GATHER",
+    "UNSQUEEZE",
+    "CONCAT",
+    "GLOBALAVERAGEPOOL",
+    "RESHAPE",
+    "GEMM",
+    "CONSTANT",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameOp(Op e) {
-  if (::flatbuffers::IsOutRange(e, Op_ADD, Op_ADD)) return "";
+  if (::flatbuffers::IsOutRange(e, Op_ADD, Op_CONSTANT)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesOp()[index];
+}
+
+struct Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_KEY = 4,
+    VT_VALUE = 6
+  };
+  const ::flatbuffers::String *key() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_KEY);
+  }
+  const ::flatbuffers::Vector<int32_t> *value() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_VALUE);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_KEY) &&
+           verifier.VerifyString(key()) &&
+           VerifyOffset(verifier, VT_VALUE) &&
+           verifier.VerifyVector(value()) &&
+           verifier.EndTable();
+  }
+};
+
+struct AttributeBuilder {
+  typedef Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_key(::flatbuffers::Offset<::flatbuffers::String> key) {
+    fbb_.AddOffset(Attribute::VT_KEY, key);
+  }
+  void add_value(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> value) {
+    fbb_.AddOffset(Attribute::VT_VALUE, value);
+  }
+  explicit AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<Attribute> CreateAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::String> key = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> value = 0) {
+  AttributeBuilder builder_(_fbb);
+  builder_.add_value(value);
+  builder_.add_key(key);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<Attribute> CreateAttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const char *key = nullptr,
+    const std::vector<int32_t> *value = nullptr) {
+  auto key__ = key ? _fbb.CreateString(key) : 0;
+  auto value__ = value ? _fbb.CreateVector<int32_t>(*value) : 0;
+  return mininn_fbs::CreateAttribute(
+      _fbb,
+      key__,
+      value__);
 }
 
 struct Node FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef NodeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TYPE = 4,
-    VT_INPUTS = 6,
-    VT_OUTPUTS = 8
+    VT_ATTRIBUTES = 6,
+    VT_INPUTS = 8,
+    VT_OUTPUTS = 10
   };
   mininn_fbs::Op type() const {
     return static_cast<mininn_fbs::Op>(GetField<int8_t>(VT_TYPE, 0));
+  }
+  const ::flatbuffers::Vector<::flatbuffers::Offset<mininn_fbs::Attribute>> *attributes() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<mininn_fbs::Attribute>> *>(VT_ATTRIBUTES);
   }
   const ::flatbuffers::Vector<int32_t> *inputs() const {
     return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_INPUTS);
@@ -70,6 +172,9 @@ struct Node FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int8_t>(verifier, VT_TYPE, 1) &&
+           VerifyOffset(verifier, VT_ATTRIBUTES) &&
+           verifier.VerifyVector(attributes()) &&
+           verifier.VerifyVectorOfTables(attributes()) &&
            VerifyOffset(verifier, VT_INPUTS) &&
            verifier.VerifyVector(inputs()) &&
            VerifyOffset(verifier, VT_OUTPUTS) &&
@@ -84,6 +189,9 @@ struct NodeBuilder {
   ::flatbuffers::uoffset_t start_;
   void add_type(mininn_fbs::Op type) {
     fbb_.AddElement<int8_t>(Node::VT_TYPE, static_cast<int8_t>(type), 0);
+  }
+  void add_attributes(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<mininn_fbs::Attribute>>> attributes) {
+    fbb_.AddOffset(Node::VT_ATTRIBUTES, attributes);
   }
   void add_inputs(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> inputs) {
     fbb_.AddOffset(Node::VT_INPUTS, inputs);
@@ -105,11 +213,13 @@ struct NodeBuilder {
 inline ::flatbuffers::Offset<Node> CreateNode(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     mininn_fbs::Op type = mininn_fbs::Op_ADD,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<mininn_fbs::Attribute>>> attributes = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> inputs = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> outputs = 0) {
   NodeBuilder builder_(_fbb);
   builder_.add_outputs(outputs);
   builder_.add_inputs(inputs);
+  builder_.add_attributes(attributes);
   builder_.add_type(type);
   return builder_.Finish();
 }
@@ -117,13 +227,16 @@ inline ::flatbuffers::Offset<Node> CreateNode(
 inline ::flatbuffers::Offset<Node> CreateNodeDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     mininn_fbs::Op type = mininn_fbs::Op_ADD,
+    const std::vector<::flatbuffers::Offset<mininn_fbs::Attribute>> *attributes = nullptr,
     const std::vector<int32_t> *inputs = nullptr,
     const std::vector<int32_t> *outputs = nullptr) {
+  auto attributes__ = attributes ? _fbb.CreateVector<::flatbuffers::Offset<mininn_fbs::Attribute>>(*attributes) : 0;
   auto inputs__ = inputs ? _fbb.CreateVector<int32_t>(*inputs) : 0;
   auto outputs__ = outputs ? _fbb.CreateVector<int32_t>(*outputs) : 0;
   return mininn_fbs::CreateNode(
       _fbb,
       type,
+      attributes__,
       inputs__,
       outputs__);
 }

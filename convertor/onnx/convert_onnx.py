@@ -6,12 +6,14 @@ import flatbuffers
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
 import mininn_fbs.Op
+import mininn_fbs.Attribute
 import mininn_fbs.Node
 import mininn_fbs.Tensor
 import mininn_fbs.Graph
 
 import onnx
 import numpy as np
+from onnx import AttributeProto
 
 
 def print_node_info(onnx_node):
@@ -67,6 +69,19 @@ def print_graph_info(onnx_graph):
     # print("quantization_annotation 数量:", len(onnx_graph.quantization_annotation))
     # print("metadata_props:", onnx_graph.metadata_props)
 
+OP_map = {
+    "Add": mininn_fbs.Op.Op().ADD,
+    "Conv": mininn_fbs.Op.Op().CONV,
+    "Clip": mininn_fbs.Op.Op().CLIP,
+    "Shape": mininn_fbs.Op.Op().SHAPE,
+    "Gather": mininn_fbs.Op.Op().GATHER,
+    "Unsqueeze": mininn_fbs.Op.Op().UNSQUEEZE,
+    "Concat": mininn_fbs.Op.Op().CONCAT,
+    "GlobalAveragePool": mininn_fbs.Op.Op().GLOBALAVERAGEPOOL,
+    "Reshape": mininn_fbs.Op.Op().RESHAPE,
+    "Gemm": mininn_fbs.Op.Op().GEMM,
+    "Constant": mininn_fbs.Op.Op().CONSTANT,
+}
 
 class convertor():
     def __init__(self):
@@ -109,8 +124,33 @@ class convertor():
             node_inputs = self.builder.CreateNumpyVector(np.array(inputs, dtype=np.int32))
             node_outputs = self.builder.CreateNumpyVector(np.array(outputs, dtype=np.int32))
 
+            attributes_vector = []
+            for attribute in onnx_node.attribute:
+                key = self.builder.CreateString(attribute.name)
+                if attribute.type == AttributeProto.INTS:
+                    value = attribute.ints
+                    value_array = self.builder.CreateNumpyVector(np.array(value, dtype=np.int32))
+                elif attribute.type == AttributeProto.INT:
+                    value = attribute.i
+                    value_array = self.builder.CreateNumpyVector(np.array(value, dtype=np.int32))
+                elif attribute.type == AttributeProto.FLOAT:
+                    value = (int)(attribute.f) # todo
+                    value_array = self.builder.CreateNumpyVector(np.array(value, dtype=np.int32))
+
+                mininn_fbs.Attribute.AttributeStart(self.builder)
+                mininn_fbs.Attribute.AttributeAddKey(self.builder, key)
+                mininn_fbs.Attribute.AttributeAddValue(self.builder, value_array)
+                attr = mininn_fbs.Attribute.AttributeEnd(self.builder)
+                attributes_vector.append(attr)
+            
+            mininn_fbs.Node.NodeStartAttributesVector(self.builder, len(attributes_vector))
+            for attribute in reversed(attributes_vector):
+                self.builder.PrependUOffsetTRelative(attribute)
+            attributes = self.builder.EndVector()
+
             mininn_fbs.Node.NodeStart(self.builder)
-            mininn_fbs.Node.NodeAddType(self.builder, mininn_fbs.Op.Op().ADD)
+            mininn_fbs.Node.NodeAddType(self.builder, OP_map[onnx_node.op_type])
+            mininn_fbs.Node.NodeAddAttributes(self.builder, attributes)
             mininn_fbs.Node.NodeAddInputs(self.builder, node_inputs)
             mininn_fbs.Node.NodeAddOutputs(self.builder, node_outputs)
             node = mininn_fbs.Node.NodeEnd(self.builder)
@@ -244,7 +284,10 @@ def read(model_path):
 
     # node
     node = graph.Nodes(0)
-    assert node.Type() == mininn_fbs.Op.Op.ADD
+    assert node.Type() == mininn_fbs.Op.Op.CONV
+    for i in range(node.AttributesLength()):
+        print(node.Attributes(i).Key())
+        print(node.Attributes(i).ValueAsNumpy())
 
     output = [3]
     for i in range(node.OutputsLength()):
