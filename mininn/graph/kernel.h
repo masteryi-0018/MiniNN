@@ -7,6 +7,8 @@ class Kernel {
 public:
     Kernel();
 
+    virtual ~Kernel() = default;
+
     virtual void run() = 0;
 
     virtual void set_params(Params* params) = 0;

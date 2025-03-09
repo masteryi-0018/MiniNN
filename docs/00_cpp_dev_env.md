@@ -122,13 +122,43 @@ ExternalProject_Add(
 
 使用模板函数的时候，要在头文件中实现。模板函数的实现需要在编译时可见，因为编译器需要根据具体的模板参数生成代码。如果你把模板函数的实现放在`.cpp`文件中，那么在编译其他文件时，编译器就无法看到模板函数的实现，因此会导致链接错误。
 
-2. 内存泄漏
+3. 内存泄漏
 
 debug到一定程度就会关注这个问题，除了用肉眼观察以外，还有一些工具可以帮忙：
   1. Valgrind（sudo apt install valgrind）：valgrind --leak-check=full ./gtest-main
   2. AddressSanitizer（ASan）：g++ -fsanitize=address -g -o your_program your_program.cpp
   3. Dr. Memory：drmemory -- your_program
   4. 静态分析工具：sudo apt install cppcheck/clang-tidy
+
+4. cpp版本
+
+命令行：
+```sh
+g++ -dM -E -x c++ /dev/null | grep __cplusplus
+clang++ -dM -E -x c++ /dev/null | grep __cplusplus
+```
+
+编译源文件查看：
+```cpp
+#include <iostream>
+
+int main() {
+    if (__cplusplus == 202002L) {
+        std::cout << "C++20" << std::endl;
+    } else if (__cplusplus == 201703L) {
+        std::cout << "C++17" << std::endl;
+    } else if (__cplusplus == 201402L) {
+        std::cout << "C++14" << std::endl;
+    } else if (__cplusplus == 201103L) {
+        std::cout << "C++11" << std::endl;
+    } else if (__cplusplus == 199711L) {
+        std::cout << "C++98" << std::endl;
+    } else {
+        std::cout << "Unknown C++ standard: " << __cplusplus << std::endl;
+    }
+    return 0;
+}
+```
 
 ## Git
 

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.5)
 
 # set compiler before call project()
 if(WIN32)
@@ -10,6 +10,11 @@ elseif(UNIX)
 endif()
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+message(STATUS "Default C++ standard: ${CMAKE_CXX_STANDARD}")
 
 # Clang with CUDA is not yet supported on Windows.  See CMake issue #20776.
 # set(CMAKE_CUDA_COMPILER "E:/LLVM/bin/clang.exe")

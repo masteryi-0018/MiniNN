@@ -17,10 +17,6 @@ add_subdirectory(parser)
 add_subdirectory(backend)
 
 # 3. bin
-set(TEST_MAIN test-main)
-add_executable(${TEST_MAIN} test.cc)
-target_link_libraries(${TEST_MAIN} utils)
-
 if(WITH_GTEST)
     add_subdirectory(test)
 endif()

@@ -10,7 +10,6 @@ Conv::~Conv() {
 }
 
 void Conv::set_input_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {
-    printf("heloo \n");
     params_->input1 = tensors[0];
     params_->input2 = tensors[1];
     params_->input3 = tensors[2];

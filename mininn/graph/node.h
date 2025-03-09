@@ -11,6 +11,9 @@ class Node {
 public:
     Node(Op type);
 
+    // "default" means use a default impl; "0" means you should impl it your self.
+    virtual ~Node() = default;
+
     virtual void set_input_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) = 0;
 
     virtual void set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) = 0;

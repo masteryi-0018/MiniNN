@@ -133,8 +133,6 @@ TEST(Predictor, async_run_future) {
     EXPECT_EQ(result, true);
 }
 
-
-
 TEST(Predictor, async_run_callback) {
     auto graph = make_graph();
 

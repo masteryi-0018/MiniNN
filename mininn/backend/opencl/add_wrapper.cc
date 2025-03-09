@@ -1,3 +1,4 @@
+#define CL_TARGET_OPENCL_VERSION 300
 #include <CL/cl.h>
 
 #include <iostream>
@@ -38,7 +39,7 @@ void opencl_add_wrapper(float* h_A, float* h_B, float* h_C, int numElements) {
 #endif
 
     cl_context context = clCreateContext(nullptr, 1, &device, nullptr, nullptr, nullptr);
-    cl_command_queue queue = clCreateCommandQueue(context, device, 0, nullptr);
+    cl_command_queue queue = clCreateCommandQueueWithProperties(context, device, nullptr, nullptr);
 
     // Create buffers
     cl_mem d_A = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, size, h_A, nullptr);
