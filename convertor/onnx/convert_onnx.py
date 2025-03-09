@@ -93,10 +93,13 @@ class convertor():
         self.tensor_dict = {}
         self.input_list = []
         self.output_list = []
+        self.name = None
 
 
     def load_onnx_model(self):
-        onnx_model = onnx.load("/home/gy/proj/MiniNN/mobilenetv2-10.onnx")
+        model_path = "/home/gy/proj/MiniNN/mobilenetv2-10.onnx"
+        self.name = model_path.split("/")[-1].split(".")[0]
+        onnx_model = onnx.load(model_path)
         onnx_model_shape = onnx.shape_inference.infer_shapes(onnx_model)
         onnx_graph = onnx_model_shape.graph
         print_graph_info(onnx_graph)
@@ -108,9 +111,10 @@ class convertor():
         graph = self.build_graph()
         
         self.builder.Finish(graph)
-        with open("onnx_add_100_3_224_224.gynn", "wb") as f:
+        new_name = self.name + ".gynn"
+        with open(new_name, "wb") as f:
             f.write(self.builder.Output())
-        print("add_model.onnx 模型已转换为 onnx_add_100_3_224_224.gynn \n")
+        print(f"{self.name} 已转换为 {new_name} \n")
 
 
     def build_node_and_tensor(self):
@@ -298,20 +302,20 @@ def read(model_path):
         assert node.Inputs(i) == input[i]
     
     # tensor
-    for i in range(graph.TensorsLength()):
-        tensor = graph.Tensors(i)
-        # use xxxAsNumpy, you should pip install numpy
-        shape = tensor.ShapeAsNumpy()
-        # print(shape)
-        # assert (shape == [100, 3, 224, 224]).all()
-        data_numpy = tensor.DataAsNumpy()
-        # if isinstance(data_numpy, int) and data_numpy == 0:
-        #     print("No data available.")
-        # else:
-        #     data_bytes = data_numpy.tobytes()
-        #     data = np.frombuffer(data_bytes, dtype=np.float32)
-        #     print(data[0])
-        # assert data == 0
+    tensor = graph.Tensors(0)
+    # use xxxAsNumpy, you should pip install numpy
+    shape = tensor.ShapeAsNumpy()
+    assert (shape == [1, 3, 224, 224]).all()
+    
+    data_numpy = tensor.DataAsNumpy()
+    if isinstance(data_numpy, int) and data_numpy == 0:
+        print("No data available.")
+        assert data_numpy == 0
+    else:
+        data_bytes = data_numpy.tobytes()
+        data = np.frombuffer(data_bytes, dtype=np.float32)
+        print(data[0])
+
 
 if __name__ == '__main__':
     my_convertor = convertor()

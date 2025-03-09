@@ -13,4 +13,58 @@ struct AddParams: Params {
     std::shared_ptr<Tensor> output;
 };
 
+struct ConvParams: Params {
+    std::shared_ptr<Tensor> input1;
+    std::shared_ptr<Tensor> input2;
+    std::shared_ptr<Tensor> input3;
+    std::shared_ptr<Tensor> output;
+};
+
+struct ClipParams: Params {
+    std::shared_ptr<Tensor> input1;
+    std::shared_ptr<Tensor> output;
+};
+
+struct ShapeParams: Params {
+    std::shared_ptr<Tensor> input1;
+    std::shared_ptr<Tensor> output;
+};
+
+struct GatherParams: Params {
+    std::shared_ptr<Tensor> input1;
+    std::shared_ptr<Tensor> input2;
+    std::shared_ptr<Tensor> output;
+};
+
+struct UnsqueezeParams: Params {
+    std::shared_ptr<Tensor> input1;
+    std::shared_ptr<Tensor> output;
+};
+
+struct ConcatParams: Params {
+    std::vector<std::shared_ptr<Tensor>> inputs;
+    std::shared_ptr<Tensor> output;
+};
+
+struct GlobalaveragepoolParams: Params {
+    std::shared_ptr<Tensor> input1;
+    std::shared_ptr<Tensor> output;
+};
+
+struct ReshapeParams: Params {
+    std::shared_ptr<Tensor> input1;
+    std::shared_ptr<Tensor> output;
+};
+
+struct GemmParams: Params {
+    std::shared_ptr<Tensor> input1;
+    std::shared_ptr<Tensor> input2;
+    std::shared_ptr<Tensor> input3;
+    std::shared_ptr<Tensor> output;
+};
+
+struct ConstantParams: Params {
+    std::shared_ptr<Tensor> output;
+};
+
 #endif // PARAM_H

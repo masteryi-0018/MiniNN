@@ -1,0 +1,26 @@
+#include "mininn/operator/concat.h"
+#include "mininn/graph/register.h"
+
+Concat::Concat(Op type): Node(type) {
+    params_ = new ConcatParams;
+}
+
+Concat::~Concat() {
+    delete params_;
+}
+
+void Concat::set_input_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {
+    for (int i = 0; i < tensors.size(); ++i) {
+        params_->inputs.emplace_back(tensors[i]);
+    }
+}
+
+void Concat::set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {
+    params_->output = tensors[0];
+}
+
+void Concat::init_kernel(std::shared_ptr<Kernel> kernel) {
+    kernel->set_params(params_);
+}
+
+REGISTER_OP(CONCAT, Concat);
