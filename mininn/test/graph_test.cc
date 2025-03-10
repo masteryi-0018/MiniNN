@@ -19,7 +19,8 @@ TEST(Graph, add_node) {
     std::shared_ptr<Node> node = OpFactory::global().create(ADD);
     std::vector<int> inputs = {0, 1};
     std::vector<int> outputs = {2};
-    graph->add_node(node, inputs, outputs);
+    std::map<std::string, std::vector<int>> attrs;
+    graph->add_node(node, inputs, outputs, attrs);
     int node_num = graph->get_nodes().size();
     EXPECT_EQ(node_num, 1);
 }

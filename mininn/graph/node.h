@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <memory>
+#include <map> 
 
 class Node {
 public:
@@ -17,6 +18,8 @@ public:
     virtual void set_input_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) = 0;
 
     virtual void set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) = 0;
+
+    virtual void set_attributes(std::map<std::string, std::vector<int>>& attrs) = 0;
 
     std::shared_ptr<Kernel> create_kernel();
 

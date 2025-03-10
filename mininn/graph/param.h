@@ -18,6 +18,11 @@ struct ConvParams: Params {
     std::shared_ptr<Tensor> input2;
     std::shared_ptr<Tensor> input3;
     std::shared_ptr<Tensor> output;
+    std::vector<int> dilations;
+    std::vector<int> group;
+    std::vector<int> kernel_shape;
+    std::vector<int> pads;
+    std::vector<int> strides;
 };
 
 struct ClipParams: Params {

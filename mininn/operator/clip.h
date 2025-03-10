@@ -15,6 +15,8 @@ public:
 
     void set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors);
 
+    void set_attributes(std::map<std::string, std::vector<int>>& attrs);
+
     void init_kernel(std::shared_ptr<Kernel> kernel);
 
 private:

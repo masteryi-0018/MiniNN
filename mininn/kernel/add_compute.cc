@@ -42,16 +42,14 @@ void AddCompute::run() {
     float* y_buffer = reinterpret_cast<float*>(y->get_buffer());
     float* out_buffer = reinterpret_cast<float*>(out->get_buffer());
 
-    for (int i = 0; i < size; ++i) {
-        out_buffer[i] = x_buffer[i] + y_buffer[i];
-    }
+    add_func(x_buffer, y_buffer, out_buffer, 0, size);
 
     auto end_time = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed_seconds = end_time - start_time;
     LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
     LOG(INFO) << "kernel run end";
 
-
+/*
     // multi-threads
     LOG(INFO) << "kernel run start in multi-threads";
     start_time = std::chrono::high_resolution_clock::now();
@@ -88,7 +86,6 @@ void AddCompute::run() {
     LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
     LOG(INFO) << "kernel run end in multi-threads";
 
-/*
     // cuda kernel
 #ifdef __linux__
     LOG(INFO) << "kernel run start in cuda kernel";

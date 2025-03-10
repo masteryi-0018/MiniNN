@@ -64,7 +64,15 @@ void load_model(std::string& filename, std::shared_ptr<Graph> graph) {
             outputs.emplace_back(o);
         }
 
-        graph->add_node(node, inputs, outputs);
+        auto fbs_attrs = fbs_node->attributes();
+        std::map<std::string, std::vector<int>> attrs;
+        for (auto a : *fbs_attrs) {
+            for (int i = 0; i < a->value()->size(); ++i) {
+                attrs[a->key()->c_str()].emplace_back(a->value()->Get(i));
+            }
+        }
+
+        graph->add_node(node, inputs, outputs, attrs);
     }
 
     return;

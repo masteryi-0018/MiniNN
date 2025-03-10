@@ -18,6 +18,10 @@ void Gather::set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {
     params_->output = tensors[0];
 }
 
+void Gather::set_attributes(std::map<std::string, std::vector<int>>& attrs) {
+
+}
+
 void Gather::init_kernel(std::shared_ptr<Kernel> kernel) {
     kernel->set_params(params_);
 }

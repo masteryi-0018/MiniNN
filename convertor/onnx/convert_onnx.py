@@ -263,7 +263,7 @@ class convertor():
 
 
 def check_mininn():
-    read("onnx_add_100_3_224_224.gynn")
+    read("mobilenetv2-10.gynn")
 
 
 def read(model_path):

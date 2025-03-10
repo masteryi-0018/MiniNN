@@ -19,6 +19,14 @@ void Conv::set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {
     params_->output = tensors[0];
 }
 
+void Conv::set_attributes(std::map<std::string, std::vector<int>>& attrs) {
+    params_->dilations = attrs["dilations"];
+    params_->group = attrs["group"];
+    params_->kernel_shape = attrs["kernel_shape"];
+    params_->pads = attrs["pads"];
+    params_->strides = attrs["strides"];
+}
+
 void Conv::init_kernel(std::shared_ptr<Kernel> kernel) {
     kernel->set_params(params_);
 }

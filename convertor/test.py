@@ -6,9 +6,12 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../third_party/flatbuff
 import flatbuffers
 
 import mininn_fbs.Op
+import mininn_fbs.Attribute
 import mininn_fbs.Node
 import mininn_fbs.Tensor
 import mininn_fbs.Graph
+
+import numpy as np
 
 # Example of how to use FlatBuffers to create and read binary buffers.
 
@@ -29,8 +32,24 @@ def write():
         builder.PrependInt32(output_list[i])
     outputs = builder.EndVector()
 
+    attributes_vector = []
+    key = builder.CreateString("add_test")
+    value_array = builder.CreateNumpyVector(np.array([0, 0], dtype=np.int32))
+
+    mininn_fbs.Attribute.AttributeStart(builder)
+    mininn_fbs.Attribute.AttributeAddKey(builder, key)
+    mininn_fbs.Attribute.AttributeAddValue(builder, value_array)
+    attr = mininn_fbs.Attribute.AttributeEnd(builder)
+    attributes_vector.append(attr)
+    
+    mininn_fbs.Node.NodeStartAttributesVector(builder, len(attributes_vector))
+    for attribute in reversed(attributes_vector):
+        builder.PrependUOffsetTRelative(attribute)
+    attributes = builder.EndVector()
+
     mininn_fbs.Node.NodeStart(builder)
     mininn_fbs.Node.NodeAddType(builder, mininn_fbs.Op.Op().ADD)
+    mininn_fbs.Node.NodeAddAttributes(builder, attributes)
     mininn_fbs.Node.NodeAddInputs(builder, inputs)
     mininn_fbs.Node.NodeAddOutputs(builder, outputs)
     node = mininn_fbs.Node.NodeEnd(builder)

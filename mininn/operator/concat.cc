@@ -19,6 +19,10 @@ void Concat::set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {
     params_->output = tensors[0];
 }
 
+void Concat::set_attributes(std::map<std::string, std::vector<int>>& attrs) {
+
+}
+
 void Concat::init_kernel(std::shared_ptr<Kernel> kernel) {
     kernel->set_params(params_);
 }

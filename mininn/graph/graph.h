@@ -6,12 +6,14 @@
 
 #include <vector>
 #include <memory>
+#include <map> 
 
 class Graph {
 public:
     Graph();
 
-    void add_node(std::shared_ptr<Node> node, std::vector<int>& inputs, std::vector<int>& outputs);
+    void add_node(std::shared_ptr<Node> node, std::vector<int>& inputs, std::vector<int>& outputs,
+                  std::map<std::string, std::vector<int>>& attrs);
 
     std::vector<std::shared_ptr<Node>> get_nodes();
 

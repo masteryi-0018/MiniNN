@@ -17,6 +17,10 @@ void Globalaveragepool::set_output_tensors(std::vector<std::shared_ptr<Tensor>>&
     params_->output = tensors[0];
 }
 
+void Globalaveragepool::set_attributes(std::map<std::string, std::vector<int>>& attrs) {
+
+}
+
 void Globalaveragepool::init_kernel(std::shared_ptr<Kernel> kernel) {
     kernel->set_params(params_);
 }
