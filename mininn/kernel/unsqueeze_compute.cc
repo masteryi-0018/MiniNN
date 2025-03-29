@@ -17,9 +17,15 @@ UnsqueezeCompute::~UnsqueezeCompute() {
     }
 }
 
-void unsqueeze_func(float* input_buffer, float* out_buffer,
-                    std::vector<int> input_shape, std::vector<int> out_shape) {
-    //
+void unsqueeze_func(float* data_buffer, float* out_buffer, std::vector<int> axis, int size,
+                    std::vector<int> input_shape, std::vector<int> out_shape, std::shared_ptr<Tensor>& out) {
+    for (int i = 0; i < size; ++i) {
+        out_buffer[i] = data_buffer[i];
+    }
+    int axis_val = axis[0];
+    // todo: why is the same shape?
+    // print_vector(input_shape); // [1]
+    // print_vector(out_shape); // [1]
 }
 
 void UnsqueezeCompute::run() {
@@ -27,15 +33,17 @@ void UnsqueezeCompute::run() {
     auto start_time = std::chrono::high_resolution_clock::now();
 
     UnsqueezeParams* params = get_params();
-    std::shared_ptr<Tensor> input = params->input1;
+    std::shared_ptr<Tensor> data = params->input1;
     std::shared_ptr<Tensor> out = params->output;
+    std::vector<int> axis = params_->axes;
 
-    std::vector<int> input_shape = input->get_shape();
+    std::vector<int> data_shape = data->get_shape();
     std::vector<int> out_shape = out->get_shape();
-    float* input_buffer = reinterpret_cast<float*>(input->get_buffer());
+    int size = out->get_size();
+    float* data_buffer = reinterpret_cast<float*>(data->get_buffer());
     float* out_buffer = reinterpret_cast<float*>(out->get_buffer());
 
-    unsqueeze_func(input_buffer,out_buffer, input_shape, out_shape);
+    unsqueeze_func(data_buffer, out_buffer, axis, size, data_shape, out_shape, out);
 
     auto end_time = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed_seconds = end_time - start_time;

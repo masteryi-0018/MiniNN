@@ -18,7 +18,7 @@ void Unsqueeze::set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors
 }
 
 void Unsqueeze::set_attributes(std::map<std::string, std::vector<int>>& attrs) {
-
+    params_->axes = attrs["axes"];
 }
 
 void Unsqueeze::init_kernel(std::shared_ptr<Kernel> kernel) {

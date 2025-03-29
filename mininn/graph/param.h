@@ -42,11 +42,13 @@ struct GatherParams: Params {
     std::shared_ptr<Tensor> input1;
     std::shared_ptr<Tensor> input2;
     std::shared_ptr<Tensor> output;
+    std::vector<int> axis;
 };
 
 struct UnsqueezeParams: Params {
     std::shared_ptr<Tensor> input1;
     std::shared_ptr<Tensor> output;
+    std::vector<int> axes;
 };
 
 struct ConcatParams: Params {

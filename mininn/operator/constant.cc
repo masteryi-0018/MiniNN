@@ -18,7 +18,7 @@ void Constant::set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors)
 }
 
 void Constant::set_attributes(std::map<std::string, std::vector<int>>& attrs) {
-
+    params_->value = attrs["value"];
 }
 
 void Constant::init_kernel(std::shared_ptr<Kernel> kernel) {

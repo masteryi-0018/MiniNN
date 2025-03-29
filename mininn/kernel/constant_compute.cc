@@ -17,8 +17,11 @@ ConstantCompute::~ConstantCompute() {
     }
 }
 
-void constant_func(float* out_buffer, std::vector<int> out_shape) {
-    // 
+void constant_func(float* out_buffer, std::vector<int> value, int size) {
+    int val = value[0];
+    for (int i = 0; i < size; ++i) {
+        out_buffer[i] = val;
+    }
 }
 
 void ConstantCompute::run() {
@@ -27,11 +30,12 @@ void ConstantCompute::run() {
 
     ConstantParams* params = get_params();
     std::shared_ptr<Tensor> out = params->output;
+    std::vector<int> value = params_->value;
 
-    std::vector<int> out_shape = out->get_shape();
+    int size = out->get_size();
     float* out_buffer = reinterpret_cast<float*>(out->get_buffer());
 
-    constant_func(out_buffer, out_shape);
+    constant_func(out_buffer, value, size);
 
     auto end_time = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed_seconds = end_time - start_time;

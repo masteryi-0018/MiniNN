@@ -5,6 +5,9 @@
 #include "mininn/graph/node.h"
 #include "mininn/graph/kernel.h"
 
+#include "mininn/utils/log.h"
+#include "mininn/utils/utils.h"
+
 #include <map>
 #include <memory> // shared_ptr needs
 #include <functional>

@@ -19,7 +19,7 @@ void Gather::set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {
 }
 
 void Gather::set_attributes(std::map<std::string, std::vector<int>>& attrs) {
-
+    params_->axis = attrs["axis"];
 }
 
 void Gather::init_kernel(std::shared_ptr<Kernel> kernel) {
