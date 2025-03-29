@@ -17,9 +17,10 @@ ShapeCompute::~ShapeCompute() {
     }
 }
 
-void shape_func(float* input_buffer, float* out_buffer,
-                  std::vector<int> input_shape, std::vector<int> out_shape) {
-    // 
+void shape_func(float* out_buffer, std::vector<int> input_shape, std::vector<int> out_shape) {
+    for (int i = 0; i < out_shape.size(); ++i) {
+        out_buffer[i] = input_shape[i];
+    }
 }
 
 void ShapeCompute::run() {
@@ -32,10 +33,9 @@ void ShapeCompute::run() {
 
     std::vector<int> input_shape = input->get_shape();
     std::vector<int> out_shape = out->get_shape();
-    float* input_buffer = reinterpret_cast<float*>(input->get_buffer());
     float* out_buffer = reinterpret_cast<float*>(out->get_buffer());
 
-    shape_func(input_buffer, out_buffer, input_shape, out_shape);
+    shape_func(out_buffer, input_shape, out_shape);
 
     auto end_time = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed_seconds = end_time - start_time;

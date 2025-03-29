@@ -18,8 +18,15 @@ Tensor::~Tensor() {
 }
 
 void Tensor::set_shape(std::vector<int>& shape) {
-    shape_ = shape;
-    size_ = std::accumulate(shape.begin(), shape.end(), 1, std::multiplies<int>());
+    if (shape.data() == nullptr) {
+        // tensor: [1, 3, 224, 224]
+        // number: [1]
+        shape_ = std::vector<int>(1, 1); // 对待空shape，初始化为一个1
+        size_ = 1;
+    } else {
+        shape_ = shape;
+        size_ = std::accumulate(shape.begin(), shape.end(), 1, std::multiplies<int>());
+    }
     // in Linux, heap usually grow to low address memory
     buffer_ = std::malloc(size_ * sizeof(float));
 }

@@ -287,25 +287,52 @@ def read(model_path):
     assert graph.TensorsLength() == 107 + 104 + 1 + 1
 
     # node
-    node = graph.Nodes(0)
-    assert node.Type() == mininn_fbs.Op.Op.CONV
+    node = graph.Nodes(99)
+    # assert node.Type() == mininn_fbs.Op.Op.CONV
     for i in range(node.AttributesLength()):
         print(node.Attributes(i).Key())
         print(node.Attributes(i).ValueAsNumpy())
 
     output = [3]
     for i in range(node.OutputsLength()):
-        assert node.Outputs(i) == output[i]
+        # assert node.Outputs(i) == output[i]
+        print("Outputs:")
+        print(node.Outputs(i))
     
     input = [0, 1, 2]
     for i in range(node.InputsLength()):
-        assert node.Inputs(i) == input[i]
+        # assert node.Inputs(i) == input[i]
+        print("Inputs:")
+        print(node.Inputs(i))
     
+    print("\n")
+    # debug
+    for i in [99, 100, 101, 102, 103]:
+        node = graph.Nodes(i)
+        # for i in range(node.AttributesLength()):
+        #     print(node.Attributes(i).Key())
+        #     print(node.Attributes(i).ValueAsNumpy())
+
+        for i in range(node.OutputsLength()):
+            print("Outputs:")
+            print(node.Outputs(i))
+        
+        for i in range(node.InputsLength()):
+            print("Inputs:")
+            print(node.Inputs(i))
+        print("\n")
+
     # tensor
-    tensor = graph.Tensors(0)
+    tensor = graph.Tensors(204)
     # use xxxAsNumpy, you should pip install numpy
     shape = tensor.ShapeAsNumpy()
-    assert (shape == [1, 3, 224, 224]).all()
+    # assert (shape == [1, 3, 224, 224]).all()
+    print(shape)
+    for i in range(graph.TensorsLength()):
+        t = graph.Tensors(i)
+        # 204, 205, 209
+        if len(t.ShapeAsNumpy()) == 0:
+            print(i)
     
     data_numpy = tensor.DataAsNumpy()
     if isinstance(data_numpy, int) and data_numpy == 0:

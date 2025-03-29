@@ -17,8 +17,16 @@ ClipCompute::~ClipCompute() {
     }
 }
 
-void clip_func(float* input_buffer, float* out_buffer, int size) {
-    // 
+void clip_func(float* input_buffer, float* out_buffer, std::vector<int> max, std::vector<int> min, int size) {
+    int max_val = max[0];
+    int min_val = min[0];
+    for (int i = 0; i < size; ++i) {
+        if (input_buffer[i] > max_val) {
+            input_buffer[i] = max_val;
+        } else if (input_buffer[i] < min_val) {
+            input_buffer[i] = min_val;
+        }
+    }
 }
 
 void ClipCompute::run() {
@@ -28,12 +36,14 @@ void ClipCompute::run() {
     ClipParams* params = get_params();
     std::shared_ptr<Tensor> input = params->input1;
     std::shared_ptr<Tensor> out = params->output;
+    std::vector<int> max = params->max;
+    std::vector<int> min = params->min;
 
     int size = input->get_size();
     float* input_buffer = reinterpret_cast<float*>(input->get_buffer());
     float* out_buffer = reinterpret_cast<float*>(out->get_buffer());
 
-    clip_func(input_buffer, out_buffer, size);
+    clip_func(input_buffer, out_buffer, max, min, size);
 
     auto end_time = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed_seconds = end_time - start_time;

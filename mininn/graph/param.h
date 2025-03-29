@@ -28,8 +28,11 @@ struct ConvParams: Params {
 struct ClipParams: Params {
     std::shared_ptr<Tensor> input1;
     std::shared_ptr<Tensor> output;
+    std::vector<int> max;
+    std::vector<int> min;
 };
 
+// todo: ai.onnx v1
 struct ShapeParams: Params {
     std::shared_ptr<Tensor> input1;
     std::shared_ptr<Tensor> output;
@@ -70,6 +73,7 @@ struct GemmParams: Params {
 
 struct ConstantParams: Params {
     std::shared_ptr<Tensor> output;
+    std::vector<int> value;
 };
 
 #endif // PARAM_H

@@ -18,7 +18,7 @@ void Shape::set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {
 }
 
 void Shape::set_attributes(std::map<std::string, std::vector<int>>& attrs) {
-
+    return;
 }
 
 void Shape::init_kernel(std::shared_ptr<Kernel> kernel) {

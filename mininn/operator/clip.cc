@@ -18,7 +18,8 @@ void Clip::set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {
 }
 
 void Clip::set_attributes(std::map<std::string, std::vector<int>>& attrs) {
-
+    params_->max = attrs["max"];
+    params_->min = attrs["min"];
 }
 
 void Clip::init_kernel(std::shared_ptr<Kernel> kernel) {
