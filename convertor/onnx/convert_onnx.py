@@ -51,7 +51,6 @@ def print_value_info(i):
     print(i.type)
     # print(i.doc_string)
     # print(i.metadata_props)
-    # print(i.type.elem_type)
     # print(i.type.tensor_type.elem_type)
     # print(i.type.tensor_type.shape)
     # print(i.type.tensor_type.shape.dim)
@@ -192,7 +191,8 @@ class convertor():
 
             for v in self.onnx_graph.value_info:
                 if v.name == onnx_tensor:
-                    # print_value_info(v)
+                    # if v.name in ['467', '469']:
+                    #     print_value_info(v)
                     # print("v from value_info")
                     shape_list = []
                     for dim in v.type.tensor_type.shape.dim:
