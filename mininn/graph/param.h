@@ -54,6 +54,7 @@ struct UnsqueezeParams: Params {
 struct ConcatParams: Params {
     std::vector<std::shared_ptr<Tensor>> inputs;
     std::shared_ptr<Tensor> output;
+    std::vector<int> axis;
 };
 
 struct GlobalaveragepoolParams: Params {
@@ -63,6 +64,7 @@ struct GlobalaveragepoolParams: Params {
 
 struct ReshapeParams: Params {
     std::shared_ptr<Tensor> input1;
+    std::shared_ptr<Tensor> input2;
     std::shared_ptr<Tensor> output;
 };
 

@@ -6,7 +6,10 @@ Gather::Gather(Op type): Node(type) {
 }
 
 Gather::~Gather() {
-    delete params_;
+    if (params_ != nullptr) {
+        params_ = nullptr;
+        delete params_;
+    }
 }
 
 void Gather::set_input_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {

@@ -181,7 +181,8 @@ class convertor():
             
             for i in self.onnx_graph.initializer:
                 if i.name == onnx_tensor:
-                    # print_tensor_info(i)
+                    # if i.name in ['630']:
+                    #     print_tensor_info(i)
                     # print("i from initializer")
                     shape_list = i.dims
                     shape = self.builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
@@ -191,7 +192,7 @@ class convertor():
 
             for v in self.onnx_graph.value_info:
                 if v.name == onnx_tensor:
-                    # if v.name in ['467', '469']:
+                    # if v.name in ['464', '471', '472']:
                     #     print_value_info(v)
                     # print("v from value_info")
                     shape_list = []

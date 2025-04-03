@@ -6,11 +6,15 @@ Reshape::Reshape(Op type): Node(type) {
 }
 
 Reshape::~Reshape() {
-    delete params_;
+    if (params_ != nullptr) {
+        params_ = nullptr;
+        delete params_;
+    }
 }
 
 void Reshape::set_input_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {
     params_->input1 = tensors[0];
+    params_->input2 = tensors[1];
 }
 
 void Reshape::set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {
@@ -18,7 +22,7 @@ void Reshape::set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) 
 }
 
 void Reshape::set_attributes(std::map<std::string, std::vector<int>>& attrs) {
-
+    return;
 }
 
 void Reshape::init_kernel(std::shared_ptr<Kernel> kernel) {

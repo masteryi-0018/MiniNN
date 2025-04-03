@@ -6,7 +6,10 @@ Concat::Concat(Op type): Node(type) {
 }
 
 Concat::~Concat() {
-    delete params_;
+    if (params_ != nullptr) {
+        params_ = nullptr;
+        delete params_;
+    }
 }
 
 void Concat::set_input_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {
@@ -20,7 +23,7 @@ void Concat::set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {
 }
 
 void Concat::set_attributes(std::map<std::string, std::vector<int>>& attrs) {
-
+    params_->axis = attrs["axis"];
 }
 
 void Concat::init_kernel(std::shared_ptr<Kernel> kernel) {

@@ -6,7 +6,10 @@ Conv::Conv(Op type): Node(type) {
 }
 
 Conv::~Conv() {
-    delete params_;
+    if (params_ != nullptr) {
+        params_ = nullptr;
+        delete params_;
+    }
 }
 
 void Conv::set_input_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {

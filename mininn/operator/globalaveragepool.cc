@@ -6,7 +6,10 @@ Globalaveragepool::Globalaveragepool(Op type): Node(type) {
 }
 
 Globalaveragepool::~Globalaveragepool() {
-    delete params_;
+    if (params_ != nullptr) {
+        params_ = nullptr;
+        delete params_;
+    }
 }
 
 void Globalaveragepool::set_input_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {
@@ -18,7 +21,7 @@ void Globalaveragepool::set_output_tensors(std::vector<std::shared_ptr<Tensor>>&
 }
 
 void Globalaveragepool::set_attributes(std::map<std::string, std::vector<int>>& attrs) {
-
+    return;
 }
 
 void Globalaveragepool::init_kernel(std::shared_ptr<Kernel> kernel) {

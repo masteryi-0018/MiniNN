@@ -6,7 +6,10 @@ Gemm::Gemm(Op type): Node(type) {
 }
 
 Gemm::~Gemm() {
-    delete params_;
+    if (params_ != nullptr) {
+        params_ = nullptr;
+        delete params_;
+    }
 }
 
 void Gemm::set_input_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {

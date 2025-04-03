@@ -17,9 +17,27 @@ ReshapeCompute::~ReshapeCompute() {
     }
 }
 
-void reshape_func(float* input_buffer, float* out_buffer,
-                  std::vector<int> input_shape, std::vector<int> out_shape) {
-    // 
+void reshape_func(float* input_buffer, std::shared_ptr<Tensor> out,
+                  std::vector<int> shape_val, int size) {
+    // output of reshape not malloc the real buffer
+    int sum = 1;
+    std::vector<int> out_shape;
+    for (int i = 0; i < shape_val.size(); ++i) {
+        // only 1 dim can be -1
+        if (shape_val[i] == -1) {
+            int new_size = size / sum;
+            out_shape.emplace_back(new_size);
+        } else {
+            out_shape.emplace_back(shape_val[i]);
+            sum *= shape_val[i];
+        }
+    }
+    out->set_shape(out_shape);
+
+    float* out_buffer = reinterpret_cast<float*>(out->get_buffer());
+    for (int i = 0; i < size; ++i) {
+        out_buffer[i] = input_buffer[i];
+    }
 }
 
 void ReshapeCompute::run() {
@@ -27,15 +45,16 @@ void ReshapeCompute::run() {
     auto start_time = std::chrono::high_resolution_clock::now();
 
     ReshapeParams* params = get_params();
-    std::shared_ptr<Tensor> input = params->input1;
+    std::shared_ptr<Tensor> data = params->input1;
+    std::shared_ptr<Tensor> shape = params->input2;
     std::shared_ptr<Tensor> out = params->output;
 
-    std::vector<int> input_shape = input->get_shape();
-    std::vector<int> out_shape = out->get_shape();
-    float* input_buffer = reinterpret_cast<float*>(input->get_buffer());
-    float* out_buffer = reinterpret_cast<float*>(out->get_buffer());
+    int size = data->get_size();
+    std::vector<int> shape_val = shape->get_shape();
 
-    reshape_func(input_buffer, out_buffer, input_shape, out_shape);
+    float* data_buffer = reinterpret_cast<float*>(data->get_buffer());
+    
+    reshape_func(data_buffer, out, shape_val, size);
 
     auto end_time = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed_seconds = end_time - start_time;

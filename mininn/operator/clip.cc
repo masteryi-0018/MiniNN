@@ -6,7 +6,10 @@ Clip::Clip(Op type): Node(type) {
 }
 
 Clip::~Clip() {
-    delete params_;
+    if (params_ != nullptr) {
+        params_ = nullptr;
+        delete params_;
+    }
 }
 
 void Clip::set_input_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {

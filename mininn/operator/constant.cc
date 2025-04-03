@@ -6,7 +6,10 @@ Constant::Constant(Op type): Node(type) {
 }
 
 Constant::~Constant() {
-    delete params_;
+    if (params_ != nullptr) {
+        params_ = nullptr;
+        delete params_;
+    }
 }
 
 void Constant::set_input_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {

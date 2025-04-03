@@ -6,7 +6,10 @@ Unsqueeze::Unsqueeze(Op type): Node(type) {
 }
 
 Unsqueeze::~Unsqueeze() {
-    delete params_;
+    if (params_ != nullptr) {
+        params_ = nullptr;
+        delete params_;
+    }
 }
 
 void Unsqueeze::set_input_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {

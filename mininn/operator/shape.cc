@@ -6,7 +6,10 @@ Shape::Shape(Op type): Node(type) {
 }
 
 Shape::~Shape() {
-    delete params_;
+    if (params_ != nullptr) {
+        params_ = nullptr;
+        delete params_;
+    }
 }
 
 void Shape::set_input_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {
