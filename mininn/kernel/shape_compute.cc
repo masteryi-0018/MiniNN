@@ -18,7 +18,7 @@ ShapeCompute::~ShapeCompute() {
 }
 
 void shape_func(float* out_buffer, std::vector<int> input_shape, std::vector<int> out_shape) {
-    for (int i = 0; i < out_shape.size(); ++i) {
+    for (int i = 0; i < out_shape[0]; ++i) {
         out_buffer[i] = input_shape[i];
     }
 }
@@ -41,7 +41,6 @@ void ShapeCompute::run() {
     std::chrono::duration<double> elapsed_seconds = end_time - start_time;
     LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
     LOG(INFO) << "kernel run end";
-
 }
 
 void ShapeCompute::set_params(Params* params) {

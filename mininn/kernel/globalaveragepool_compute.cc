@@ -63,7 +63,6 @@ void GlobalaveragepoolCompute::run() {
     std::chrono::duration<double> elapsed_seconds = end_time - start_time;
     LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
     LOG(INFO) << "kernel run end";
-
 }
 
 void GlobalaveragepoolCompute::set_params(Params* params) {

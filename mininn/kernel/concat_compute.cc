@@ -29,6 +29,8 @@ void concat_func(std::vector<std::shared_ptr<Tensor>> inputs, float* out_buffer,
         }
         offset += input_size;
     }
+    // todo: set this value
+    out_buffer[1] = -1;
 }
 
 void ConcatCompute::run() {
@@ -49,7 +51,6 @@ void ConcatCompute::run() {
     std::chrono::duration<double> elapsed_seconds = end_time - start_time;
     LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
     LOG(INFO) << "kernel run end";
-
 }
 
 void ConcatCompute::set_params(Params* params) {

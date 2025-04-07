@@ -184,11 +184,21 @@ class convertor():
                     # if i.name in ['630']:
                     #     print_tensor_info(i)
                     # print("i from initializer")
-                    shape_list = i.dims
-                    shape = self.builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
-                    raw_data = i.raw_data
-                    data = self.builder.CreateNumpyVector(np.frombuffer(raw_data, dtype=np.uint8))
-                    self.add_tensor(shape, data, idx_list, onnx_tensor)
+                    if i.data_type == 7: # int64
+                        shape_list = i.dims
+                        shape = self.builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
+                        raw_data = i.raw_data
+                        int64_value = np.frombuffer(raw_data, dtype=np.int64)
+                        float32_value = np.float32(int64_value)
+                        float32_bytes = float32_value.tobytes()
+                        data = self.builder.CreateNumpyVector(np.frombuffer(float32_bytes, dtype=np.uint8))
+                        self.add_tensor(shape, data, idx_list, onnx_tensor)
+                    else: # float32
+                        shape_list = i.dims
+                        shape = self.builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
+                        raw_data = i.raw_data
+                        data = self.builder.CreateNumpyVector(np.frombuffer(raw_data, dtype=np.uint8))
+                        self.add_tensor(shape, data, idx_list, onnx_tensor)
 
             for v in self.onnx_graph.value_info:
                 if v.name == onnx_tensor:
@@ -313,7 +323,7 @@ def read(model_path):
         # for i in range(node.AttributesLength()):
         #     print(node.Attributes(i).Key())
         #     print(node.Attributes(i).ValueAsNumpy())
-
+        print("node: ", i)
         for i in range(node.OutputsLength()):
             print("Outputs:")
             print(node.Outputs(i))

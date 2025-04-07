@@ -23,7 +23,9 @@ void Gemm::set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {
 }
 
 void Gemm::set_attributes(std::map<std::string, std::vector<int>>& attrs) {
-
+    params_->alpha = attrs["alpha"];
+    params_->beta = attrs["beta"];
+    params_->transB = attrs["transB"];
 }
 
 void Gemm::init_kernel(std::shared_ptr<Kernel> kernel) {

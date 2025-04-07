@@ -73,6 +73,9 @@ struct GemmParams: Params {
     std::shared_ptr<Tensor> input2;
     std::shared_ptr<Tensor> input3;
     std::shared_ptr<Tensor> output;
+    std::vector<int> alpha;
+    std::vector<int> beta;
+    std::vector<int> transB;
 };
 
 struct ConstantParams: Params {
