@@ -7,11 +7,11 @@
 
 #include "mininn/graph/register_helper.h"
 
+#include "mininn/graph/use_op.h"
+#include "mininn/graph/use_kernel.h"
+
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
-
-USE_OP(ADD);
-USE_KERNEL(ADD);
 
 namespace py = pybind11;
 

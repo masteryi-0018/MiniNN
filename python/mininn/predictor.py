@@ -10,10 +10,10 @@ class Predictor():
         inputs = self.Predictor.get_input_tensors()
         return inputs
 
-    def set_data(self, a, b):
+    def set_data(self, data):
         input = self.Predictor.get_input_tensors()
-        input[0].set_data(a)
-        input[1].set_data(b)
+        for i in range(0, len(input)):
+            input[i].set_data(data[i])
 
     def run(self):
         self.Predictor.prepare()
