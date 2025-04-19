@@ -61,3 +61,9 @@ std::vector<float> Tensor::get_data() {
     std::memcpy(data.data(), buffer_, size_ * sizeof(float));
     return data;
 }
+
+void Tensor::set_rawdata(const void* data) {
+    if (data != nullptr) {
+        std::memcpy(buffer_, data, size_ * sizeof(float));
+    }
+}

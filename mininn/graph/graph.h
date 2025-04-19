@@ -17,7 +17,7 @@ public:
 
     std::vector<std::shared_ptr<Node>> get_nodes();
 
-    void add_tensor(std::vector<int>& shape);
+    void add_tensor(std::vector<int>& shape, const void* data);
 
     std::vector<std::shared_ptr<Tensor>> get_tensors();
     

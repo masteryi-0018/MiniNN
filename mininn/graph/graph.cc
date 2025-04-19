@@ -27,9 +27,10 @@ std::vector<std::shared_ptr<Node>> Graph::get_nodes() {
     return nodes_;
 }
 
-void Graph::add_tensor(std::vector<int>& shape) {
+void Graph::add_tensor(std::vector<int>& shape, const void* data) {
     auto tensor = std::make_shared<Tensor>();
     tensor->set_shape(shape);
+    tensor->set_rawdata(data);
     tensors_.emplace_back(tensor);
     return;
 }

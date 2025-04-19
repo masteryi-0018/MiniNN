@@ -27,6 +27,8 @@ public:
     // pybind
     std::vector<float> get_data();
 
+    void set_rawdata(const void* data);
+
 private:
     std::vector<int> shape_;
     void* buffer_;

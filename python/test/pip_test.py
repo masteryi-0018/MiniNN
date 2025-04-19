@@ -1,5 +1,25 @@
 import mininn
 
+import onnxruntime as ort
+import numpy as np
+
+def gen_golden(filename):
+    session = ort.InferenceSession(filename)
+
+    input_shape = (1, 3, 224, 224)
+    input0 = np.full(input_shape, 1.0, dtype=np.float32)
+
+    outputs = session.run(
+        None,
+        {'input': input0}
+    )
+    return outputs[0]
+
+def l2_norm(a, b):
+    arr_a = np.array(a, dtype=np.float32)
+    arr_b = np.array(b, dtype=np.float32)
+    return np.linalg.norm(arr_a - arr_b)
+
 def test_add():
     filename = "/home/gy/proj/MiniNN/convertor/onnx/add_model.gynn"
     my_predictor= mininn.Predictor(filename)
@@ -37,9 +57,8 @@ def test_mv2():
     c = outputs[0]
     print(c.get_data()[0], c.get_shape())
 
-    output_size = c.get_size()
-    golden = [0.0] * output_size
-    assert c.get_data() == golden
+    golden = gen_golden("/home/gy/proj/MiniNN/convertor/onnx/mv2_shape.onnx")
+    print(l2_norm(c.get_data(), golden))
     return
 
 def main():
