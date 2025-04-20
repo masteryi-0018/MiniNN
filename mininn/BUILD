@@ -97,6 +97,6 @@ cc_binary(
         ":operator",
         ":kernel",
         ":parser",
-        "//third_party/googletest:gtest",
+        "@googletest//:gtest",
     ],
 )
