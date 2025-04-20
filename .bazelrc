@@ -1,1 +1,2 @@
-build --enable_workspace
+# build --enable_workspace
+build --enable_bzlmod
