@@ -22,7 +22,7 @@ void unsqueeze_func(float* data_buffer, float* out_buffer, std::vector<int> axis
     for (int i = 0; i < size; ++i) {
         out_buffer[i] = data_buffer[i];
     }
-    int axis_val = axis[0];
+    // int axis_val = axis[0];
     // todo: why is the same shape?
     // print_vector(input_shape); // [1]
     // print_vector(out_shape); // [1]

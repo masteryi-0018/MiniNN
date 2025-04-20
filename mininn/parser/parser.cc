@@ -34,7 +34,7 @@ void load_model(std::string& filename, std::shared_ptr<Graph> graph) {
     // tensors
     // consider use auto to handle fbs type
     const flatbuffers::Vector<flatbuffers::Offset<mininn_fbs::Tensor>>* tensors = fbs_graph->tensors();
-    for (int i = 0; i < tensors->size(); ++i) {
+    for (uint i = 0; i < tensors->size(); ++i) {
         auto fbs_tensor = tensors->Get(i);
         const flatbuffers::Vector<int32_t>* fbs_shape = fbs_tensor->shape();
         std::vector<int> shape;
@@ -65,7 +65,7 @@ void load_model(std::string& filename, std::shared_ptr<Graph> graph) {
     // nodes
     // consider use auto to handle fbs type
     const flatbuffers::Vector<flatbuffers::Offset<mininn_fbs::Node>>* nodes = fbs_graph->nodes();
-    for (int i = 0; i < nodes->size(); ++i) {
+    for (uint i = 0; i < nodes->size(); ++i) {
         auto fbs_node = nodes->Get(i);
         Op type = static_cast<Op>(fbs_node->type());
         std::shared_ptr<Node> node = OpFactory::global().create(type);
@@ -85,7 +85,7 @@ void load_model(std::string& filename, std::shared_ptr<Graph> graph) {
         auto fbs_attrs = fbs_node->attributes();
         std::map<std::string, std::vector<int>> attrs;
         for (auto a : *fbs_attrs) {
-            for (int i = 0; i < a->value()->size(); ++i) {
+            for (uint i = 0; i < a->value()->size(); ++i) {
                 attrs[a->key()->c_str()].emplace_back(a->value()->Get(i));
             }
         }

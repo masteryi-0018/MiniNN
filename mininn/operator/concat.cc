@@ -13,7 +13,7 @@ Concat::~Concat() {
 }
 
 void Concat::set_input_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {
-    for (int i = 0; i < tensors.size(); ++i) {
+    for (uint i = 0; i < tensors.size(); ++i) {
         params_->inputs.emplace_back(tensors[i]);
     }
 }

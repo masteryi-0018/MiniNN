@@ -23,8 +23,8 @@ void gather_func(float* data_buffer, float* indices_buffer, float* out_buffer, s
     // todo: only support axis == 0
     // todo: only support indices_shape is 1 dim
     // todo: only support data_shape is 1 dim
-    int axis_val = axis[0];
-    int offset = 0;
+    // int axis_val = axis[0];
+    // int offset = 0;
     for (int i = 0; i < indices_shape[0]; ++i) {
         int index = (int)(indices_buffer[i]);
         for (int j = 0; j < out_shape[0]; ++j) {

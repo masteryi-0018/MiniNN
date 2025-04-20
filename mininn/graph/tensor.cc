@@ -49,7 +49,7 @@ int Tensor::get_length() {
 
 // pybind
 void Tensor::set_data(std::vector<float>& data) {
-    if (data.size() != size_) {
+    if ((int)data.size() != size_) {
         throw std::runtime_error("Data size mismatch");
     }
     std::memcpy(buffer_, data.data(), size_ * sizeof(float));

@@ -19,10 +19,10 @@ ConcatCompute::~ConcatCompute() {
 
 void concat_func(std::vector<std::shared_ptr<Tensor>> inputs, float* out_buffer, std::vector<int> axis, int size) {
     // todo: only support axis == 0
-    int axis_val = axis[0];
+    // int axis_val = axis[0];
     int input_size = inputs[0]->get_size();
     int offset = 0;
-    for (int i = 0; i < inputs.size(); ++i) {
+    for (uint i = 0; i < inputs.size(); ++i) {
         float* temp_buffer = reinterpret_cast<float*>(inputs[i]->get_buffer());
         for (int k = 0; k < input_size; ++k) {
             out_buffer[offset] = temp_buffer[k];
