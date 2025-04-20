@@ -6,7 +6,8 @@
 
 #include <vector>
 #include <memory>
-#include <map> 
+#include <map>
+#include <string>
 
 class Node {
 public:

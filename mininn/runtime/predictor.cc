@@ -38,7 +38,7 @@ std::vector<std::shared_ptr<Tensor>> Predictor::get_input_tensors() {
     std::vector<std::shared_ptr<Tensor>> tensors = graph_->get_tensors();
     std::vector<int> inputs = graph_->get_inputs();
     std::vector<std::shared_ptr<Tensor>> input_tensors;
-    for (uint i = 0; i < inputs.size(); ++i) {
+    for (uint32_t i = 0; i < inputs.size(); ++i) {
         input_tensors.emplace_back(tensors[inputs[i]]);
     }
     return input_tensors;
@@ -48,7 +48,7 @@ std::vector<std::shared_ptr<Tensor>> Predictor::get_output_tensors() {
     std::vector<std::shared_ptr<Tensor>> tensors = graph_->get_tensors();
     std::vector<int> outputs = graph_->get_outputs();
     std::vector<std::shared_ptr<Tensor>> output_tensors;
-    for (uint i = 0; i < outputs.size(); ++i) {
+    for (uint32_t i = 0; i < outputs.size(); ++i) {
         output_tensors.emplace_back(tensors[outputs[i]]);
     }
     return output_tensors;

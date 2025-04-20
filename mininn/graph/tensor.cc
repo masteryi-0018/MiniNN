@@ -4,6 +4,7 @@
 #include <numeric> // std::accumulate
 #include <functional> // std::multiplies, bazel needs
 #include <cstring> // std::memcpy
+#include <stdexcept> // std::runtime_error
 
 Tensor::Tensor() {
     buffer_ = nullptr;

@@ -9,6 +9,6 @@ add_library(kernel ${LIB_TYPE} ${KERNEL_SRC})
 
 target_link_libraries(kernel avx)
 target_link_libraries(kernel sse)
-target_link_libraries(kernel mkl)
+# target_link_libraries(kernel mkl)
 
 message(STATUS "Source files for kernel library: ${KERNEL_SRC}")

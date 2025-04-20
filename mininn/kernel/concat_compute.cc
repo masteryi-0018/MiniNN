@@ -22,7 +22,7 @@ void concat_func(std::vector<std::shared_ptr<Tensor>> inputs, float* out_buffer,
     // int axis_val = axis[0];
     int input_size = inputs[0]->get_size();
     int offset = 0;
-    for (uint i = 0; i < inputs.size(); ++i) {
+    for (uint32_t i = 0; i < inputs.size(); ++i) {
         float* temp_buffer = reinterpret_cast<float*>(inputs[i]->get_buffer());
         for (int k = 0; k < input_size; ++k) {
             out_buffer[offset] = temp_buffer[k];
