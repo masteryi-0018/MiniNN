@@ -10,9 +10,10 @@ TEST(Graph, add_node) {
     // you should add_tensor before add_node
     auto graph = std::make_shared<Graph>();
     std::vector<int> shape = {1, 3, 224, 224};
-    graph->add_tensor(shape);
-    graph->add_tensor(shape);
-    graph->add_tensor(shape);
+    void* data = nullptr;
+    graph->add_tensor(shape, data);
+    graph->add_tensor(shape, data);
+    graph->add_tensor(shape, data);
     int tensor_num = graph->get_tensors().size();
     EXPECT_EQ(tensor_num, 3);
 
@@ -28,7 +29,8 @@ TEST(Graph, add_node) {
 TEST(Graph, add_tensor) {
     auto graph = std::make_shared<Graph>();
     std::vector<int> shape = {1, 3, 224, 224};
-    graph->add_tensor(shape);
+    void* data = nullptr;
+    graph->add_tensor(shape, data);
     int tensor_num = graph->get_tensors().size();
     EXPECT_EQ(tensor_num, 1);
 }

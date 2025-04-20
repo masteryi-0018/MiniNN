@@ -246,6 +246,11 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
 - 方式1：命令行传递参数`-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++`。不需要绝对路径
 - 方式2：cmakelists中设置环境变量，需要写绝对路径，并且Windows下也需要用正斜杠
 
+10. bazel构建不能识别flatbuffers为submodule的相对路径
+
+- 问题原因：虽然submodule将源代码都暴露了出来，但是flatbuffers内部的构建规则是自己的相对路径，无法被mininn识别到
+- 解决方法：在WORKSPACE中将flatbuffers定义为外部依赖，就可以让flatbuffers管理自己的构建路径。同时在bazel8.0+后默认使用MODULE.bazel，需要显式声明为`--enable_workspace`
+
 ## Linux，x86
 
 1. 额外安装的SDK运行时出现`cannot open shared object file: No such file or directory`

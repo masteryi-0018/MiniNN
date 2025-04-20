@@ -22,9 +22,10 @@ std::shared_ptr<Graph> make_graph() {
     
     // 1. set tensor first
     std::vector<int> shape = {1000, 3, 224, 224};
-    graph->add_tensor(shape);
-    graph->add_tensor(shape);
-    graph->add_tensor(shape);
+    void* data = nullptr;
+    graph->add_tensor(shape, data);
+    graph->add_tensor(shape, data);
+    graph->add_tensor(shape, data);
 
     // 2. set node
     std::shared_ptr<Node> node = OpFactory::global().create(ADD);

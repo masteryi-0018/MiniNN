@@ -15,6 +15,17 @@ pip install mininn
 python python/test/pip_test.py
 ```
 
+## Build System Compatibility
+
+| OS / Platform       | Architecture | CMake Support | Bazel Support  | Notes                     |
+|---------------------|--------------|---------------|----------------|---------------------------|
+| **Linux**           | x86_64       | ✅ Yes        | ✅ Yes        | Tested on Ubuntu 20.04    |
+| **Windows**         | x86_64       | ⚠️ Partial    | ⚠️ Partial    | Windows 11                |
+| **Android**         | ARM64        | ⚠️ Partial    | ⚠️ Partial    | NDK required              |
+| **macOS**           | x86_64       | ❌ No         | ❌ No         | intel                     |
+|                     | ARM64        | ❌ No         | ❌ No         | M1/M2/M3...               |
+| **iOS**             | ARM64        | ❌ No         | ❌ No         |                           |
+
 ## download
 
 ```sh
@@ -66,14 +77,12 @@ git clone --recursive git@github.com:masteryi-0018/MiniNN.git
 1. cmake
 
 ```ps1
-.\build\mininn\test-main.exe
 .\build\mininn\test\gtest-main.exe
 ```
 
 2. bazel
 
 ```ps1
-.\bazel-bin\mininn\test-main.exe
 .\bazel-bin\mininn\gtest-main.exe
 ```
 
@@ -82,14 +91,12 @@ git clone --recursive git@github.com:masteryi-0018/MiniNN.git
 1. cmake
 
 ```sh
-./build/mininn/test-main
 ./build/mininn/test/gtest-main
 ```
 
 2. bazel
 
 ```sh
-./bazel-bin/mininn/test-main
 ./bazel-bin/mininn/gtest-main
 ```
 
@@ -101,7 +108,7 @@ git clone --recursive git@github.com:masteryi-0018/MiniNN.git
 - [ ] 支持将tensorflow模型转换为gynn格式
 
 2. mininn IR
-- [ ] 支持多算子构图
+- [x] 支持多算子构图
 
 3. mininn kernel
 - [x] 增加opencl后端
@@ -114,7 +121,8 @@ git clone --recursive git@github.com:masteryi-0018/MiniNN.git
 - [ ] 增加示例程序，链接mininn.so
 
 5. 构建系统
-- [x] 引入flatbuffers头文件，集成到bazel脚本中
-- [x] Windows使用bazel构建
-- [x] Windows使用msvc编译问题解决
-- [x] 使用clang编译器
+- [x] cmake
+- [x] bazel
+- [x] clang
+- [x] gcc
+- [x] msvc

@@ -5,6 +5,8 @@ cc_library(
     ]),
     hdrs = glob([
         "utils/*.h",
+        "graph/*.h",
+        "parser/*.h",
     ]),
 )
 
@@ -42,6 +44,11 @@ cc_library(
     ]),
     hdrs = glob([
         "kernel/*.h",
+        "backend/cuda/*.cuh",
+        "backend/opencl/*.h",
+        "backend/avx/*.h",
+        "backend/sse/*.h",
+        "backend/mkl/*.h",
     ]),
     deps = [
         ":graph",
@@ -77,19 +84,13 @@ cc_library(
 )
 
 cc_binary(
-    name = "test-main",
-    srcs = [
-        "test.cc",
-    ],
-    deps = [
-        ":utils",
-    ],
-)
-
-cc_binary(
     name = "gtest-main",
     srcs = glob([
         "test/*.cc",
+        "test/graph/*.cc",
+        "test/operator/*.cc",
+        "test/parser/*.cc",
+        "test/runtime/*.cc",
     ]),
     deps = [
         ":runtime",
