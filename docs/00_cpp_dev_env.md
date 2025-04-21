@@ -251,6 +251,11 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
 - 问题原因：虽然submodule将源代码都暴露了出来，但是flatbuffers内部的构建规则是自己的相对路径，无法被mininn识别到
 - 解决方法：在WORKSPACE中将flatbuffers定义为外部依赖，就可以让flatbuffers管理自己的构建路径。同时在bazel8.0+后默认使用MODULE.bazel，需要显式声明为`--enable_workspace`
 
+11. windows下bazel编译日志乱码
+
+- 问题原因：错误中的"936"表示系统正在使用GBK编码（中文Windows默认），MSVC编译器期望源代码是带BOM的UTF-8或与系统区域设置匹配的编码
+- 解决方法：修改系统区域设置（针对MSVC编译器警告）：进入控制面板 → 区域 → 管理 → 更改系统区域设置，勾选 "Beta版：使用Unicode UTF-8提供全球语言支持"，重启计算机
+
 ## Linux，x86
 
 1. 额外安装的SDK运行时出现`cannot open shared object file: No such file or directory`

@@ -28,7 +28,7 @@ void reshape_func(float* input_buffer, float* shape_buffer, std::shared_ptr<Tens
             int new_size = size / sum;
             out_shape.emplace_back(new_size);
         } else {
-            out_shape.emplace_back(shape_buffer[i]);
+            out_shape.emplace_back(static_cast<int>(shape_buffer[i]));
             sum *= shape_buffer[i];
         }
     }
