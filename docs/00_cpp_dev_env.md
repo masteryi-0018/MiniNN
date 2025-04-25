@@ -265,3 +265,24 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
   - `-L/opt/intel/oneapi/mkl/latest/lib`
   - 但是在运行时依然需要对应的打开库文件，这里只是让编译器编译时不出错
 - 解决方法：使用`-Wl,-rpath,/opt/intel/oneapi/mkl/latest/lib`让编译产物链接到绝对路径，从而正确运行
+
+## Android，arm
+
+1. 设置环境
+
+    1. GitHub下载[termux](https://github.com/termux/termux-app/releases)
+    2. 电脑配置adb工具。官网下载或借助Android Studio下载。
+    3. 连接手机。打开 开发者模式：连续点击「设置」-「关于手机」-「版本号」7次。启用 USB调试：在开发者选项中打开「USB调试」。选择 正确的USB模式：连接时下拉通知栏，将USB模式设为「文件传输（MTP）」或「PTP」（部分机型需选「传输文件」）。
+    4. `adb install .\termux-app_v0.118.2+github-debug_arm64-v8a.apk`
+    5. 使用手机操作termux
+       ```sh
+       pkg update
+       pkg upgrade
+       pkg install openssh
+       passwd
+       sshd
+       whoami
+       ifconfig
+       ```
+    6. 使用电脑ssh登录，`ssh u0_a201@192.168.0.103 -p 8022`，有兴趣可以配置免密登录。
+    7. 手机设置termux自启动，允许后台活动，就可以保持随时ssh了。
