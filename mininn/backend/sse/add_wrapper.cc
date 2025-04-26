@@ -10,14 +10,14 @@ void sse_add_wrapper(const float* h_A, const float* h_B, float* h_C, int numElem
         // Load 4 floats from arrays A and B into SSE registers
         __m128 vec_a = _mm_loadu_ps(&h_A[i]);
         __m128 vec_b = _mm_loadu_ps(&h_B[i]);
-        
+
         // Perform element-wise addition
         __m128 vec_c = _mm_add_ps(vec_a, vec_b);
-        
+
         // Store the result back to array C
         _mm_storeu_ps(&h_C[i], vec_c);
     }
-    
+
     // Handle any remaining elements (if n is not a multiple of 4)
     for (; i < numElements; ++i) {
         h_C[i] = h_A[i] + h_B[i];

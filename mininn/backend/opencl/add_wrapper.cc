@@ -29,7 +29,7 @@ void opencl_add_wrapper(float* h_A, float* h_B, float* h_C, int numElements) {
     clGetPlatformIDs(1, &platform, nullptr);
 
     cl_device_id device;
-    
+
 #ifdef __linux__
     clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 1, &device, nullptr);
 #elif defined(_WIN32)

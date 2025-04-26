@@ -35,7 +35,7 @@
 # 开发中
 
 > 本项目作者受tensorflow lite，paddle-lite，Android NNAPI影响较大，一些设计可能借鉴上述项目
-> 
+>
 > 本项目实践过程跟随项目：https://github.com/zjhellofss/KuiperInfer，在此表示感谢
 
 ## 构建

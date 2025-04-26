@@ -124,7 +124,7 @@ void ConvCompute::run() {
     float* bias_buffer = reinterpret_cast<float*>(bias->get_buffer());
     float* out_buffer = reinterpret_cast<float*>(out->get_buffer());
 
-    conv_func(input_buffer, weight_buffer, bias_buffer, out_buffer, 
+    conv_func(input_buffer, weight_buffer, bias_buffer, out_buffer,
               dilations, group, kernel_shape, pads, strides, input_shape, out_shape);
 
     auto end_time = std::chrono::high_resolution_clock::now();

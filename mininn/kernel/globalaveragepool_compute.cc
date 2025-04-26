@@ -17,27 +17,27 @@ GlobalaveragepoolCompute::~GlobalaveragepoolCompute() {
     }
 }
 
-void globalaveragepool_func(float* input_buffer, float* out_buffer, 
+void globalaveragepool_func(float* input_buffer, float* out_buffer,
                             std::vector<int> input_shape, std::vector<int> out_shape) {
     // reserve output dims. such as [1, 1280, 1, 1]
     int batch_size = input_shape[0];
     int channels = input_shape[1];
     int height = input_shape[2];
     int width = input_shape[3];
-    
+
     int spatial_size = height * width;
 
     for (int n = 0; n < batch_size; ++n) {
         for (int c = 0; c < channels; ++c) {
             float sum = 0.0f;
-            
+
             for (int h = 0; h < height; ++h) {
                 for (int w = 0; w < width; ++w) {
                     int input_idx = n * channels * height * width + c * height * width + h * width + w;
                     sum += input_buffer[input_idx];
                 }
             }
-            
+
             int output_idx = n * channels + c;
             out_buffer[output_idx] = sum / spatial_size;
         }

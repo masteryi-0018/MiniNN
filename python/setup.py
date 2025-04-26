@@ -13,20 +13,20 @@ class CustomBuildCommand(build_py):
     def run(self):
         cmake_output = os.path.abspath("../build/python/mininn_capi.cpython-311-x86_64-linux-gnu.so")
         target_dir = os.path.join(self.build_lib, "mininn")
-        
+
         if not os.path.exists(target_dir):
             os.makedirs(target_dir)
-        
+
         if os.path.exists(cmake_output):
             shutil.copyfile(cmake_output, os.path.join(target_dir, "mininn_capi.so"))
         else:
             raise FileNotFoundError(f"{cmake_output} does not exist. Build with CMake first.")
-        
+
         super().run()
 
 
 setup(
-    name = "mininn", 
+    name = "mininn",
     version = VERSION,
     author = "masteryi-0018",
     author_email = "<1536474741@qq.com>",

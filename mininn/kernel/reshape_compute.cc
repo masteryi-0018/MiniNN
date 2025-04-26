@@ -54,7 +54,7 @@ void ReshapeCompute::run() {
 
     float* data_buffer = reinterpret_cast<float*>(data->get_buffer());
     float* shape_buffer = reinterpret_cast<float*>(shape->get_buffer());
-    
+
     reshape_func(data_buffer, shape_buffer, out, shape_val, size);
 
     auto end_time = std::chrono::high_resolution_clock::now();

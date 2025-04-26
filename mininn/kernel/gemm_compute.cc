@@ -28,9 +28,9 @@ void gemm_func(float* input_buffer, float* weight_buffer, float* bias_buffer, fl
     float alpha_val = static_cast<float>(alpha[0]);
     float beta_val = static_cast<float>(beta[0]);
     bool transpose_B = transB[0] != 0;
-    
+
     std::vector<float> temp_result(M * N, 0.0f);
-    
+
     for (int i = 0; i < M; ++i) {
         for (int j = 0; j < N; ++j) {
             float sum = 0.0f;
@@ -42,13 +42,13 @@ void gemm_func(float* input_buffer, float* weight_buffer, float* bias_buffer, fl
             temp_result[i * N + j] = sum;
         }
     }
-    
+
     for (int i = 0; i < M; ++i) {
         for (int j = 0; j < N; ++j) {
             float value = temp_result[i * N + j];
-            
+
             value *= alpha_val;
-            
+
             if (bias_buffer != nullptr && bias_shape.size() > 0) {
                 if (bias_shape[0] == N) {
                     value += bias_buffer[j];
@@ -56,7 +56,7 @@ void gemm_func(float* input_buffer, float* weight_buffer, float* bias_buffer, fl
                     value += bias_buffer[i * N + j];
                 }
             }
-            
+
             out_buffer[i * N + j] = beta_val * out_buffer[i * N + j] + value;
         }
     }

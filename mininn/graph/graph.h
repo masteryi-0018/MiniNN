@@ -6,7 +6,7 @@
 
 #include <vector>
 #include <memory>
-#include <map> 
+#include <map>
 
 class Graph {
 public:
@@ -20,7 +20,7 @@ public:
     void add_tensor(std::vector<int>& shape, const void* data);
 
     std::vector<std::shared_ptr<Tensor>> get_tensors();
-    
+
     void set_inputs(std::vector<int>& inputs);
 
     std::vector<int>& get_inputs();

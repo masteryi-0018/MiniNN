@@ -117,10 +117,12 @@ git clone --recursive git@github.com:masteryi-0018/MiniNN.git
 - [x] 增加sse后端
 - [x] 增加mkl后端
 
-4. 工具类
+4. mininn release
 - [ ] 增加示例程序，链接mininn.so
+- [ ] cpp sdk
+- [x] pip package
 
-5. 构建系统
+5. mininn build
 - [x] cmake
 - [x] bazel
 - [x] clang

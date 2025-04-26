@@ -7,7 +7,7 @@ def add_node_outputs_as_graph_outputs(model_path, output_node_names, new_model_p
     onnx.checker.check_model(model)
     graph = model.graph
     new_outputs = []
-    
+
     for node in graph.node:
         if node.name in output_node_names:
             for output in node.output:
@@ -16,7 +16,7 @@ def add_node_outputs_as_graph_outputs(model_path, output_node_names, new_model_p
                     if vi.name == output:
                         value_info = vi
                         break
-                
+
                 if value_info is None:
                     print(f"{node.name}'s output {output} is graph's input/output")
                     for inp in graph.input:
@@ -27,7 +27,7 @@ def add_node_outputs_as_graph_outputs(model_path, output_node_names, new_model_p
                         if out.name == output:
                             value_info = out
                             break
-                
+
                 if value_info is not None:
                     new_output = onnx.helper.make_tensor_value_info(
                         value_info.name,
@@ -61,6 +61,6 @@ if __name__ == "__main__":
     input_model = "mv2_shape.onnx"
     nodes_to_output = ["Gather_100", "Unsqueeze_101"]
     output_model = "modified_model.onnx"
-    
+
     add_node_outputs_as_graph_outputs(input_model, nodes_to_output, output_model)
     run(output_model)

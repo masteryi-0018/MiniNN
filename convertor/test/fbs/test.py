@@ -41,7 +41,7 @@ def write():
     mininn_fbs.Attribute.AttributeAddValue(builder, value_array)
     attr = mininn_fbs.Attribute.AttributeEnd(builder)
     attributes_vector.append(attr)
-    
+
     mininn_fbs.Node.NodeStartAttributesVector(builder, len(attributes_vector))
     for attribute in reversed(attributes_vector):
         builder.PrependUOffsetTRelative(attribute)
@@ -122,18 +122,18 @@ def read(model_path):
     # read
     with open(model_path, "rb") as f:
         buf = f.read()
-    
+
     graph = mininn_fbs.Graph.Graph.GetRootAsGraph(buf)
 
     # graph
     output = [2]
     for i in range(graph.OutputsLength()):
         assert graph.Outputs(i) == output[i]
-    
+
     input = [0, 1]
     for i in range(graph.InputsLength()):
         assert graph.Inputs(i) == input[i]
-    
+
     assert graph.NodesLength() == 1
     assert graph.TensorsLength() == 3
 
@@ -144,11 +144,11 @@ def read(model_path):
     output = [2]
     for i in range(node.OutputsLength()):
         assert node.Outputs(i) == output[i]
-    
+
     input = [0, 1]
     for i in range(node.InputsLength()):
         assert node.Inputs(i) == input[i]
-    
+
     # tensor
     for i in range(graph.TensorsLength()):
         tensor = graph.Tensors(i)

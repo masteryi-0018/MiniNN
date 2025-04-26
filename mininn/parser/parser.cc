@@ -46,7 +46,7 @@ void load_model(std::string& filename, std::shared_ptr<Graph> graph) {
         const void* raw_data = nullptr;
         if (fbs_data) {
             raw_data = reinterpret_cast<const void*>(fbs_data->data());
-            
+
             // debug
             // size_t data_size = fbs_data->size();
             // const float* float_data = reinterpret_cast<const float*>(raw_data);

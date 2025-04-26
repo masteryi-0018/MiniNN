@@ -1,0 +1,27 @@
+###############################################################################
+# Bazel now uses Bzlmod by default to manage external dependencies.
+# Please consider migrating your external dependencies from WORKSPACE to MODULE.bazel.
+#
+# For more details, please check https://github.com/bazelbuild/bazel/issues/18958
+###############################################################################
+
+module(
+    name = "mininn",
+    version = "1.0.0",
+)
+
+bazel_dep(name = "flatbuffers", version = "25.2.10")
+
+# override path of dep flatbuffers
+local_path_override(
+    module_name = "flatbuffers",
+    path = "third_party/flatbuffers",
+)
+
+bazel_dep(name = "googletest", version = "head")
+
+# override path of dep googletest
+local_path_override(
+    module_name = "googletest",
+    path = "third_party/googletest",
+)

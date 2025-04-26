@@ -68,7 +68,7 @@ void AddCompute::run() {
     LOG(INFO) << "num_threads: " << num_threads;
     std::vector<std::thread> threads;
     int chunk_size = size / num_threads;
-    
+
     for (int i = 0; i < num_threads; ++i) {
         int start = i * chunk_size;
         int end = (i == num_threads - 1) ? size : start + chunk_size;

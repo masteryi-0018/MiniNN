@@ -5,7 +5,7 @@ build/
 
 # bazel
 bazel-*
-MODULE*
+MODULE.bazel.lock
 
 # py
 __pycache__

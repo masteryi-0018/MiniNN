@@ -19,7 +19,7 @@
 
 std::shared_ptr<Graph> make_graph() {
     auto graph = std::make_shared<Graph>();
-    
+
     // 1. set tensor first
     std::vector<int> shape = {1000, 3, 224, 224};
     void* data = nullptr;

@@ -4,6 +4,7 @@ local_repository(
     path = "third_party/flatbuffers",
 )
 
+# external googletest libs
 local_repository(
     name = "googletest",
     path = "third_party/googletest",

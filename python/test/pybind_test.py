@@ -45,7 +45,7 @@ def main():
     predictor.run()
     c = output[0].get_data()
     print(c[0], output[0].get_shape())
-    
+
     golden = [3.0] * output_size
     assert c == golden
     return

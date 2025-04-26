@@ -9,20 +9,23 @@ elseif(UNIX)
     set(CMAKE_CXX_COMPILER "clang++")
 endif()
 
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+# set cpp standard
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+message(STATUS "Default C++ standard: ${CMAKE_CXX_STANDARD}")
 
+# set release type
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
     # set(CMAKE_BUILD_TYPE Release)
     # set(CMAKE_BUILD_TYPE RelWithDebInfo)
     # set(CMAKE_BUILD_TYPE MinSizeRel)
 endif()
-message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+message(STATUS "Default cmake build type: ${CMAKE_BUILD_TYPE}")
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-message(STATUS "Default C++ standard: ${CMAKE_CXX_STANDARD}")
+# set PIC for shared library
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Clang with CUDA is not yet supported on Windows.  See CMake issue #20776.
 # set(CMAKE_CUDA_COMPILER "E:/LLVM/bin/clang.exe")
@@ -36,7 +39,7 @@ endif()
 # 1. environment
 set(MININN_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
-# stander opencl
+# standard opencl
 # find_package(OpenCL REQUIRED)
 # include_directories(${OpenCL_INCLUDE_DIRS})
 

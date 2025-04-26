@@ -108,7 +108,7 @@ class convertor():
     def build_mininn(self):
         self.build_node_and_tensor()
         graph = self.build_graph()
-        
+
         self.builder.Finish(graph)
         new_name = self.name + ".gynn"
         with open(new_name, "wb") as f:
@@ -145,7 +145,7 @@ class convertor():
                 mininn_fbs.Attribute.AttributeAddValue(self.builder, value_array)
                 attr = mininn_fbs.Attribute.AttributeEnd(self.builder)
                 attributes_vector.append(attr)
-            
+
             mininn_fbs.Node.NodeStartAttributesVector(self.builder, len(attributes_vector))
             for attribute in reversed(attributes_vector):
                 self.builder.PrependUOffsetTRelative(attribute)
@@ -178,7 +178,7 @@ class convertor():
             if onnx_tensor in self.tensor_dict:
                 idx_list.append(self.tensor_dict[onnx_tensor])
                 continue
-            
+
             for i in self.onnx_graph.initializer:
                 if i.name == onnx_tensor:
                     # if i.name in ['630']:
@@ -229,7 +229,7 @@ class convertor():
                     shape = self.builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
                     data = 0
                     self.add_tensor(shape, data, idx_list, onnx_tensor)
-        
+
             for o in self.onnx_graph.output:
                 if o.name == onnx_tensor:
                     self.output_list.append(self.tensor_idx)
@@ -251,7 +251,7 @@ class convertor():
     def build_graph(self):
         graph_inputs = self.builder.CreateNumpyVector(np.array(self.input_list, dtype=np.int32))
         graph_outputs = self.builder.CreateNumpyVector(np.array(self.output_list, dtype=np.int32))
-        
+
         mininn_fbs.Graph.GraphStartNodesVector(self.builder, len(self.nodes_list))
         for i in reversed(range(len(self.nodes_list))):
             self.builder.PrependUOffsetTRelative(self.nodes_list[i])
@@ -269,7 +269,7 @@ class convertor():
         mininn_fbs.Graph.GraphAddInputs(self.builder, graph_inputs)
         mininn_fbs.Graph.GraphAddOutputs(self.builder, graph_outputs)
         graph = mininn_fbs.Graph.GraphEnd(self.builder)
-        
+
         return graph
 
 
@@ -281,18 +281,18 @@ def read(model_path):
     # read
     with open(model_path, "rb") as f:
         buf = f.read()
-    
+
     graph = mininn_fbs.Graph.Graph.GetRootAsGraph(buf)
 
     # graph
     output = [212]
     for i in range(graph.OutputsLength()):
         assert graph.Outputs(i) == output[i]
-    
+
     input = [0]
     for i in range(graph.InputsLength()):
         assert graph.Inputs(i) == input[i]
-    
+
     assert graph.NodesLength() == 105
     # initializer num + value_info num + input num + output num
     assert graph.TensorsLength() == 107 + 104 + 1 + 1
@@ -309,13 +309,13 @@ def read(model_path):
         # assert node.Outputs(i) == output[i]
         print("Outputs:")
         print(node.Outputs(i))
-    
+
     input = [0, 1, 2]
     for i in range(node.InputsLength()):
         # assert node.Inputs(i) == input[i]
         print("Inputs:")
         print(node.Inputs(i))
-    
+
     print("\n")
     # debug
     for i in [99, 100, 101, 102, 103]:
@@ -327,7 +327,7 @@ def read(model_path):
         for i in range(node.OutputsLength()):
             print("Outputs:")
             print(node.Outputs(i))
-        
+
         for i in range(node.InputsLength()):
             print("Inputs:")
             print(node.Inputs(i))
@@ -344,7 +344,7 @@ def read(model_path):
         # 204, 205, 209
         if len(t.ShapeAsNumpy()) == 0:
             print(i)
-    
+
     data_numpy = tensor.DataAsNumpy()
     if isinstance(data_numpy, int) and data_numpy == 0:
         print("No data available.")

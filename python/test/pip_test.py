@@ -32,7 +32,7 @@ def test_add():
 
     my_predictor.set_data([a, b])
     my_predictor.run()
-    
+
     outputs = my_predictor.get_output()
     c = outputs[0]
     print(c.get_data()[0], c.get_shape())
@@ -52,7 +52,7 @@ def test_mv2():
 
     my_predictor.set_data([a])
     my_predictor.run()
-    
+
     outputs = my_predictor.get_output()
     c = outputs[0]
     print(c.get_data()[0], c.get_shape())
