@@ -17,7 +17,7 @@
 #include <unistd.h>
 #endif
 
-std::string conv_filename = "convertor/onnx/mobilenetv2-10.gynn";
+std::string conv_filename = "models/mobilenetv2-10.gynn";
 
 TEST(Operator_Conv, get_input_tensors) {
     auto graph = load_graph(conv_filename);

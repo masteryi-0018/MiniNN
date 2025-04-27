@@ -17,7 +17,7 @@
 #include <unistd.h>
 #endif
 
-std::string add_filename = "convertor/mininn_test.gynn";
+std::string add_filename = "models/add_model.gynn";
 
 TEST(Operator_Add, get_input_tensors) {
     auto graph = load_graph(add_filename);

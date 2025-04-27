@@ -95,8 +95,7 @@ class convertor():
         self.name = None
 
 
-    def load_onnx_model(self):
-        model_path = "/home/gy/proj/MiniNN/mobilenetv2-10.onnx"
+    def load_onnx_model(self, model_path):
         self.name = model_path.split("/")[-1].split(".")[0]
         onnx_model = onnx.load(model_path)
         onnx_model_shape = onnx.shape_inference.infer_shapes(onnx_model)
@@ -105,15 +104,15 @@ class convertor():
         self.onnx_graph = onnx_graph
 
 
-    def build_mininn(self):
+    def build_mininn(self, model_path):
         self.build_node_and_tensor()
         graph = self.build_graph()
 
         self.builder.Finish(graph)
         new_name = self.name + ".gynn"
-        with open(new_name, "wb") as f:
+        with open(model_path, "wb") as f:
             f.write(self.builder.Output())
-        print(f"{self.name} 已转换为 {new_name} \n")
+        print(f"{self.name} 模型已转换为 {new_name} \n")
 
 
     def build_node_and_tensor(self):
@@ -273,8 +272,8 @@ class convertor():
         return graph
 
 
-def check_mininn():
-    read("mobilenetv2-10.gynn")
+def check_mininn(model_path):
+    read(model_path)
 
 
 def read(model_path):
@@ -356,7 +355,9 @@ def read(model_path):
 
 
 if __name__ == '__main__':
+    model_path = "../../models/mobilenetv2-10.onnx"
+    new_model_path = model_path.replace(".onnx", ".gynn")
     my_convertor = convertor()
-    my_convertor.load_onnx_model()
-    my_convertor.build_mininn()
-    check_mininn()
+    my_convertor.load_onnx_model(model_path)
+    my_convertor.build_mininn(new_model_path)
+    check_mininn(new_model_path)

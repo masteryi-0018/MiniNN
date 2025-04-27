@@ -1,7 +1,8 @@
 import onnxruntime as ort
 import numpy as np
 
-session = ort.InferenceSession('add_model.onnx')
+model_path = '../../../../models/add_model.onnx'
+session = ort.InferenceSession(model_path)
 
 input_shape = (100, 3, 224, 224)
 input0 = np.full(input_shape, 1.0, dtype=np.float32)

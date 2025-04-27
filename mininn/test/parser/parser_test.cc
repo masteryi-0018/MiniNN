@@ -3,7 +3,7 @@
 #include <gtest/gtest.h>
 
 TEST(Parser, load_model_add) {
-    std::string filename = "convertor/mininn_test.gynn";
+    std::string filename = "models/add_model.gynn";
     auto graph = std::make_shared<Graph>();
     load_model(filename, graph);
 
@@ -23,7 +23,7 @@ TEST(Parser, load_model_add) {
 }
 
 TEST(Parser, load_model_mv2) {
-    std::string filename = "convertor/onnx/mobilenetv2-10.gynn";
+    std::string filename = "models/mobilenetv2-10.gynn";
     auto graph = std::make_shared<Graph>();
     load_model(filename, graph);
 

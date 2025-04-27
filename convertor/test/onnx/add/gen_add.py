@@ -26,5 +26,7 @@ model = helper.make_model(
 )
 
 onnx.checker.check_model(model)
-onnx.save(model, 'add_model.onnx')
-print("模型已保存为 add_model.onnx")
+
+model_path = '../../../../models/add_model.onnx'
+onnx.save(model, model_path)
+print(f"模型已保存为 {model_path}")

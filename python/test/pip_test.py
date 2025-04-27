@@ -21,7 +21,7 @@ def l2_norm(a, b):
     return np.linalg.norm(arr_a - arr_b)
 
 def test_add():
-    filename = "/home/gy/proj/MiniNN/convertor/onnx/add_model.gynn"
+    filename = "../../models/add_model.gynn"
     my_predictor= mininn.Predictor(filename)
 
     inputs = my_predictor.get_input()
@@ -43,7 +43,7 @@ def test_add():
     return
 
 def test_mv2():
-    filename = "/home/gy/proj/MiniNN/convertor/onnx/mobilenetv2-10.gynn"
+    filename = "../../models/mobilenetv2-10.gynn"
     my_predictor= mininn.Predictor(filename)
 
     inputs = my_predictor.get_input()
@@ -57,7 +57,7 @@ def test_mv2():
     c = outputs[0]
     print(c.get_data()[0], c.get_shape())
 
-    golden = gen_golden("/home/gy/proj/MiniNN/convertor/onnx/mv2_shape.onnx")
+    golden = gen_golden("../../models/mobilenetv2-10.onnx")
     print(l2_norm(c.get_data(), golden))
     return
 

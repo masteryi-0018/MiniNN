@@ -1,3 +1,7 @@
+import os
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../build/python'))
+
 import mininn_capi
 
 def main():
@@ -10,7 +14,7 @@ def main():
     print(tensor.get_length())
 
     # parser
-    filename = "../../convertor/mininn_test.gynn"
+    filename = "../../models/mininn_test.gynn"
     graph = mininn_capi.Graph()
     mininn_capi.load_model(filename, graph)
 

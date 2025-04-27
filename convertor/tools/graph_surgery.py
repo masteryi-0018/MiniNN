@@ -40,7 +40,7 @@ def add_node_outputs_as_graph_outputs(model_path, output_node_names, new_model_p
 
     graph.output.extend(new_outputs)
     onnx.save(model, new_model_path)
-    print(f"新模型已保存到: {new_model_path}")
+    print(f"新模型已保存为: {new_model_path}")
 
 def run(model_path):
     session = ort.InferenceSession(model_path)
@@ -58,9 +58,9 @@ def run(model_path):
 
 
 if __name__ == "__main__":
-    input_model = "mv2_shape.onnx"
+    input_model = "../../models/mobilenetv2-10-shape.onnx"
     nodes_to_output = ["Gather_100", "Unsqueeze_101"]
-    output_model = "modified_model.onnx"
+    output_model = input_model.replace('.onnx', '-modified.onnx')
 
     add_node_outputs_as_graph_outputs(input_model, nodes_to_output, output_model)
     run(output_model)
