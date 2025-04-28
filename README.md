@@ -43,13 +43,13 @@ git clone --recursive git@github.com:masteryi-0018/MiniNN.git
 1. cmake
 
 ```ps1
-.\build.ps1
+python .\build.py
 ```
 
 2. bazel
 
 ```ps1
-.\bazel.ps1
+python .\build.py --tool bazel
 ```
 
 更多请查看：<https://github.com/masteryi-0018/MiniNN/blob/main/docs/README.md>
