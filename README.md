@@ -2,9 +2,10 @@
 
 Build a deep learning inference framework from scratch
 
-## quick start
+## Quick Start
 
 环境需求：
+
 - conda，python=3.11
 - mininn_test.gynn [下载](https://github.com/masteryi-0018/MiniNN/releases/download/mininn-0.0.1/mininn_test.gynn)
 
@@ -17,16 +18,23 @@ python python/test/pip_test.py
 
 ## Build System Compatibility
 
-| OS / Platform       | Architecture | CMake Support | Bazel Support  | Notes                     |
-|---------------------|--------------|---------------|----------------|---------------------------|
-| **Linux**           | x86_64       | ✅ Yes        | ✅ Yes        | Tested on Ubuntu 20.04    |
-| **Windows**         | x86_64       | ⚠️ Partial    | ⚠️ Partial    | Windows 11                |
-| **Android**         | ARM64        | ⚠️ Partial    | ⚠️ Partial    | NDK required              |
-| **macOS**           | x86_64       | ❌ No         | ❌ No         | intel                     |
-|                     | ARM64        | ❌ No         | ❌ No         | M1/M2/M3...               |
-| **iOS**             | ARM64        | ❌ No         | ❌ No         |                           |
+| Platform    | Architecture | CMake Support | Bazel Support | Notes        |
+| ----------- | ------------ | ------------- | ------------- | ------------ |
+| **Linux**   | x86_64       | ✅ Yes        | ✅ Yes        | Ubuntu 20.04 |
+| **Windows** | x86_64       | ✅ Yes        | ✅ Yes        | Windows 11   |
+| **Android** | ARM64        | ⚠️ Partial    | ⚠️ Partial    | NDK required |
+| **macOS**   | x86_64       | ❌ No         | ❌ No         | intel        |
+|             | ARM64        | ❌ No         | ❌ No         | M1/M2/M3...  |
+| **iOS**     | ARM64        | ❌ No         | ❌ No         |              |
 
-## download
+## Environment version
+
+| Platform    | CMake  | Bazel | clang++ | g++    | msvc        |
+| ----------- | ------ | ----- | ------- | ------ | ----------- |
+| **Linux**   | 3.30.5 | 8.0.0 | 10.0.0  | 9.4.0  |             |
+| **Windows** | 3.26.4 | 7.3.1 | 18.1.4  | 13.1.0 | 19.41.34120 |
+
+## Download
 
 ```sh
 # https
@@ -36,7 +44,7 @@ git clone --recursive https://github.com/masteryi-0018/MiniNN.git
 git clone --recursive git@github.com:masteryi-0018/MiniNN.git
 ```
 
-## build
+## Build
 
 ### windows
 
@@ -52,25 +60,21 @@ python .\build.py
 python .\build.py --tool bazel
 ```
 
-更多请查看：<https://github.com/masteryi-0018/MiniNN/blob/main/docs/README.md>
-
 ### linux
 
 1. cmake
 
 ```sh
-./build.sh
+python build.py
 ```
 
 2. bazel
 
 ```sh
-./bazel.sh
+python build.py --tool bazel
 ```
 
-更多请查看：<https://github.com/masteryi-0018/MiniNN/blob/main/docs/README.md>
-
-## unit test
+## Unit Test
 
 ### windows
 
@@ -103,28 +107,33 @@ python .\build.py --tool bazel
 ## TODO
 
 1. mininn convertor
-- [x] 支持将onnx模型转换为gynn格式
-- [ ] 支持将pytorch模型转换为gynn格式
-- [ ] 支持将tensorflow模型转换为gynn格式
+
+- [x] 支持将 onnx 模型转换为 gynn 格式
+- [ ] 支持将 pytorch 模型转换为 gynn 格式
+- [ ] 支持将 tensorflow 模型转换为 gynn 格式
 
 2. mininn IR
+
 - [x] 支持多算子构图
 
 3. mininn kernel
-- [x] 增加opencl后端
-- [x] 增加cuda后端
-- [x] 增加avx后端
-- [x] 增加sse后端
-- [x] 增加mkl后端
+
+- [x] 增加 opencl 后端
+- [x] 增加 cuda 后端
+- [x] 增加 avx 后端
+- [x] 增加 sse 后端
+- [x] 增加 mkl 后端
 
 4. mininn release
-- [ ] 增加示例程序，链接mininn.so
+
+- [ ] demo
 - [ ] cpp sdk
 - [x] pip package
 
 5. mininn build
+
 - [x] cmake
 - [x] bazel
-- [x] clang
-- [x] gcc
+- [x] clang++
+- [x] g++
 - [x] msvc
