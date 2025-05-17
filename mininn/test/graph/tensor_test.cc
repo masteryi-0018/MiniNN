@@ -24,7 +24,4 @@ TEST(Tensor, set_shape) {
 
     void* buffer_ = tensor->get_buffer();
     EXPECT_TRUE(buffer_ != nullptr);
-
-    int length_ = tensor->get_length();
-    EXPECT_EQ(length_, size * 4);
 }

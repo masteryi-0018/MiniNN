@@ -32,7 +32,6 @@ void bind_class(py::module_ &m) {
         .def("get_shape", &Tensor::get_shape)
         .def("get_size", &Tensor::get_size)
         .def("get_buffer", &Tensor::get_buffer)
-        .def("get_length", &Tensor::get_length)
         .def("set_data", &Tensor::set_data)
         .def("get_data", &Tensor::get_data);
 

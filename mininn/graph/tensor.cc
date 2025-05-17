@@ -4,7 +4,7 @@
 #include <numeric> // std::accumulate
 #include <functional> // std::multiplies, bazel needs
 #include <cstring> // std::memcpy
-#include <stdexcept> // std::runtime_error
+#include <iostream> // std::cerr
 
 Tensor::Tensor() {
     buffer_ = nullptr;
@@ -12,7 +12,7 @@ Tensor::Tensor() {
 }
 
 Tensor::~Tensor() {
-    if (buffer_) {
+    if (buffer_ != nullptr) {
         free(buffer_);
         buffer_ = nullptr;
     }
@@ -28,7 +28,6 @@ void Tensor::set_shape(std::vector<int>& shape) {
         shape_ = shape;
         size_ = std::accumulate(shape.begin(), shape.end(), 1, std::multiplies<int>());
     }
-    // in Linux, heap usually grow to low address memory
     buffer_ = std::malloc(size_ * sizeof(float));
 }
 
@@ -44,19 +43,15 @@ void* Tensor::get_buffer() {
     return buffer_;
 }
 
-int Tensor::get_length() {
-    return size_ * sizeof(float);
-}
-
-// pybind
 void Tensor::set_data(std::vector<float>& data) {
     if ((int)data.size() != size_) {
-        throw std::runtime_error("Data size mismatch");
+        std::cerr << "Data size mismatch" << std::endl;
+        return;
     }
     std::memcpy(buffer_, data.data(), size_ * sizeof(float));
 }
 
-// pybind
+// 返回局部变量不可以使用引用，否则会造成悬空引用
 std::vector<float> Tensor::get_data() {
     std::vector<float> data(size_);
     std::memcpy(data.data(), buffer_, size_ * sizeof(float));

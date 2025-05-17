@@ -3,6 +3,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../build/python'))
 
 import mininn_capi
+import numpy as np
 
 def main():
     # Tensor
@@ -11,7 +12,6 @@ def main():
     print(tensor.get_shape())
     print(tensor.get_size())
     print(tensor.get_buffer())
-    print(tensor.get_length())
 
     # parser
     filename = "../../models/mininn_test.gynn"
@@ -41,8 +41,8 @@ def main():
     input1_size = input[0].get_size()
     input2_size = input[1].get_size()
     output_size = output[0].get_size()
-    a = [1.0] * input1_size
-    b = [2.0] * input2_size
+    a = np.full(input1_size, 1.0, dtype=np.float32)
+    b = np.full(input2_size, 2.0, dtype=np.float32)
     input[0].set_data(a)
     input[1].set_data(b)
     predictor.prepare()
@@ -50,7 +50,7 @@ def main():
     c = output[0].get_data()
     print(c[0], output[0].get_shape())
 
-    golden = [3.0] * output_size
+    golden = np.full(output_size, 3.0, dtype=np.float32)
     assert c == golden
     return
 

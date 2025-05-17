@@ -27,8 +27,8 @@ def test_add():
     inputs = my_predictor.get_input()
     input1_size = inputs[0].get_size()
     input2_size = inputs[1].get_size()
-    a = [1.0] * input1_size
-    b = [2.0] * input2_size
+    a = np.full(input1_size, 1.0, dtype=np.float32)
+    b = np.full(input2_size, 2.0, dtype=np.float32)
 
     my_predictor.set_data([a, b])
     my_predictor.run()
@@ -48,7 +48,7 @@ def test_mv2():
 
     inputs = my_predictor.get_input()
     input1_size = inputs[0].get_size()
-    a = [1.0] * input1_size
+    a = np.full(input1_size, 1.0, dtype=np.float32)
 
     my_predictor.set_data([a])
     my_predictor.run()

@@ -9,17 +9,16 @@ public:
 
     ~Tensor();
 
+    // todo：入参推荐用const
     void set_shape(std::vector<int>& shape);
 
+    // 返回成员变量可以用引用，需要注意对象的生命周期
+    // todo：推荐用const
     std::vector<int>& get_shape();
 
-    // 这里使用int是因为int最大为2,147,483,647，取10 0000 0000为例
-    // 这个长度对应内存字节为40 0000 0000，也就是4G，所以在size溢出前内存已经超了
     int get_size();
 
     void* get_buffer();
-
-    int get_length();
 
     // pybind
     void set_data(std::vector<float>& data);
@@ -27,6 +26,7 @@ public:
     // pybind
     std::vector<float> get_data();
 
+    // flatbuffers use const void*
     void set_rawdata(const void* data);
 
 private:
