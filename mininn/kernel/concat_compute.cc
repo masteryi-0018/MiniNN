@@ -1,12 +1,10 @@
 #include "mininn/kernel/concat_compute.h"
 #include "mininn/graph/register.h"
 
-#include "mininn/utils/log.h" // todo
+#include "mininn/utils/log.h"
 
 #include <thread>
 #include <chrono>
-#include <iostream> // todo
-#include <cstring> // memset
 
 ConcatCompute::ConcatCompute() {}
 
@@ -25,12 +23,10 @@ void concat_func(std::vector<std::shared_ptr<Tensor>> inputs, float* out_buffer,
     for (uint32_t i = 0; i < inputs.size(); ++i) {
         float* temp_buffer = reinterpret_cast<float*>(inputs[i]->get_buffer());
         for (int k = 0; k < input_size; ++k) {
-            out_buffer[offset] = temp_buffer[k];
+            out_buffer[offset+k] = temp_buffer[k];
         }
         offset += input_size;
     }
-    // todo: set this value
-    out_buffer[1] = -1;
 }
 
 void ConcatCompute::run() {

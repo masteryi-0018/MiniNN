@@ -1,11 +1,10 @@
 #include "mininn/kernel/conv_compute.h"
 #include "mininn/graph/register.h"
 
-#include "mininn/utils/log.h" // todo
+#include "mininn/utils/log.h"
 
 #include <thread>
 #include <chrono>
-#include <iostream> // todo
 #include <cstring> // memset
 
 ConvCompute::ConvCompute() {}

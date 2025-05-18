@@ -1,8 +1,6 @@
 #include "mininn/graph/graph.h"
 
-Graph::Graph() {}
-
-void Graph::add_node(std::shared_ptr<Node> node, std::vector<int>& inputs, std::vector<int>& outputs,
+void Graph::add_node(std::shared_ptr<Node>& node, std::vector<int>& inputs, std::vector<int>& outputs,
                      std::map<std::string, std::vector<int>>& attrs) {
     nodes_.emplace_back(node);
     std::vector<std::shared_ptr<Tensor>> tensors = get_tensors();
@@ -23,19 +21,19 @@ void Graph::add_node(std::shared_ptr<Node> node, std::vector<int>& inputs, std::
     return;
 }
 
-std::vector<std::shared_ptr<Node>> Graph::get_nodes() {
+std::vector<std::shared_ptr<Node>>& Graph::get_nodes() {
     return nodes_;
 }
 
 void Graph::add_tensor(std::vector<int>& shape, const void* data) {
     auto tensor = std::make_shared<Tensor>();
+    tensors_.emplace_back(tensor);
     tensor->set_shape(shape);
     tensor->set_rawdata(data);
-    tensors_.emplace_back(tensor);
     return;
 }
 
-std::vector<std::shared_ptr<Tensor>> Graph::get_tensors() {
+std::vector<std::shared_ptr<Tensor>>& Graph::get_tensors() {
     return tensors_;
 }
 

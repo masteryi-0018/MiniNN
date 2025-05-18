@@ -1,7 +1,7 @@
 #include "mininn/kernel/add_compute.h"
 #include "mininn/graph/register.h"
 
-#include "mininn/utils/log.h" // todo
+#include "mininn/utils/log.h"
 
 #include "mininn/backend/cuda/cuda.cuh"
 #include "mininn/backend/opencl/opencl.h"
@@ -11,7 +11,6 @@
 
 #include <thread>
 #include <chrono>
-#include <iostream> // todo
 
 AddCompute::AddCompute() {}
 

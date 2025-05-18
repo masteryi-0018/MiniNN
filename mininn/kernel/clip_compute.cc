@@ -1,12 +1,10 @@
 #include "mininn/kernel/clip_compute.h"
 #include "mininn/graph/register.h"
 
-#include "mininn/utils/log.h" // todo
+#include "mininn/utils/log.h"
 
 #include <thread>
 #include <chrono>
-#include <iostream> // todo
-#include <cstring> // memset
 
 ClipCompute::ClipCompute() {}
 
@@ -22,9 +20,11 @@ void clip_func(float* input_buffer, float* out_buffer, std::vector<int> max, std
     int min_val = min[0];
     for (int i = 0; i < size; ++i) {
         if (input_buffer[i] > max_val) {
-            input_buffer[i] = max_val;
+            out_buffer[i] = max_val;
         } else if (input_buffer[i] < min_val) {
-            input_buffer[i] = min_val;
+            out_buffer[i] = min_val;
+        } else {
+            out_buffer[i] = input_buffer[i];
         }
     }
 }

@@ -1,13 +1,11 @@
 #include "mininn/kernel/gather_compute.h"
 #include "mininn/graph/register.h"
 
-#include "mininn/utils/log.h" // todo
+#include "mininn/utils/log.h"
 #include "mininn/utils/utils.h"
 
 #include <thread>
 #include <chrono>
-#include <iostream> // todo
-#include <cstring> // memset
 
 GatherCompute::GatherCompute() {}
 
@@ -24,7 +22,6 @@ void gather_func(float* data_buffer, float* indices_buffer, float* out_buffer, s
     // todo: only support indices_shape is 1 dim
     // todo: only support data_shape is 1 dim
     // int axis_val = axis[0];
-    // int offset = 0;
     for (int i = 0; i < indices_shape[0]; ++i) {
         int index = (int)(indices_buffer[i]);
         for (int j = 0; j < out_shape[0]; ++j) {
@@ -45,7 +42,6 @@ void GatherCompute::run() {
     std::shared_ptr<Tensor> out = params->output;
     std::vector<int> axis = params_->axis;
 
-    // std::vector<int> input_shape = data->get_shape();
     std::vector<int> indices_shape = indices->get_shape();
     std::vector<int> out_shape = out->get_shape();
     float* data_buffer = reinterpret_cast<float*>(data->get_buffer());
