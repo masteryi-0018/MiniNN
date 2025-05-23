@@ -62,13 +62,13 @@ void AddCompute::run() {
     float* y_buffer = reinterpret_cast<float*>(y->get_buffer());
     float* out_buffer = reinterpret_cast<float*>(out->get_buffer());
 
-#ifdef MULTI_THREADS
+#ifdef WITH_MULTI_THREADS
     start_time = std::chrono::high_resolution_clock::now();
     add_func_multi_threads(x_buffer, y_buffer, out_buffer, size);
     end_time = std::chrono::high_resolution_clock::now();
     elapsed_seconds = end_time - start_time;
     LOG(INFO) << "Elapsed time in multi_threads: " << elapsed_seconds.count() << " seconds";
-#endif // MULTI_THREADS
+#endif // WITH_MULTI_THREADS
 
 #ifdef WITH_CUDA
 #ifdef __linux__

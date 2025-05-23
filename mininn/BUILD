@@ -1,72 +1,8 @@
 cc_library(
-    name = "utils",
-    srcs = glob([
-        "utils/*.cc",
-    ]),
-    hdrs = glob([
-        "utils/*.h",
-        "graph/*.h",
-        "parser/*.h",
-    ]),
-)
-
-cc_library(
-    name = "graph",
-    srcs = glob([
-        "graph/*.cc",
-    ]),
-    hdrs = glob([
-        "graph/*.h",
-    ]),
-    deps = [
-        ":utils",
-    ],
-)
-
-cc_library(
-    name = "operator",
-    srcs = glob([
-        "operator/*.cc",
-    ]),
-    hdrs = glob([
-        "operator/*.h",
-    ]),
-    deps = [
-        ":graph",
-        ":utils",
-    ],
-)
-
-cc_library(
-    name = "kernel",
-    srcs = glob([
-        "kernel/*.cc",
-    ]),
-    hdrs = glob([
-        "kernel/*.h",
-        "backend/cuda/*.cuh",
-        "backend/opencl/*.h",
-        "backend/avx/*.h",
-        "backend/sse/*.h",
-        "backend/mkl/*.h",
-    ]),
-    deps = [
-        ":graph",
-        ":utils",
-    ],
-)
-
-cc_library(
     name = "runtime",
     srcs = glob([
         "runtime/*.cc",
     ]),
-    hdrs = glob([
-        "runtime/*.h",
-    ]),
-    deps = [
-        ":graph",
-    ],
 )
 
 cc_library(
@@ -74,15 +10,123 @@ cc_library(
     srcs = glob([
         "parser/*.cc",
     ]),
-    hdrs = glob([
-        "parser/*.h",
-    ]),
     deps = [
-        ":graph",
         "@flatbuffers//:flatbuffers",
     ],
 )
 
+cc_library(
+    name = "graph",
+    srcs = glob([
+        "graph/*.cc",
+    ]),
+)
+
+cc_library(
+    name = "operator",
+    srcs = glob([
+        "operator/*.cc",
+    ]),
+)
+
+cc_library(
+    name = "kernel",
+    srcs = glob([
+        "kernel/*.cc",
+    ]),
+    defines = [
+        "WITH_CUDA",
+        "WITH_OPENCL",
+        "WITH_AVX",
+        "WITH_SSE",
+        "WITH_MKL",
+        "WITH_MULTI_THREADS",
+    ],
+)
+
+cc_library(
+    name = "utils",
+    srcs = glob([
+        "utils/*.cc",
+    ]),
+)
+
+# backend lib
+cc_library(
+    name = "cuda",
+    srcs = glob([
+        "backend/cuda/*.cc",
+    ]),
+)
+
+cc_library(
+    name = "opencl",
+    srcs = glob([
+        "backend/opencl/*.cc",
+    ]),
+    # includes = [
+    #     "C:/Progra~1/NVIDIA~2/CUDA/v12.2/include"
+    # ],
+    copts = [
+        "/I\"C:/Progra~1/NVIDIA~2/CUDA/v12.2/include\"",
+    ],
+    linkopts = [
+        "C:/Progra~1/NVIDIA~2/CUDA/v12.2/lib/x64/OpenCL.lib"
+    ],
+)
+
+cc_library(
+    name = "avx",
+    srcs = glob([
+        "backend/avx/*.cc",
+    ]),
+)
+
+cc_library(
+    name = "sse",
+    srcs = glob([
+        "backend/sse/*.cc",
+    ]),
+)
+
+cc_library(
+    name = "mkl",
+    srcs = glob([
+        "backend/mkl/*.cc",
+    ]),
+    includes = [
+        "E:/oneAPI/mkl/2024.2/include"
+    ],
+    linkopts = [
+        "E:/oneAPI/mkl/2024.2/lib/mkl_rt.lib"
+    ]
+)
+
+cc_library(
+    name = "backend",
+    deps = [
+        ":cuda",
+        ":opencl",
+        ":avx",
+        ":sse",
+        ":mkl",
+    ],
+)
+
+cc_library(
+    name = "mininn_lib",
+    deps = [
+        ":runtime",
+        ":parser",
+        ":graph",
+        ":operator",
+        ":kernel",
+        ":utils",
+        ":backend"
+    ],
+)
+
+# test lib
 cc_binary(
     name = "gtest-main",
     srcs = glob([
@@ -93,10 +137,7 @@ cc_binary(
         "test/runtime/*.cc",
     ]),
     deps = [
-        ":runtime",
-        ":operator",
-        ":kernel",
-        ":parser",
+        ":mininn_lib",
         "@googletest//:gtest",
     ],
 )

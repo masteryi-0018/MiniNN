@@ -3,7 +3,7 @@ add_library(kernel ${LIB_TYPE} ${KERNEL_SRC})
 
 
 if (WITH_CUDA)
-    target_compile_definitions(kernel PRIVATE -DUSE_CUDA)
+    target_compile_definitions(kernel PRIVATE -DWITH_CUDA)
 endif()
 if (WITH_OPENCL)
     target_compile_definitions(kernel PRIVATE -DWITH_OPENCL)
