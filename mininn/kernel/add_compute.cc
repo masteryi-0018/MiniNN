@@ -48,7 +48,7 @@ void AddCompute::run() {
     LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
     LOG(INFO) << "kernel run end";
 
-/*
+
     // multi-threads
     LOG(INFO) << "kernel run start in multi-threads";
     start_time = std::chrono::high_resolution_clock::now();
@@ -191,7 +191,7 @@ void AddCompute::run() {
     elapsed_seconds = end_time - start_time;
     LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
     LOG(INFO) << "kernel run end in mkl kernel";
-*/
+
 }
 
 void AddCompute::set_params(Params* params) {
