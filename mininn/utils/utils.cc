@@ -8,9 +8,3 @@ bool is_equal(float* tensor1, float* tensor2, int size) {
     }
     return true;
 }
-
-std::shared_ptr<Graph> load_graph(std::string filename) {
-    auto graph = std::make_shared<Graph>();
-    load_model(filename, graph);
-    return graph;
-}

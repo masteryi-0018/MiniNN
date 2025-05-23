@@ -25,3 +25,14 @@ TEST(Tensor, set_shape) {
     void* buffer_ = tensor->get_buffer();
     EXPECT_TRUE(buffer_ != nullptr);
 }
+
+TEST(Tensor, set_data) {
+    auto tensor = std::make_shared<Tensor>();
+    std::vector<int> shape = {1, 3};
+    tensor->set_shape(shape);
+
+    std::vector<float> data = {1, 2, 3};
+    tensor->set_data(data);
+    std::vector<float> data_ = tensor->get_data();
+    EXPECT_EQ(data_, data);
+}

@@ -1,5 +1,6 @@
 # 1. environment
 option(WITH_GTEST "build with gtest" ON)
+option(WITH_MULTI_THREADS "build with multi_threads" ON)
 
 option(WITH_CUDA "build with cuda" ON)
 option(WITH_OPENCL "build with opencl" ON)

@@ -1,14 +1,10 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include "mininn/graph/graph.h"
-#include "mininn/parser/parser.h"
-
 #include <iostream>
+#include <vector>
 
 bool is_equal(float* tensor1, float* tensor2, int size);
-
-std::shared_ptr<Graph> load_graph(std::string filename);
 
 template <typename T>
 void print_vector(const std::vector<T>& vec) {

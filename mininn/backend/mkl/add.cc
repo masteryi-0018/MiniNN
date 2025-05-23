@@ -1,4 +1,3 @@
-#include <iostream>
 #include <mkl.h>  // Include the MKL library header
 
 // Vector addition function

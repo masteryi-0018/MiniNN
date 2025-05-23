@@ -17,10 +17,11 @@
 #include <unistd.h>
 #endif
 
-std::string conv_filename = "models/mobilenetv2-10.gynn";
+std::string mv2_filename = "models/mobilenetv2-10.gynn";
 
 TEST(Operator_Conv, get_input_tensors) {
-    auto graph = load_graph(conv_filename);
+    auto graph = std::make_shared<Graph>();
+    load_model(mv2_filename, graph);
 
     auto predictor = std::make_shared<Predictor>(graph);
     std::vector<std::shared_ptr<Tensor>> input_tensors = predictor->get_input_tensors();
@@ -29,7 +30,8 @@ TEST(Operator_Conv, get_input_tensors) {
 }
 
 TEST(Operator_Conv, get_output_tensors) {
-    auto graph = load_graph(conv_filename);
+    auto graph = std::make_shared<Graph>();
+    load_model(mv2_filename, graph);
 
     auto predictor = std::make_shared<Predictor>(graph);
     std::vector<std::shared_ptr<Tensor>> output_tensors = predictor->get_output_tensors();
@@ -38,7 +40,8 @@ TEST(Operator_Conv, get_output_tensors) {
 }
 
 TEST(Operator_Conv, run) {
-    auto graph = load_graph(conv_filename);
+    auto graph = std::make_shared<Graph>();
+    load_model(mv2_filename, graph);
 
     auto predictor = std::make_shared<Predictor>(graph);
     predictor->prepare();

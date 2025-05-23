@@ -27,42 +27,7 @@ void add_func(float* x_buffer, float* y_buffer, float* out_buffer, int start, in
     }
 }
 
-void AddCompute::run() {
-    LOG(INFO) << "kernel run start";
-    auto start_time = std::chrono::high_resolution_clock::now();
-
-    AddParams* params = get_params();
-    std::shared_ptr<Tensor> x = params->input1;
-    std::shared_ptr<Tensor> y = params->input2;
-    std::shared_ptr<Tensor> out = params->output;
-
-    int size = x->get_size();
-    float* x_buffer = reinterpret_cast<float*>(x->get_buffer());
-    float* y_buffer = reinterpret_cast<float*>(y->get_buffer());
-    float* out_buffer = reinterpret_cast<float*>(out->get_buffer());
-
-    add_func(x_buffer, y_buffer, out_buffer, 0, size);
-
-    auto end_time = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> elapsed_seconds = end_time - start_time;
-    LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
-    LOG(INFO) << "kernel run end";
-
-
-    // multi-threads
-    LOG(INFO) << "kernel run start in multi-threads";
-    start_time = std::chrono::high_resolution_clock::now();
-
-    params = get_params();
-    x = params->input1;
-    y = params->input2;
-    out = params->output;
-
-    size = x->get_size();
-    x_buffer = reinterpret_cast<float*>(x->get_buffer());
-    y_buffer = reinterpret_cast<float*>(y->get_buffer());
-    out_buffer = reinterpret_cast<float*>(out->get_buffer());
-
+void add_func_multi_threads(float* x_buffer, float* y_buffer, float* out_buffer, int size) {
     const size_t num_threads = std::thread::hardware_concurrency();
     LOG(INFO) << "num_threads: " << num_threads;
     std::vector<std::thread> threads;
@@ -79,119 +44,80 @@ void AddCompute::run() {
             thread.join();
         }
     }
+}
 
+void AddCompute::run() {
+    LOG(INFO) << "kernel run start";
+    auto start_time = std::chrono::high_resolution_clock::now();
+    auto end_time = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed_seconds;
+
+    AddParams* params = get_params();
+    std::shared_ptr<Tensor> x = params->input1;
+    std::shared_ptr<Tensor> y = params->input2;
+    std::shared_ptr<Tensor> out = params->output;
+
+    int size = x->get_size();
+    float* x_buffer = reinterpret_cast<float*>(x->get_buffer());
+    float* y_buffer = reinterpret_cast<float*>(y->get_buffer());
+    float* out_buffer = reinterpret_cast<float*>(out->get_buffer());
+
+#ifdef MULTI_THREADS
+    start_time = std::chrono::high_resolution_clock::now();
+    add_func_multi_threads(x_buffer, y_buffer, out_buffer, size);
     end_time = std::chrono::high_resolution_clock::now();
     elapsed_seconds = end_time - start_time;
-    LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
-    LOG(INFO) << "kernel run end in multi-threads";
+    LOG(INFO) << "Elapsed time in multi_threads: " << elapsed_seconds.count() << " seconds";
+#endif // MULTI_THREADS
 
-    // cuda kernel
+#ifdef WITH_CUDA
 #ifdef __linux__
-    LOG(INFO) << "kernel run start in cuda kernel";
     start_time = std::chrono::high_resolution_clock::now();
-
-    params = get_params();
-    x = params->input1;
-    y = params->input2;
-    out = params->output;
-
-    size = x->get_size();
-    x_buffer = reinterpret_cast<float*>(x->get_buffer());
-    y_buffer = reinterpret_cast<float*>(y->get_buffer());
-    out_buffer = reinterpret_cast<float*>(out->get_buffer());
-
     cuda_add_wrapper(x_buffer, y_buffer, out_buffer, size);
-
     end_time = std::chrono::high_resolution_clock::now();
     elapsed_seconds = end_time - start_time;
-    LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
-    LOG(INFO) << "kernel run end in cuda kernel";
+    LOG(INFO) << "Elapsed time in cuda: " << elapsed_seconds.count() << " seconds";
 #endif // __linux__
+#endif // WITH_CUDA
 
-    // opencl kernel
-    LOG(INFO) << "kernel run start in opencl kernel";
+#ifdef WITH_OPENCL
     start_time = std::chrono::high_resolution_clock::now();
-
-    params = get_params();
-    x = params->input1;
-    y = params->input2;
-    out = params->output;
-
-    size = x->get_size();
-    x_buffer = reinterpret_cast<float*>(x->get_buffer());
-    y_buffer = reinterpret_cast<float*>(y->get_buffer());
-    out_buffer = reinterpret_cast<float*>(out->get_buffer());
-
     opencl_add_wrapper(x_buffer, y_buffer, out_buffer, size);
-
     end_time = std::chrono::high_resolution_clock::now();
     elapsed_seconds = end_time - start_time;
-    LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
-    LOG(INFO) << "kernel run end in opencl kernel";
+    LOG(INFO) << "Elapsed time in opencl: " << elapsed_seconds.count() << " seconds";
+#endif // WITH_OPENCL
 
-    // avx kernel
-    LOG(INFO) << "kernel run start in avx kernel";
+#ifdef WITH_AVX
     start_time = std::chrono::high_resolution_clock::now();
-
-    params = get_params();
-    x = params->input1;
-    y = params->input2;
-    out = params->output;
-
-    size = x->get_size();
-    x_buffer = reinterpret_cast<float*>(x->get_buffer());
-    y_buffer = reinterpret_cast<float*>(y->get_buffer());
-    out_buffer = reinterpret_cast<float*>(out->get_buffer());
-
     avx_add_wrapper(x_buffer, y_buffer, out_buffer, size);
-
     end_time = std::chrono::high_resolution_clock::now();
     elapsed_seconds = end_time - start_time;
-    LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
-    LOG(INFO) << "kernel run end in avx kernel";
+    LOG(INFO) << "Elapsed time in avx: " << elapsed_seconds.count() << " seconds";
+#endif // WITH_AVX
 
-    // sse kernel
-    LOG(INFO) << "kernel run start in sse kernel";
+#ifdef WITH_SSE
     start_time = std::chrono::high_resolution_clock::now();
-
-    params = get_params();
-    x = params->input1;
-    y = params->input2;
-    out = params->output;
-
-    size = x->get_size();
-    x_buffer = reinterpret_cast<float*>(x->get_buffer());
-    y_buffer = reinterpret_cast<float*>(y->get_buffer());
-    out_buffer = reinterpret_cast<float*>(out->get_buffer());
-
     sse_add_wrapper(x_buffer, y_buffer, out_buffer, size);
-
     end_time = std::chrono::high_resolution_clock::now();
     elapsed_seconds = end_time - start_time;
-    LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
-    LOG(INFO) << "kernel run end in sse kernel";
+    LOG(INFO) << "Elapsed time in sse: " << elapsed_seconds.count() << " seconds";
+#endif // WITH_SSE
 
-    // mkl kernel
-    LOG(INFO) << "kernel run start in mkl kernel";
+#ifdef WITH_MKL
     start_time = std::chrono::high_resolution_clock::now();
-
-    params = get_params();
-    x = params->input1;
-    y = params->input2;
-    out = params->output;
-
-    size = x->get_size();
-    x_buffer = reinterpret_cast<float*>(x->get_buffer());
-    y_buffer = reinterpret_cast<float*>(y->get_buffer());
-    out_buffer = reinterpret_cast<float*>(out->get_buffer());
-
     mkl_add_wrapper(x_buffer, y_buffer, out_buffer, size);
+    end_time = std::chrono::high_resolution_clock::now();
+    elapsed_seconds = end_time - start_time;
+    LOG(INFO) << "Elapsed time in mkl: " << elapsed_seconds.count() << " seconds";
+#endif // WITH_MKL
 
+    start_time = std::chrono::high_resolution_clock::now();
+    add_func(x_buffer, y_buffer, out_buffer, 0, size);
     end_time = std::chrono::high_resolution_clock::now();
     elapsed_seconds = end_time - start_time;
     LOG(INFO) << "Elapsed time: " << elapsed_seconds.count() << " seconds";
-    LOG(INFO) << "kernel run end in mkl kernel";
-
+    LOG(INFO) << "kernel run end";
 }
 
 void AddCompute::set_params(Params* params) {

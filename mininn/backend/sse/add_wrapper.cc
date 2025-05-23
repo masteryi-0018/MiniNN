@@ -1,4 +1,3 @@
-#include <iostream>
 #include <xmmintrin.h>  // Include SSE instruction set
 // #include <smmintrin.h> // Include SSE4.1/4.2 instruction set, but float compute is the same
 

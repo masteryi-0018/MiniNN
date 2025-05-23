@@ -20,7 +20,8 @@
 std::string add_filename = "models/add_model.gynn";
 
 TEST(Operator_Add, get_input_tensors) {
-    auto graph = load_graph(add_filename);
+    auto graph = std::make_shared<Graph>();
+    load_model(add_filename, graph);
 
     auto predictor = std::make_shared<Predictor>(graph);
     std::vector<std::shared_ptr<Tensor>> input_tensors = predictor->get_input_tensors();
@@ -29,7 +30,8 @@ TEST(Operator_Add, get_input_tensors) {
 }
 
 TEST(Operator_Add, get_output_tensors) {
-    auto graph = load_graph(add_filename);
+    auto graph = std::make_shared<Graph>();
+    load_model(add_filename, graph);
 
     auto predictor = std::make_shared<Predictor>(graph);
     std::vector<std::shared_ptr<Tensor>> output_tensors = predictor->get_output_tensors();
@@ -38,7 +40,8 @@ TEST(Operator_Add, get_output_tensors) {
 }
 
 TEST(Operator_Add, run) {
-    auto graph = load_graph(add_filename);
+    auto graph = std::make_shared<Graph>();
+    load_model(add_filename, graph);
 
     auto predictor = std::make_shared<Predictor>(graph);
     predictor->prepare();

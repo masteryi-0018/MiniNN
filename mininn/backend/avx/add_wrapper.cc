@@ -1,4 +1,3 @@
-#include <iostream>
 #include <immintrin.h>  // AVX
 
 // vectorAdd use avx/avx2
