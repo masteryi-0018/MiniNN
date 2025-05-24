@@ -5,10 +5,8 @@ add_library(backend ${BACKEND_LIB_TYPE} ${BACKEND_SRC})
 
 
 if(WITH_CUDA)
-    if(UNIX)
-        add_subdirectory(cuda)
-        target_link_libraries(backend cuda)
-    endif()
+    add_subdirectory(cuda)
+    target_link_libraries(backend cuda)
 endif()
 
 if(WITH_OPENCL)

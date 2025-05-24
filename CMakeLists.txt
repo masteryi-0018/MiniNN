@@ -26,12 +26,11 @@ message(STATUS "Default cmake build type: ${CMAKE_BUILD_TYPE}")
 ####################  二、env  ####################
 
 # 1. project
-# Clang with CUDA is not yet supported on Windows.  See CMake issue #20776.
-# set(CMAKE_CUDA_COMPILER "E:/LLVM/bin/clang.exe")
-if(WIN32)
-    project(MININN)
-elseif(UNIX)
-    project(MININN LANGUAGES CXX CUDA)
+project(MININN)
+if((WIN32 AND MSVC) OR UNIX)
+    enable_language(CXX CUDA)
+else()
+    enable_language(CXX)
 endif()
 
 if(WIN32)
@@ -44,8 +43,8 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # 2. backend
 # custom libs
 if(WIN32)
-    set(OPENCL_INCLUDE_DIR "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.2/include")
-    set(OPENCL_LIB_DIR "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.2/lib/x64")
+    set(OPENCL_INCLUDE_DIR "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.9/include")
+    set(OPENCL_LIB_DIR "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.9/lib/x64")
     set(MKL_INCLUDE_DIR "E:/oneAPI/mkl/2024.2/include")
     set(MKL_LIB_DIR "E:/oneAPI/mkl/2024.2/lib")
 elseif(UNIX)

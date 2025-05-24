@@ -16,23 +16,20 @@ pip install mininn
 python python/test/pip_test.py
 ```
 
-## Build System Compatibility
+## Environment Version
 
-| Platform    | Architecture | CMake Support | Bazel Support | Notes        |
-| ----------- | ------------ | ------------- | ------------- | ------------ |
-| **Linux**   | x86_64       | ✅ Yes        | ✅ Yes        | Ubuntu 20.04 |
-| **Windows** | x86_64       | ✅ Yes        | ✅ Yes        | Windows 11   |
-| **Android** | ARM64        | ⚠️ Partial    | ⚠️ Partial    | NDK required |
-| **macOS**   | x86_64       | ❌ No         | ❌ No         | intel        |
-|             | ARM64        | ❌ No         | ❌ No         | M1/M2/M3...  |
-| **iOS**     | ARM64        | ❌ No         | ❌ No         |              |
-
-## Environment version
-
-| Platform    | CMake  | Bazel | clang++ | g++    | msvc / cl     |
-| ----------- | ------ | ----- | ------- | ------ | ------------- |
-| **Linux**   | 3.30.5 | 8.0.0 | 10.0.0  | 9.4.0  |               |
-| **Windows** | 3.26.4 | 7.3.1 | 18.1.4  | 13.1.0 | 14.44 / 19.44 |
+| Host Platform | Target Platform | Build Tool   | Compiler     | Backend                           | Note        |
+| ------------- | --------------- | ------------ | ------------ | --------------------------------- | ----------- |
+| **Windows**   | Windows         | cmake 3.26.4 | msvc 14.44   | cuda✅ opencl✅ avx✅ sse✅ mkl✅ | VS shell 中 |
+|               |                 |              | clang 20.1.5 | cuda❌ opencl✅ avx✅ sse✅ mkl✅ |             |
+|               |                 |              | g++ 13.1.0   | cuda❌ opencl✅ avx✅ sse✅ mkl✅ |             |
+|               |                 | bazel 7.3.1  | msvc 14.44   | cuda✅ opencl✅ avx✅ sse✅ mkl✅ | 默认 msvc   |
+|               |                 |              | clang 20.1.5 |                                   |             |
+|               |                 |              | g++ 13.1.0   |                                   |             |
+| **Linux**     | Linux           | cmake 3.30.5 | clang 10.0.0 | cuda❌ opencl❌ avx❌ sse❌ mkl❌ |             |
+|               |                 |              | g++ 9.4.0    | cuda❌ opencl❌ avx❌ sse❌ mkl❌ |             |
+|               |                 | bazel 8.0.0  | clang 10.0.0 |                                   |             |
+|               |                 |              | g++ 9.4.0    | cuda❌ opencl❌ avx❌ sse❌ mkl❌ |             |
 
 ## Download
 

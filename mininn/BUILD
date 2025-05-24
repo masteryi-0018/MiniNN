@@ -70,13 +70,13 @@ cc_library(
         "backend/opencl/*.cc",
     ]),
     # includes = [
-    #     "C:/PROGRA~1/NVIDIA~2/CUDA/v12.2/include"
+    #     "C:/PROGRA~1/NVIDIA~2/CUDA/v12.9/include"
     # ],
     copts = [
-        "/I\"C:/PROGRA~1/NVIDIA~2/CUDA/v12.2/include\"",
+        "/I\"C:/PROGRA~1/NVIDIA~2/CUDA/v12.9/include\"",
     ],
     linkopts = [
-        "C:/PROGRA~1/NVIDIA~2/CUDA/v12.2/lib/x64/OpenCL.lib"
+        "C:/PROGRA~1/NVIDIA~2/CUDA/v12.9/lib/x64/OpenCL.lib"
     ],
 )
 
