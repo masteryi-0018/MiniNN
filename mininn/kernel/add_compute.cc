@@ -29,7 +29,6 @@ void add_func(float* x_buffer, float* y_buffer, float* out_buffer, int start, in
 
 void add_func_multi_threads(float* x_buffer, float* y_buffer, float* out_buffer, int size) {
     const size_t num_threads = std::thread::hardware_concurrency();
-    LOG(INFO) << "num_threads: " << num_threads;
     std::vector<std::thread> threads;
     int chunk_size = size / num_threads;
 
@@ -71,13 +70,11 @@ void AddCompute::run() {
 #endif // WITH_MULTI_THREADS
 
 #ifdef WITH_CUDA
-#ifdef __linux__
     start_time = std::chrono::high_resolution_clock::now();
     cuda_add_wrapper(x_buffer, y_buffer, out_buffer, size);
     end_time = std::chrono::high_resolution_clock::now();
     elapsed_seconds = end_time - start_time;
     LOG(INFO) << "Elapsed time in cuda: " << elapsed_seconds.count() << " seconds";
-#endif // __linux__
 #endif // WITH_CUDA
 
 #ifdef WITH_OPENCL

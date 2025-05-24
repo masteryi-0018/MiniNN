@@ -1,3 +1,5 @@
+load("@rules_cuda//cuda:defs.bzl", "cuda_library")
+
 cc_library(
     name = "runtime",
     srcs = glob([
@@ -35,12 +37,12 @@ cc_library(
         "kernel/*.cc",
     ]),
     defines = [
+        "WITH_MULTI_THREADS",
         "WITH_CUDA",
         "WITH_OPENCL",
         "WITH_AVX",
         "WITH_SSE",
         "WITH_MKL",
-        "WITH_MULTI_THREADS",
     ],
 )
 
@@ -52,11 +54,14 @@ cc_library(
 )
 
 # backend lib
-cc_library(
+cuda_library(
     name = "cuda",
     srcs = glob([
-        "backend/cuda/*.cc",
+        "backend/cuda/*.cu",
     ]),
+    # copts = [
+    #     "-allow-unsupported-compiler",
+    # ],
 )
 
 cc_library(
@@ -65,13 +70,13 @@ cc_library(
         "backend/opencl/*.cc",
     ]),
     # includes = [
-    #     "C:/Progra~1/NVIDIA~2/CUDA/v12.2/include"
+    #     "C:/PROGRA~1/NVIDIA~2/CUDA/v12.2/include"
     # ],
     copts = [
-        "/I\"C:/Progra~1/NVIDIA~2/CUDA/v12.2/include\"",
+        "/I\"C:/PROGRA~1/NVIDIA~2/CUDA/v12.2/include\"",
     ],
     linkopts = [
-        "C:/Progra~1/NVIDIA~2/CUDA/v12.2/lib/x64/OpenCL.lib"
+        "C:/PROGRA~1/NVIDIA~2/CUDA/v12.2/lib/x64/OpenCL.lib"
     ],
 )
 

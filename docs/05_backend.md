@@ -19,6 +19,8 @@ Windows下的CUDA编译，默认使用MSVC的cl编译器，使用`-ccbin`传递�
 
 所以只能用cl编译器，那么就意味着需要在VS powershel中编译，即使这样，也会因为CUDA和NSVC的版本不匹配，需要添加`-allow-unsupported-compiler`来保证启用cl编译器，但是即使这样，开始编译后依旧会有代码中的错误检查`error: static assertion failed`。综合来看，**不建议**在Windows下编译CUDA程序。
 
+2. 运行`nvidia-smi`后显示的CUDA Version是当前安装的 NVIDIA 驱动程序（Driver）所支持的最高 CUDA 工具包（Toolkit）版本。所以硬件决定能安装什么样的驱动，只要驱动可以一直升级，那么cuda版本就可以一直升级。
+
 ## CUDA in WSL
 
 1. Windows上面安装的CUDA在wsl中无法使用，需要在NVIDIA官网再下载一下wsl-linux版本：

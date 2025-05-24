@@ -10,18 +10,39 @@ module(
     version = "1.0.0",
 )
 
-bazel_dep(name = "flatbuffers", version = "25.2.10")
-
 # override path of dep flatbuffers
+bazel_dep(name = "flatbuffers", version = "head")
 local_path_override(
     module_name = "flatbuffers",
     path = "third_party/flatbuffers",
 )
 
-bazel_dep(name = "googletest", version = "head")
-
 # override path of dep googletest
+bazel_dep(name = "googletest", version = "head")
 local_path_override(
     module_name = "googletest",
     path = "third_party/googletest",
 )
+
+# cuda: https://github.com/bazel-contrib/rules_cuda, https://registry.bazel.build/modules/rules_cuda
+bazel_dep(name = "rules_cuda", version = "0.2.5")
+
+local_path_override(
+    module_name = "rules_cuda",
+    path = "third_party/rules_cuda"
+)
+
+cuda = use_extension("@rules_cuda//cuda:extensions.bzl", "toolchain")
+cuda.toolkit(
+    name = "cuda",
+    toolkit_path = "",
+)
+use_repo(cuda, "cuda")
+
+# pick a specific version (this is optional an can be skipped)
+# archive_override(
+#     module_name = "rules_cuda",
+#     integrity = "{SRI value}",  # see https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity
+#     url = "https://github.com/bazel-contrib/rules_cuda/archive/{git_commit_hash}.tar.gz",
+#     strip_prefix = "rules_cuda-{git_commit_hash}",
+# )

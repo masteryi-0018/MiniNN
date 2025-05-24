@@ -24,7 +24,6 @@ void cuda_add_wrapper(const float* h_A, const float* h_B, float* h_C, int numEle
 
     // Print the vector length to be used, and compute its size
     size_t size = numElements * sizeof(float);
-    printf("[Vector addition of %d elements]\n", numElements);
 
     // Allocate the device input vector A
     float* d_A = NULL;
@@ -57,7 +56,6 @@ void cuda_add_wrapper(const float* h_A, const float* h_B, float* h_C, int numEle
     }
 
     // Copy the host input vectors A and B in host memory to the device input vectors in device memory
-    printf("Copy input data from the host memory to the CUDA device\n");
     err = cudaMemcpy(d_A, h_A, size, cudaMemcpyHostToDevice);
 
     if (err != cudaSuccess) {
@@ -79,8 +77,6 @@ void cuda_add_wrapper(const float* h_A, const float* h_B, float* h_C, int numEle
     // Launch the Vector Add CUDA Kernel
     int threadsPerBlock = 256;
     int blocksPerGrid = (numElements + threadsPerBlock - 1) / threadsPerBlock;
-    printf("CUDA kernel launch with %d blocks of %d threads\n", blocksPerGrid,
-            threadsPerBlock);
     vectorAdd<<<blocksPerGrid, threadsPerBlock>>>(d_A, d_B, d_C, numElements);
     err = cudaGetLastError();
 
@@ -91,7 +87,6 @@ void cuda_add_wrapper(const float* h_A, const float* h_B, float* h_C, int numEle
     }
 
     // Copy the device result vector in device memory to the host result vector in host memory.
-    printf("Copy output data from the CUDA device to the host memory\n");
     err = cudaMemcpy(h_C, d_C, size, cudaMemcpyDeviceToHost);
 
     if (err != cudaSuccess) {
@@ -108,8 +103,6 @@ void cuda_add_wrapper(const float* h_A, const float* h_B, float* h_C, int numEle
             exit(EXIT_FAILURE);
         }
     }
-
-    printf("Test PASSED\n");
 
     // Free device global memory
     err = cudaFree(d_A);
@@ -135,6 +128,4 @@ void cuda_add_wrapper(const float* h_A, const float* h_B, float* h_C, int numEle
                 cudaGetErrorString(err));
         exit(EXIT_FAILURE);
     }
-
-    printf("Done\n");
 }
