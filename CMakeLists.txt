@@ -71,6 +71,8 @@ include_directories("${MININN_SOURCE_DIR}")
 include_directories("third_party/flatbuffers/include")
 
 # 2. subdirectory
+
+# add_subdirectory(third_party/glog)
 add_subdirectory(third_party/googletest)
 add_subdirectory(third_party/pybind11)
 add_subdirectory(mininn)
