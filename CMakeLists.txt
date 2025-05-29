@@ -3,8 +3,6 @@ cmake_minimum_required(VERSION 3.0)
 ####################  一、build  ####################
 
 # 1. set compiler before call project()
-# set(CMAKE_C_COMPILER "clang") # Windows do not need to specify .exe
-# set(CMAKE_CXX_COMPILER "clang++")
 message(STATUS "Default C++ compiler: ${CMAKE_CXX_COMPILER}")
 
 # 2. set cpp standard
