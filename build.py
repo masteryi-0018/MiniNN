@@ -27,7 +27,8 @@ def build_cmake(args):
         elif args.generator == "vs2022":
             cmake_args.extend(["-G", "Visual Studio 17 2022"])
         else:
-            print("Unsupported generator for Windows. Use 'ninja', 'mingw', or 'vs2022'.")
+            print("Unsupported generator for Windows. Use 'ninja', 'mingw', or 'vs2022'. Set default generator to 'ninja'.")
+            cmake_args.extend(["-G", "Ninja"])
 
         if args.compiler == "clang":
             cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
@@ -36,10 +37,11 @@ def build_cmake(args):
         elif args.compiler == "cl":
             cmake_args.extend(["-DCMAKE_C_COMPILER=cl", "-DCMAKE_CXX_COMPILER=cl"])
         else:
-            print("Unsupported compiler for Windows. Use 'clang', 'gcc', or 'cl'.")
+            print("Unsupported compiler for Windows. Use 'clang', 'gcc', or 'cl'. Set default compiler to 'clang'.")
+            cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
 
         if args.generator == "vs2022" and args.compiler != "cl":
-            print("Using Visual Studio generator only uses the MSVC compiler. Set --compiler to 'cl'.")
+            print("Visual Studio generator only uses the MSVC compiler. Set default compiler to 'cl'.")
 
     elif current_platform == "linux":
 
@@ -48,18 +50,16 @@ def build_cmake(args):
         elif args.generator == "make":
             cmake_args.extend(["-G", "Unix Makefiles"])
         else:
-            print("Unsupported generator for Linux. Use 'ninja' or 'make'.")
+            print("Unsupported generator for Linux. Use 'ninja' or 'make'. Set default generator to 'ninja'.")
+            cmake_args.extend(["-G", "Ninja"])
 
         if args.compiler == "clang":
             cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
         elif args.compiler == "gcc":
             cmake_args.extend(["-DCMAKE_C_COMPILER=gcc", "-DCMAKE_CXX_COMPILER=g++"])
         else:
-            print("Unsupported compiler for Linux. Use 'clang' or 'gcc'.")
-
-        if args.compiler == "cl":
-            print("MSVC compiler is not supported on Linux. Please use 'clang' or 'gcc'.")
-            sys.exit(1)
+            print("Unsupported compiler for Linux. Use 'clang' or 'gcc'. Set default compiler to 'clang'.")
+            cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
 
     run_command(cmake_args)
     run_command(["cmake", "--build", "."], cwd="build")
@@ -83,7 +83,7 @@ def clean_bazel():
 def main():
     parser = argparse.ArgumentParser(description="Build and clean script for multiple platforms and build systems")
     parser.add_argument("--tool", choices=["cmake", "bazel"], default="cmake")
-    parser.add_argument("--generator", choices=["ninja", "mingw", "vs2022", "make"], default="vs2022")
+    parser.add_argument("--generator", choices=["ninja", "mingw", "vs2022", "make"], default="ninja")
     parser.add_argument("--compiler", choices=["gcc", "clang", "cl"], default="clang")
     parser.add_argument("--clean", action="store_true")
 
