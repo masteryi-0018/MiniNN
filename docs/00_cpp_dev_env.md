@@ -256,6 +256,17 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
 - 问题原因：错误中的"936"表示系统正在使用GBK编码（中文Windows默认），MSVC编译器期望源代码是带BOM的UTF-8或与系统区域设置匹配的编码
 - 解决方法：修改系统区域设置（针对MSVC编译器警告）：进入控制面板 → 区域 → 管理 → 更改系统区域设置，勾选 "Beta版：使用Unicode UTF-8提供全球语言支持"，重启计算机
 
+12. glog作为submodule编译错误
+
+- 问题原因：默认conda环境包括了gtest，使用find_package来寻找，导致链接的不是自己的gtest
+- 解决方法：新建conda环境，保证没有gtest
+
+13. gtest在windows下无法编译得到gmock_main动态库
+
+- 问题原因：使用clang编译器时无法导出某些符号，导致编译动态库失败
+- 解决方法：强制指定编译静态库（-DBUILD_SHARED_LIBS=OFF），或者使用gcc编译器
+
+
 ## Linux，x86
 
 1. 额外安装的SDK运行时出现`cannot open shared object file: No such file or directory`

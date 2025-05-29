@@ -3,12 +3,12 @@ cmake_minimum_required(VERSION 3.0)
 ####################  一、build  ####################
 
 # 1. set compiler before call project()
-set(CMAKE_C_COMPILER "clang") # Windows do not need to specify .exe
-set(CMAKE_CXX_COMPILER "clang++")
+# set(CMAKE_C_COMPILER "clang") # Windows do not need to specify .exe
+# set(CMAKE_CXX_COMPILER "clang++")
 message(STATUS "Default C++ compiler: ${CMAKE_CXX_COMPILER}")
 
 # 2. set cpp standard
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 message(STATUS "Default C++ standard: ${CMAKE_CXX_STANDARD}")
@@ -34,7 +34,7 @@ else()
 endif()
 
 if(WIN32)
-    set(gtest_force_shared_crt ON)
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif()
 
 # set PIC for shared library
@@ -71,8 +71,13 @@ include_directories("${MININN_SOURCE_DIR}")
 include_directories("third_party/flatbuffers/include")
 
 # 2. subdirectory
+set(CLANG ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
+if(WIN32 AND CLANG)
+    message(STATUS "Clang on Windows detected, setting up for static libraries.")
+    set(BUILD_SHARED_LIBS OFF)
+endif()
 
-# add_subdirectory(third_party/glog)
+add_subdirectory(third_party/glog)
 add_subdirectory(third_party/googletest)
 add_subdirectory(third_party/pybind11)
 add_subdirectory(mininn)
