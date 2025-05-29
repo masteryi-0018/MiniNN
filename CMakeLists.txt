@@ -8,7 +8,7 @@ cmake_minimum_required(VERSION 3.0)
 message(STATUS "Default C++ compiler: ${CMAKE_CXX_COMPILER}")
 
 # 2. set cpp standard
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 message(STATUS "Default C++ standard: ${CMAKE_CXX_STANDARD}")
@@ -77,7 +77,6 @@ if(WIN32 AND CLANG)
     set(BUILD_SHARED_LIBS OFF)
 endif()
 
-add_subdirectory(third_party/glog)
 add_subdirectory(third_party/googletest)
 add_subdirectory(third_party/pybind11)
 add_subdirectory(mininn)
