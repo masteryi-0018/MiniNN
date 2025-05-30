@@ -129,6 +129,7 @@ cc_library(
         ":utils",
         ":backend"
     ],
+    visibility = ["//visibility:public"],
 )
 
 # test lib
