@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.0)
 ####################  一、build  ####################
 
 # 1. set compiler before call project()
+# Clang with CUDA is not yet supported on Windows.  See CMake issue #20776.Add commentMore actions
+# set(CMAKE_CUDA_COMPILER "clang++")
 message(STATUS "Default C++ compiler: ${CMAKE_CXX_COMPILER}")
 
 # 2. set cpp standard
@@ -31,6 +33,7 @@ else()
     enable_language(CXX)
 endif()
 
+# https://google.github.io/googletest/quickstart-cmake.html
 if(WIN32)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif()
@@ -69,12 +72,6 @@ include_directories("${MININN_SOURCE_DIR}")
 include_directories("third_party/flatbuffers/include")
 
 # 2. subdirectory
-set(CLANG ${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
-if(WIN32 AND CLANG)
-    message(STATUS "Clang on Windows detected, setting up for static libraries.")
-    set(BUILD_SHARED_LIBS OFF)
-endif()
-
 add_subdirectory(third_party/googletest)
 add_subdirectory(third_party/pybind11)
 add_subdirectory(mininn)

@@ -42,18 +42,23 @@
 | Host Platform | Build Tool | Generator             | gcc         | clang       | msvc        |
 | ------------- | ---------- | --------------------- | ----------- | ----------- | ----------- |
 | **Windows**   | cmake      | Visual Studio 17 2022 | ❌          | ❌          | ✅          |
-|               |            | Ninja                 | ✅          | ✅          | vs shell    |
-|               |            | MinGW Makefiles       | ✅          | ✅          | vs shell    |
+|               |            | Ninja                 | ✅          | ✅          | ⚠️          |
+|               |            | MinGW Makefiles       | ✅          | ✅          | ⚠️          |
 |               |            | NMake Makefiles       | vs shell    | vs shell    | vs shell    |
-|               |            | Unix                  | rename      | rename      | rename      |
+|               |            | Unix Makefiles        | rename      | rename      | rename      |
 |               |            | MSYS Makefiles        | msys2 shell | msys2 shell | msys2 shell |
 | **Linux**     | cmake      | Unix Makefiles        | ✅          | ✅          | ❌          |
 |               |            | Ninja                 | ✅          | ✅          | ❌          |
 
 1. 使用 Unix Makefile 需要 rename mingw32-make -> make，不推荐
-2. 使用 NMake Makefiles 和 MSYS Makefiles 都需要特定的 shell，不推荐
-3. 似乎通过执行 vcvarsall.bat 脚本，可以获得 vs shell 的环境
-   1. cmd /c "`"E:\visual studio\VC\Auxiliary\Build\vcvarsall.bat`" x64 && powershell"
-   2. 就不需要单独打开vs shell了
+2. 使用 MSYS Makefiles 需要特定的 shell，否则找不到默认的使用 sh.exe，不推荐
+3. 使用 NMake Makefiles 需要特定的 shell，不推荐
+4. 通过执行 vcvarsall.bat 脚本，可以获得 vs shell 的环境
+5. 获得环境之后依旧不推荐使用不匹配的工具链进行开发，容易出问题
+6. 不推荐手动配置 cl 的环境，windows SDK（mt.exe）的环境，甚至 windows SDK（kernel32.lib）的环境
+
+```ps1
+cmd /c "`"E:\visual studio\VC\Auxiliary\Build\vcvarsall.bat`" x64 && pwsh"
+```
 
 ### bazel

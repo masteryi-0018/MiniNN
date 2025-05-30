@@ -26,7 +26,6 @@ local_path_override(
 
 # cuda: https://github.com/bazel-contrib/rules_cuda, https://registry.bazel.build/modules/rules_cuda
 bazel_dep(name = "rules_cuda", version = "0.2.5")
-
 local_path_override(
     module_name = "rules_cuda",
     path = "third_party/rules_cuda"
@@ -46,3 +45,17 @@ use_repo(cuda, "cuda")
 #     url = "https://github.com/bazel-contrib/rules_cuda/archive/{git_commit_hash}.tar.gz",
 #     strip_prefix = "rules_cuda-{git_commit_hash}",
 # )
+
+# override path of dep pybind11_bazel
+bazel_dep(name = "pybind11_bazel", version = "2.13.6")
+local_path_override(
+    module_name = "pybind11_bazel",
+    path = "third_party/pybind11_bazel",
+)
+
+# override path of dep rules_python
+bazel_dep(name = "rules_python", version = "1.4.1")
+local_path_override(
+    module_name = "rules_python",
+    path = "third_party/rules_python",
+)
