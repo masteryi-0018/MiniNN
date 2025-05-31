@@ -11,11 +11,11 @@ module(
 )
 
 # override path of dep flatbuffers
-bazel_dep(name = "flatbuffers", version = "head")
-local_path_override(
-    module_name = "flatbuffers",
-    path = "third_party/flatbuffers",
-)
+# bazel_dep(name = "flatbuffers", version = "head")
+# local_path_override(
+#     module_name = "flatbuffers",
+#     path = "third_party/flatbuffers",
+# )
 
 # override path of dep googletest
 bazel_dep(name = "googletest", version = "head")

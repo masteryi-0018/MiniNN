@@ -12,9 +12,12 @@ cc_library(
     srcs = glob([
         "parser/*.cc",
     ]),
-    deps = [
-        "@flatbuffers//:flatbuffers",
+    includes = [
+        "../third_party/flatbuffers/include"
     ],
+    # deps = [
+    #     "@flatbuffers//:flatbuffers",
+    # ],
 )
 
 cc_library(

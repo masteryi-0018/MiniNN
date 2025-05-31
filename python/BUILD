@@ -1,6 +1,6 @@
 load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
-load("@rules_python//python:defs.bzl", "py_library")
-load("@rules_python//python:packaging.bzl", "py_wheel", "py_package")
+# load("@rules_python//python:defs.bzl", "py_library")
+# load("@rules_python//python:packaging.bzl", "py_wheel", "py_package")
 
 pybind_extension(
     name = "mininn_capi",
@@ -12,17 +12,17 @@ pybind_extension(
     ],
 )
 
-py_library(
-    name = "mininn_py",
-    srcs = glob([
-        "mininn/*.py",
-    ]),
-    data = [
-        ":mininn_capi",
-    ]
-)
+# todo: use bazel to generate python wheel, now copy mininn_capi manually
+# py_library(
+#     name = "mininn_py",
+#     srcs = glob([
+#         "mininn/*.py",
+#     ]),
+#     data = [
+#         ":mininn_capi",
+#     ]
+# )
 
-# todo: use py_package to include mininn_capi.pyd in wheel
 # py_package(
 #     name = "mininn_pkg",
 #     deps = [
@@ -32,12 +32,12 @@ py_library(
 #     package_name = "mininn_py_pkg",
 # )
 
-py_wheel(
-    name = "mininn_wheel",
-    distribution = "mininn",
-    version = "1.0.0",
-    deps  = [
-        ":mininn_py",
-    ],
-    python_tag = "py3",
-)
+# py_wheel(
+#     name = "mininn_wheel",
+#     distribution = "mininn",
+#     version = "1.0.0",
+#     deps  = [
+#         ":mininn_py",
+#     ],
+#     python_tag = "py3",
+# )
