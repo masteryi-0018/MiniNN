@@ -63,6 +63,7 @@ def build_cmake(args):
 
     run_command(cmake_args)
     run_command(["cmake", "--build", "."], cwd="build")
+    build_wheel(args)
 
 
 def clean_cmake():
@@ -70,14 +71,56 @@ def clean_cmake():
         print(f"Removing build directory: 'build'")
         shutil.rmtree("build")
     else:
-        print(f"No build directory to remove: 'build'")
+        print(f"No directory to remove: 'build'")
+
+    if os.path.exists("pybuild"):
+        print(f"Removing pybuild directory: 'pybuild', 'dist', and 'python/mininn.egg-info'")
+        shutil.rmtree("pybuild")
+    else:
+        print(f"No directory to remove: 'pybuild', 'dist', and 'python/mininn.egg-info'")
+    if os.path.exists("dist"):
+        shutil.rmtree("dist")
+    if os.path.exists("python/mininn.egg-info"):
+        shutil.rmtree("python/mininn.egg-info")
+
 
 def build_bazel():
-    run_command(["bazel", "build", "//mininn/..."])
+    run_command(["bazel", "build", "//mininn/...", "//python/..."])
 
 def clean_bazel():
     # use --expunge to clean all
     run_command(["bazel", "clean"])
+    os.remove("MODULE.bazel.lock")
+
+def build_wheel(args):
+    if args.tool == "cmake":
+        if sys.platform == "win32":
+            cmake_output = os.path.abspath("./build/python/mininn_capi.cp313-win_amd64.pyd")
+        elif sys.platform == "linux":
+            cmake_output = os.path.abspath("./build/python/mininn_capi.cpython-313-x86_64-linux-gnu.so")
+
+    elif args.tool == "bazel":
+        if sys.platform == "win32":
+            cmake_output = os.path.abspath("../bazel-bin/python/mininn_capi.pyd")
+        elif sys.platform == "linux":
+            cmake_output = os.path.abspath("../bazel-bin/python/mininn_capi.so")
+
+    # you can cp .pyd/.so file to pybuild/lib/mininn directly, but you should mkdir before python setup.py
+    # target_dir = os.path.join("pybuild/lib", "mininn")
+    # if not os.path.exists(target_dir):
+    #     os.makedirs(target_dir)
+
+    target_dir = os.path.join("python", "mininn")
+
+    if os.path.exists(cmake_output):
+        if sys.platform == "win32":
+            shutil.copyfile(cmake_output, os.path.join(target_dir, "mininn_capi.pyd"))
+        elif sys.platform == "linux":
+            shutil.copyfile(cmake_output, os.path.join(target_dir, "mininn_capi.so"))
+    else:
+        raise FileNotFoundError(f"{cmake_output} does not exist. Build with CMake first.")
+
+    run_command(["python", "setup.py", "build" ,"--build-base", "pybuild", "bdist_wheel"])
 
 
 def main():

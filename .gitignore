@@ -1,7 +1,7 @@
-.vscode/
+.vscode
 
 # cmake
-build/
+build
 
 # bazel
 bazel-*
@@ -11,6 +11,9 @@ MODULE.bazel.lock
 __pycache__
 *.egg-info
 dist
+pybuild
+*.pyd
+*.so
 
 # model
 *.gynn
