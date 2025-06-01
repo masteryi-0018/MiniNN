@@ -64,16 +64,16 @@ py_repositories()
 load("@rules_python//python:repositories.bzl", "python_register_toolchains")
 
 python_register_toolchains(
-    name = "python_3_11",
+    name = "python_3_13",
     # Available versions are listed in @rules_python//python:versions.bzl.
     # We recommend using the same version your team is already standardized on.
-    python_version = "3.11",
+    python_version = "3.13",
 )
 
-load("@rules_python//python:pip.bzl", "pip_parse")
+# load("@rules_python//python:pip.bzl", "pip_parse")
 
-pip_parse(
-    name = "pypi",
-    python_interpreter_target = "@python_3_11_host//:python",
-    requirements_lock = "//:requirements.txt",
-)
+# pip_parse(
+#     name = "pypi",
+#     python_interpreter_target = "@python_3_13_host//:python",
+#     requirements_lock = "//:requirements.txt",
+# )

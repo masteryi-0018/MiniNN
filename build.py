@@ -61,9 +61,12 @@ def build_cmake(args):
             print("Unsupported compiler for Linux. Use 'clang' or 'gcc'. Set default compiler to 'clang'.")
             cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
 
+    if args.wheel:
+        cmake_args.extend(["-DWITH_CUDA=OFF", "-DWITH_OPENCL=OFF", "-DWITH_AVX=OFF", "-DWITH_SSE=OFF", "-DWITH_MKL=OFF"])
     run_command(cmake_args)
     run_command(["cmake", "--build", "."], cwd="build")
-    build_wheel(args)
+    if args.wheel:
+        build_wheel(args)
 
 
 def clean_cmake():
@@ -84,12 +87,15 @@ def clean_cmake():
         shutil.rmtree("python/mininn.egg-info")
 
 
-def build_bazel():
-    run_command(["bazel", "build", "//mininn/...", "//python/..."])
+def build_bazel(args):
+    bazel_args = ["bazel", "build", "//mininn/...", "//python/..."]
+    if args.wheel:
+        bazel_args.extend(["--define", "with_wheel=1"])
+    run_command(bazel_args)
 
 def clean_bazel():
     # use --expunge to clean all
-    run_command(["bazel", "clean"])
+    run_command(["bazel", "clean", "--expunge"])
     os.remove("MODULE.bazel.lock")
 
 def build_wheel(args):
@@ -129,6 +135,7 @@ def main():
     parser.add_argument("--generator", choices=["ninja", "mingw", "vs2022", "make"], default="ninja")
     parser.add_argument("--compiler", choices=["gcc", "clang", "cl"], default="clang")
     parser.add_argument("--clean", action="store_true")
+    parser.add_argument("--wheel", action="store_true")
 
     args = parser.parse_args()
 
@@ -142,7 +149,7 @@ def main():
         if args.clean:
             clean_bazel()
         else:
-            build_bazel()
+            build_bazel(args)
 
     else:
         print(f"Unsupported tool: {args.tool}. Use 'cmake' or 'bazel'.")

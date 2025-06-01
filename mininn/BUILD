@@ -39,14 +39,17 @@ cc_library(
     srcs = glob([
         "kernel/*.cc",
     ]),
-    defines = [
-        "WITH_MULTI_THREADS",
-        "WITH_CUDA",
-        "WITH_OPENCL",
-        "WITH_AVX",
-        "WITH_SSE",
-        "WITH_MKL",
-    ],
+    defines = select({
+        ":with_wheel": [],
+        "//conditions:default": [
+            "WITH_MULTI_THREADS",
+            "WITH_CUDA",
+            "WITH_OPENCL",
+            "WITH_AVX",
+            "WITH_SSE",
+            "WITH_MKL",
+        ],
+    }),
 )
 
 cc_library(
@@ -110,15 +113,23 @@ cc_library(
     ]
 )
 
+config_setting(
+    name = "with_wheel",
+    values = {"define": "with_wheel=1"},
+)
+
 cc_library(
     name = "backend",
-    deps = [
-        ":cuda",
-        ":opencl",
-        ":avx",
-        ":sse",
-        ":mkl",
-    ],
+    deps = select({
+        ":with_wheel": [],
+        "//conditions:default": [
+            ":cuda",
+            ":opencl",
+            ":avx",
+            ":sse",
+            ":mkl",
+        ],
+    }),
 )
 
 cc_library(

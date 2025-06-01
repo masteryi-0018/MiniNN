@@ -33,7 +33,7 @@ filegroup(
 py_wheel(
     name = "mininn_wheel",
     distribution = "mininn",
-    version = "1.0.0",
+    version = "0.9.0",
     deps  = [
         ":mininn_files",
     ],
