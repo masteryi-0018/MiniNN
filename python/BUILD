@@ -24,11 +24,25 @@ filegroup(
     name = "mininn_files",
     srcs = [
         ":mininn_py",
-        ":mininn_capi.pyd",
-        ":mininn_capi.so",
-    ],
+    ] + select({
+        "@platforms//os:windows": [":rename_pyd"],
+        "@platforms//os:linux": [":rename_so"],
+    }),
 )
 
+genrule(
+    name = "rename_pyd",
+    srcs = [":mininn_capi.pyd"],
+    outs = ["mininn/mininn_capi.pyd"],
+    cmd = "cp $< $@",
+)
+
+genrule(
+    name = "rename_so",
+    srcs = [":mininn_capi.so"],
+    outs = ["mininn/mininn_capi.so"],
+    cmd = "cp $< $@",
+)
 
 py_wheel(
     name = "mininn_wheel",
@@ -38,4 +52,7 @@ py_wheel(
         ":mininn_files",
     ],
     python_tag = "py3",
+    strip_path_prefixes = [
+        "python",
+    ],
 )

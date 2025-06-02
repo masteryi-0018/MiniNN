@@ -1,6 +1,7 @@
 import os
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../build/python'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../bazel-bin/python'))
 
 import mininn_capi
 import numpy as np
