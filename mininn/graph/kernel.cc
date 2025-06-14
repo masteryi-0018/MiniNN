@@ -1,3 +1,4 @@
 #include "mininn/graph/kernel.h"
 
-Kernel::Kernel() {}
+// todo: strange link error by manully defining the constructor
+// Kernel::Kernel() {}

@@ -5,7 +5,7 @@
 
 class Kernel {
 public:
-    Kernel();
+    Kernel() = default;
 
     virtual ~Kernel() = default;
 
