@@ -62,3 +62,10 @@ cmd /c "`"E:\visual studio\VC\Auxiliary\Build\vcvarsall.bat`" x64 && pwsh"
 ```
 
 ### bazel
+
+自己配置 cpp 工具链比较负责，使用默认的测试
+
+| Host Platform | Build Tool | gcc | clang | msvc |
+| ------------- | ---------- | --- | ----- | ---- |
+| **Windows**   | bazel      | ❌  | ❌    | ✅   |
+| **Linux**     | bazel      | ✅  | ❌    | ❌   |
