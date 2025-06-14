@@ -5,6 +5,10 @@ cc_library(
     srcs = glob([
         "runtime/*.cc",
     ]),
+    hdrs = glob([
+        "runtime/*.h",
+        "graph/*.h",
+    ]),
 )
 
 cc_library(
@@ -12,18 +16,28 @@ cc_library(
     srcs = glob([
         "parser/*.cc",
     ]),
-    includes = [
-        "../third_party/flatbuffers/include"
-    ],
-    # deps = [
-    #     "@flatbuffers//:flatbuffers",
+    hdrs = glob([
+        "parser/*.h",
+        "graph/*.h",
+        "utils/*.h",
+    ]),
+    # includes = [
+    #     "../third_party/flatbuffers/include"
     # ],
+    # linux need this
+    deps = [
+        "@flatbuffers//:flatbuffers",
+    ],
 )
 
 cc_library(
     name = "graph",
     srcs = glob([
         "graph/*.cc",
+    ]),
+    hdrs = glob([
+        "graph/*.h",
+        "utils/*.h",
     ]),
 )
 
@@ -32,6 +46,11 @@ cc_library(
     srcs = glob([
         "operator/*.cc",
     ]),
+    hdrs = glob([
+        "operator/*.h",
+        "graph/*.h",
+        "utils/*.h",
+    ]),
 )
 
 cc_library(
@@ -39,15 +58,32 @@ cc_library(
     srcs = glob([
         "kernel/*.cc",
     ]),
+    hdrs = glob([
+        "kernel/*.h",
+        "graph/*.h",
+        "utils/*.h",
+        "backend/cuda/*.cuh",
+        "backend/opencl/*.h",
+        "backend/avx/*.h",
+        "backend/sse/*.h",
+        "backend/mkl/*.h",
+    ]),
     defines = select({
         ":with_wheel": [],
-        "//conditions:default": [
+        "@platforms//os:windows": [
             "WITH_MULTI_THREADS",
             "WITH_CUDA",
             "WITH_OPENCL",
             "WITH_AVX",
             "WITH_SSE",
             "WITH_MKL",
+        ],
+        "@platforms//os:linux": [
+            "WITH_MULTI_THREADS",
+            "WITH_CUDA",
+            "WITH_OPENCL",
+            "WITH_AVX",
+            "WITH_SSE",
         ],
     }),
 )
@@ -56,6 +92,9 @@ cc_library(
     name = "utils",
     srcs = glob([
         "utils/*.cc",
+    ]),
+    hdrs = glob([
+        "utils/*.h",
     ]),
 )
 
@@ -78,12 +117,14 @@ cc_library(
     # includes = [
     #     "C:/PROGRA~1/NVIDIA~2/CUDA/v12.9/include"
     # ],
-    copts = [
-        "/I\"C:/PROGRA~1/NVIDIA~2/CUDA/v12.9/include\"",
-    ],
-    linkopts = [
-        "C:/PROGRA~1/NVIDIA~2/CUDA/v12.9/lib/x64/OpenCL.lib"
-    ],
+    copts = select({
+        "@platforms//os:windows": ["/I\"C:/PROGRA~1/NVIDIA~2/CUDA/v12.9/include\""],
+        "@platforms//os:linux": ["/usr/local/cuda/include/"],
+    }),
+    linkopts = select({
+        "@platforms//os:windows": ["C:/PROGRA~1/NVIDIA~2/CUDA/v12.9/lib/x64/OpenCL.lib"],
+        "@platforms//os:linux": ["/usr/local/cuda/lib64/libOpenCL.so"],
+    }),
 )
 
 cc_library(
@@ -91,6 +132,9 @@ cc_library(
     srcs = glob([
         "backend/avx/*.cc",
     ]),
+    copts = [
+        "-mavx512vnni",
+    ],
 )
 
 cc_library(
@@ -98,6 +142,9 @@ cc_library(
     srcs = glob([
         "backend/sse/*.cc",
     ]),
+    copts = [
+        "-msse4.2",
+    ],
 )
 
 cc_library(
@@ -110,7 +157,11 @@ cc_library(
     ],
     linkopts = [
         "E:/oneAPI/mkl/2024.2/lib/mkl_rt.lib"
-    ]
+    ],
+    # linux will get include path '/opt/intel/oneapi/mkl/latest/include'
+    # references a path outside of the execution root.
+    # flatbuffers use third_party to fix, but mkl not
+    target_compatible_with = ["@platforms//os:windows"],
 )
 
 config_setting(
@@ -122,12 +173,18 @@ cc_library(
     name = "backend",
     deps = select({
         ":with_wheel": [],
-        "//conditions:default": [
+        "@platforms//os:windows": [
             ":cuda",
             ":opencl",
             ":avx",
             ":sse",
             ":mkl",
+        ],
+        "@platforms//os:linux": [
+            ":cuda",
+            ":opencl",
+            ":avx",
+            ":sse",
         ],
     }),
 )
