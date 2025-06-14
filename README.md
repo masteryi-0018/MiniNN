@@ -4,10 +4,10 @@ Build a deep learning inference framework from scratch
 
 ## Quick Start
 
-环境需求：
+envirooment requirement：
 
 - conda，python=3.11
-- mininn_test.gynn [下载](https://github.com/masteryi-0018/MiniNN/releases/download/mininn-0.0.1/mininn_test.gynn)
+- mininn_test.gynn [download](https://github.com/masteryi-0018/MiniNN/releases/download/mininn-0.0.1/mininn_test.gynn)
 
 ```sh
 conda create -n mininn python=3.11
@@ -16,22 +16,24 @@ pip install mininn
 python python/test/pip_test.py
 ```
 
-## Environment Version
+## Build from source
 
-| Host Platform | Target Platform | Build Tool   | Compiler     | Backend                           | Note        |
-| ------------- | --------------- | ------------ | ------------ | --------------------------------- | ----------- |
-| **Windows**   | Windows         | cmake 3.26.4 | msvc 14.44   | cuda✅ opencl✅ avx✅ sse✅ mkl✅ | VS shell 中 |
-|               |                 |              | clang 20.1.5 | cuda❌ opencl✅ avx✅ sse✅ mkl✅ |             |
-|               |                 |              | g++ 13.1.0   | cuda❌ opencl✅ avx✅ sse✅ mkl✅ |             |
-|               |                 | bazel 7.3.1  | msvc 14.44   | cuda✅ opencl✅ avx✅ sse✅ mkl✅ | 默认 msvc   |
-|               |                 |              | clang 20.1.5 |                                   |             |
-|               |                 |              | g++ 13.1.0   |                                   |             |
-| **Linux**     | Linux           | cmake 3.30.5 | clang 10.0.0 | cuda❌ opencl❌ avx❌ sse❌ mkl❌ |             |
-|               |                 |              | g++ 9.4.0    | cuda❌ opencl❌ avx❌ sse❌ mkl❌ |             |
-|               |                 | bazel 8.0.0  | clang 10.0.0 |                                   |             |
-|               |                 |              | g++ 9.4.0    | cuda❌ opencl❌ avx❌ sse❌ mkl❌ |             |
+### Environment Version
 
-## Download
+| Host        | Target  | Tool         | Compiler     | Backend                           | Note         |
+| ----------- | ------- | ------------ | ------------ | --------------------------------- | ------------ |
+| **Windows** | Windows | cmake 3.26.4 | msvc 14.44   | cuda✅ opencl✅ avx✅ sse✅ mkl✅ | use VS shell |
+|             |         |              | clang 20.1.5 | cuda❌ opencl✅ avx✅ sse✅ mkl✅ |              |
+|             |         |              | g++ 13.1.0   | cuda❌ opencl✅ avx✅ sse✅ mkl✅ |              |
+|             |         | bazel 7.3.1  | msvc 14.44   | cuda✅ opencl✅ avx✅ sse✅ mkl✅ | default msvc |
+|             |         |              | clang 20.1.5 |                                   |              |
+|             |         |              | g++ 13.1.0   |                                   |              |
+| **Linux**   | Linux   | cmake 3.30.5 | clang 10.0.0 | cuda❌ opencl❌ avx❌ sse❌ mkl❌ |              |
+|             |         |              | g++ 9.4.0    | cuda❌ opencl❌ avx❌ sse❌ mkl❌ |              |
+|             |         | bazel 8.0.0  | clang 10.0.0 |                                   |              |
+|             |         |              | g++ 9.4.0    | cuda❌ opencl❌ avx❌ sse❌ mkl❌ |              |
+
+### Download
 
 ```sh
 # https
@@ -41,63 +43,44 @@ git clone --recursive https://github.com/masteryi-0018/MiniNN.git
 git clone --recursive git@github.com:masteryi-0018/MiniNN.git
 ```
 
-## Build
-
-### windows
-
-1. cmake
-
-```ps1
-python .\build.py
-```
-
-2. bazel
-
-```ps1
-python .\build.py --tool bazel
-```
-
-### linux
-
-1. cmake
+### Build
 
 ```sh
+# cmake
 python build.py
-```
 
-2. bazel
-
-```sh
+# bazel
 python build.py --tool bazel
+
+# if you want to identify generator, add this flag
+python build.py --tool bazel --generator ninja
+
+# if you want to identify compiler, add this flag
+python build.py --tool bazel --compiler clang
+
+# if you want build python wheel, add this flag
+python build.py --tool bazel --wheel
 ```
 
 ## Unit Test
 
 ### windows
 
-1. cmake
-
 ```ps1
+# cmake
 .\build\mininn\test\gtest-main.exe
-```
 
-2. bazel
-
-```ps1
+# bazel
 .\bazel-bin\mininn\gtest-main.exe
 ```
 
 ### linux
 
-1. cmake
-
 ```sh
+# cmake
 ./build/mininn/test/gtest-main
-```
 
-2. bazel
-
-```sh
+# bazel
 ./bazel-bin/mininn/gtest-main
 ```
 

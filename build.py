@@ -42,6 +42,7 @@ def build_cmake(args):
 
         if args.generator == "vs2022" and args.compiler != "cl":
             print("Visual Studio generator only uses the MSVC compiler. Set default compiler to 'cl'.")
+            cmake_args.extend(["-DCMAKE_C_COMPILER=cl", "-DCMAKE_CXX_COMPILER=cl"])
 
     elif current_platform == "linux":
 
@@ -90,6 +91,8 @@ def clean_cmake():
         shutil.rmtree("dist")
     if os.path.exists("python/mininn.egg-info"):
         shutil.rmtree("python/mininn.egg-info")
+    if os.path.exists("python/mininn/mininn_capi.pyd"):
+        os.remove("python/mininn/mininn_capi.pyd")
 
 
 def build_bazel(args):
@@ -135,7 +138,7 @@ def build_wheel(args):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Build and clean script for multiple platforms and build systems")
+    parser = argparse.ArgumentParser(description="Build and clean script for multiple tools, generator and compiler")
     parser.add_argument("--tool", choices=["cmake", "bazel"], default="cmake")
     parser.add_argument("--generator", choices=["ninja", "mingw", "vs2022", "make"], default="ninja")
     parser.add_argument("--compiler", choices=["gcc", "clang", "cl"], default="clang")
