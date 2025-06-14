@@ -96,6 +96,11 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
   - 但是在运行时依然需要对应的打开库文件，这里只是让编译器编译时不出错
 - 解决方法：使用`-Wl,-rpath,/opt/intel/oneapi/mkl/latest/lib`让编译产物链接到绝对路径，从而正确运行
 
+2. 执行`bazel build //python:mininn_wheel`时出现`exec: -a: not found`
+
+- 问题原因：这是许多现代 Linux 发行版（如 Debian、Ubuntu）的刻意设计，默认将 /bin/sh 链接到 dash 而非 bash 是出于性能和兼容性的权衡
+- 解决方法：`sudo dpkg-reconfigure dash`然后选择No
+
 ## Android，arm
 
 设置环境
