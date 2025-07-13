@@ -2,6 +2,7 @@
 
 # cmake
 build
+mininn_sdk
 
 # bazel
 bazel-*

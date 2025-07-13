@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.5)
 
 ####################  一、build  ####################
 
@@ -76,3 +76,6 @@ add_subdirectory(third_party/googletest)
 add_subdirectory(third_party/pybind11)
 add_subdirectory(mininn)
 add_subdirectory(python)
+
+# 3. demo
+add_subdirectory(demo)
