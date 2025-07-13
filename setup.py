@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VERSION = '0.9.0'
+VERSION = '1.0.0'
 DESCRIPTION = 'python interface of MiniNN'
 LONG_DESCRIPTION = 'Build a deep learning inference framework from scratch'
 

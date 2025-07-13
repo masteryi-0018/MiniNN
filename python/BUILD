@@ -47,7 +47,7 @@ genrule(
 py_wheel(
     name = "mininn_wheel",
     distribution = "mininn",
-    version = "0.9.0",
+    version = "1.0.0",
     deps  = [
         ":mininn_files",
     ],

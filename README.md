@@ -6,11 +6,11 @@ Build a deep learning inference framework from scratch
 
 envirooment requirement：
 
-- conda，python=3.11
+- conda，python=3.13
 - mininn_test.gynn [download](https://github.com/masteryi-0018/MiniNN/releases/download/mininn-0.0.1/mininn_test.gynn)
 
 ```sh
-conda create -n mininn python=3.11
+conda create -n mininn python=3.13
 conda activate mininn
 pip install mininn
 python python/test/pip_test.py
