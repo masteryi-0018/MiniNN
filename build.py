@@ -93,6 +93,8 @@ def clean_cmake():
         shutil.rmtree("python/mininn.egg-info")
     if os.path.exists("python/mininn/mininn_capi.pyd"):
         os.remove("python/mininn/mininn_capi.pyd")
+    if os.path.exists("python/mininn/mininn_capi.so"):
+        os.remove("python/mininn/mininn_capi.so")
 
 
 def build_bazel(args):

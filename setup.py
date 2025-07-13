@@ -15,5 +15,6 @@ setup(
     package_dir={"": "python"},
     package_data={
         'mininn': ['mininn_capi.pyd'],
+        'mininn': ['mininn_capi.so'],
     },
 )

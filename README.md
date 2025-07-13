@@ -7,12 +7,14 @@ Build a deep learning inference framework from scratch
 envirooment requirement：
 
 - conda，python=3.13
+- onnxruntime
 - mininn_test.gynn [download](https://github.com/masteryi-0018/MiniNN/releases/download/mininn-0.0.1/mininn_test.gynn)
 
 ```sh
 conda create -n mininn python=3.13
 conda activate mininn
 pip install mininn
+pip install onnxruntime
 python python/test/pip_test.py
 ```
 
@@ -106,8 +108,8 @@ python build.py --tool bazel --wheel
 
 4. mininn release
 
-- [ ] demo
-- [ ] cpp sdk
+- [x] demo
+- [x] cpp sdk
 - [x] pip package
 
 5. mininn build
