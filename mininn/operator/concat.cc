@@ -1,6 +1,8 @@
 #include "mininn/operator/concat.h"
 #include "mininn/graph/register.h"
 
+#include <cstdint>
+
 Concat::Concat(Op type): Node(type) {
     params_ = new ConcatParams;
 }

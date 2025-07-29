@@ -1,5 +1,7 @@
 #include "mininn/graph/graph.h"
 
+#include <cstdint>
+
 void Graph::add_node(std::shared_ptr<Node>& node, std::vector<int>& inputs, std::vector<int>& outputs,
                      std::map<std::string, std::vector<int>>& attrs) {
     nodes_.emplace_back(node);
