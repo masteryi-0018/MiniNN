@@ -18,7 +18,31 @@ def build_cmake(args):
     os.makedirs("build", exist_ok=True)
 
     current_platform = platform.system().lower()
-    if current_platform == "windows":
+    if args.target == "android":
+        print(f"Building for Android with target: {args.target}")
+        if args.generator == "ninja":
+            cmake_args.extend(["-G", "Ninja"])
+        elif args.generator == "make":
+            cmake_args.extend(["-G", "Unix Makefiles"])
+        else:
+            print("Unsupported generator for Android. Use 'ninja' or 'make'. Set default generator to 'ninja'.")
+            cmake_args.extend(["-G", "Ninja"])
+
+        if args.compiler == "clang":
+            cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
+        else:
+            print("Unsupported compiler for Android. Use 'clang'. Set default compiler to 'clang'.")
+            cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
+
+        if current_platform == "windows":
+            cmake_args.extend(["-DANDROID_NDK=E:\\android_sdk\\ndk\\25.2.9519653"])
+        elif current_platform == "linux":
+            cmake_args.extend(["-DANDROID_NDK=E:\\android_sdk\\ndk\\25.2.9519653"])
+        cmake_args.extend(["-DCMAKE_TOOLCHAIN_FILE=E:\\android_sdk\\ndk\\25.2.9519653/build/cmake/android.toolchain.cmake"])
+        cmake_args.extend(["-DANDROID_ABI=arm64-v8a"])
+        cmake_args.extend(["-DANDROID_PLATFORM=android-21"])
+
+    elif current_platform == "windows":
 
         if args.generator == "ninja":
             cmake_args.extend(["-G", "Ninja"])
@@ -62,7 +86,7 @@ def build_cmake(args):
             print("Unsupported compiler for Linux. Use 'clang' or 'gcc'. Set default compiler to 'clang'.")
             cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
 
-    if args.wheel:
+    if args.wheel or args.target == "android":
         cmake_args.extend(["-DWITH_MULTI_THREADS=OFF",
                            "-DWITH_CUDA=OFF",
                            "-DWITH_OPENCL=OFF",
@@ -71,7 +95,7 @@ def build_cmake(args):
                            "-DWITH_MKL=OFF"])
     run_command(cmake_args)
     run_command(["cmake", "--build", "."], cwd="build")
-    if args.wheel:
+    if args.wheel and args.target != "android":
         build_wheel(args)
 
 
@@ -141,6 +165,7 @@ def build_wheel(args):
 
 def main():
     parser = argparse.ArgumentParser(description="Build and clean script for multiple tools, generator and compiler")
+    parser.add_argument("--target", choices=["windows", "linux", "android"])
     parser.add_argument("--tool", choices=["cmake", "bazel"], default="cmake")
     parser.add_argument("--generator", choices=["ninja", "mingw", "vs2022", "make"], default="ninja")
     parser.add_argument("--compiler", choices=["gcc", "clang", "cl"], default="clang")

@@ -103,7 +103,7 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
 
 ## Android，arm
 
-设置环境
+设置环境1
 
 1. GitHub 下载[termux](https://github.com/termux/termux-app/releases)
 2. 电脑配置 adb 工具。官网下载或借助 Android Studio 下载。
@@ -121,3 +121,27 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
    ```
 6. 使用电脑 ssh 登录，`ssh u0_a201@192.168.0.103 -p 8022`，有兴趣可以配置免密登录。
 7. 手机设置 termux 自启动，允许后台活动，就可以保持随时 ssh 了。
+
+设置环境2
+
+1. 下载Android Studio
+2. 添加adb所在路径到环境变量，就可以使用adb了
+3. 在SDK中安装NDK，编译时使用NDK编译，就是Android平台的目标
+4. 在Android Studio中下载一个模拟器，相当于一个虚拟的Android手机，型号不重要，下载好点击启动，就可以在adb中发现设备并且使用其运行程序了
+5. 命令：
+   ```sh
+   adb shell
+   cd /data/local/tmp/
+   mkdir models
+
+   adb push .\build\mininn\test\gtest-main /data/local/tmp
+   adb push .\models\mininn_test.gynn /data/local/tmp/models/
+   adb push .\models\add_model.gynn /data/local/tmp/models/
+   adb push .\models\mobilenetv2-10.gynn /data/local/tmp/models/
+
+   adb shell
+   cd /data/local/tmp/
+   chmod +x /data/local/tmp/gtest-main
+   ./gtest-main
+   ```
+6. 进行异步运行时崩溃退出

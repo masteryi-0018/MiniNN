@@ -2,7 +2,7 @@
 option(WITH_GTEST "build with gtest" ON)
 option(WITH_MULTI_THREADS "build with multi_threads" ON)
 
-if((WIN32 AND MSVC) OR UNIX)
+if((WIN32 AND MSVC) OR (UNIX AND NOT ANDROID))
     option(WITH_CUDA "build with cuda" ON)
 else()
     option(WITH_CUDA "build with cuda" OFF)
