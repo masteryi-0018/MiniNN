@@ -145,3 +145,10 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
    ./gtest-main
    ```
 6. 进行异步运行时崩溃退出
+
+问题
+
+1. Android Studio不能运行arm64的Android镜像
+
+- 问题原因：Windows未开启Hyper-V，导致Android模拟器不能使用虚拟化技术，无法模拟arm的指令集
+- 解决方法：未解决。Windows开启Hyper-V，重启即可。但是在没有开启Hyper-V时wsl可以正常使用，因为wsl可以使用一个更轻量级的虚拟化组件，独立于 Hyper-V，避免影响 VMware/VirtualBox 等第三方虚拟化软件
