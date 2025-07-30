@@ -19,7 +19,6 @@ def build_cmake(args):
 
     current_platform = platform.system().lower()
     if args.target == "android":
-        print(f"Building for Android with target: {args.target}")
         if args.generator == "ninja":
             cmake_args.extend(["-G", "Ninja"])
         elif args.generator == "make":
@@ -28,19 +27,19 @@ def build_cmake(args):
             print("Unsupported generator for Android. Use 'ninja' or 'make'. Set default generator to 'ninja'.")
             cmake_args.extend(["-G", "Ninja"])
 
-        if args.compiler == "clang":
-            cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
-        else:
-            print("Unsupported compiler for Android. Use 'clang'. Set default compiler to 'clang'.")
-            cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
+        # if set compiler, cmake will re-generate the build files of linux target
+        # if args.compiler == "clang":
+        #     cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
+        # else:
+        #     print("Unsupported compiler for Android. Use 'clang'. Set default compiler to 'clang'.")
+        #     cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
 
         if current_platform == "windows":
-            cmake_args.extend(["-DANDROID_NDK=E:\\android_sdk\\ndk\\25.2.9519653"])
+            cmake_args.extend(["-DCMAKE_TOOLCHAIN_FILE=E:\\android_sdk\\ndk\\25.2.9519653\\build\\cmake\\android.toolchain.cmake"])
         elif current_platform == "linux":
-            cmake_args.extend(["-DANDROID_NDK=E:\\android_sdk\\ndk\\25.2.9519653"])
-        cmake_args.extend(["-DCMAKE_TOOLCHAIN_FILE=E:\\android_sdk\\ndk\\25.2.9519653/build/cmake/android.toolchain.cmake"])
+            cmake_args.extend(["-DCMAKE_TOOLCHAIN_FILE=/home/gy/tools/android-ndk-r21e/build/cmake/android.toolchain.cmake"])
         cmake_args.extend(["-DANDROID_ABI=arm64-v8a"])
-        cmake_args.extend(["-DANDROID_PLATFORM=android-21"])
+        cmake_args.extend(["-DANDROID_PLATFORM=android-21"]) # Android 5 (Lollipop)	android-21, minimal version
 
     elif current_platform == "windows":
 

@@ -134,15 +134,19 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
    cd /data/local/tmp/
    mkdir models
 
-   adb push .\build\mininn\test\gtest-main /data/local/tmp
-   adb push .\models\mininn_test.gynn /data/local/tmp/models/
-   adb push .\models\add_model.gynn /data/local/tmp/models/
-   adb push .\models\mobilenetv2-10.gynn /data/local/tmp/models/
+   adb push ./build/mininn/test/gtest-main /data/local/tmp
+   adb push ./build/demo/demo /data/local/tmp
+   adb push ./models/mininn_test.gynn /data/local/tmp/models/
+   adb push ./models/add_model.gynn /data/local/tmp/models/
+   adb push ./models/mobilenetv2-10.gynn /data/local/tmp/models/
 
    adb shell
    cd /data/local/tmp/
-   chmod +x /data/local/tmp/gtest-main
+   chmod +x ./gtest-main
+   chmod +x ./demo
+
    ./gtest-main
+   ./demo ./models/add_model.gynn
    ```
 6. 进行异步运行时崩溃退出
 
@@ -152,3 +156,16 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
 
 - 问题原因：Windows未开启Hyper-V，导致Android模拟器不能使用虚拟化技术，无法模拟arm的指令集
 - 解决方法：未解决。Windows开启Hyper-V，重启即可。但是在没有开启Hyper-V时wsl可以正常使用，因为wsl可以使用一个更轻量级的虚拟化组件，独立于 Hyper-V，避免影响 VMware/VirtualBox 等第三方虚拟化软件
+
+2. WSL下直接再安装adb会报错
+
+- 问题原因：一台物理机有2个adb会不兼容。
+- 解决方法：直接使用Windows下的adb，`export PATH="E:\android_sdk\platform-tools:$PATH"`。详情见<https://blog.csdn.net/qq_45510888/article/details/133133338>
+
+3. 可执行文件的属性
+
+在Android下运行：
+```sh
+ldd /data/local/tmp/gtest-main
+ldd /data/local/tmp/demo
+```
