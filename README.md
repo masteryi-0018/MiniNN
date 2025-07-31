@@ -30,10 +30,12 @@ python python/test/pip_test.py
 |             |         | bazel 7.3.1  | msvc 14.44   | cuda✅ opencl✅ avx✅ sse✅ mkl✅ | default msvc |
 |             |         |              | clang 20.1.5 |                                   |              |
 |             |         |              | g++ 13.1.0   |                                   |              |
+|             | Android | cmake 3.26.4 | Clang 14.0.7 | cuda❌ opencl❌ avx❌ sse❌ mkl❌ | ndk 25.2     |
 | **Linux**   | Linux   | cmake 3.16.3 | clang 10.0.0 | cuda✅ opencl✅ avx✅ sse✅ mkl✅ |              |
 |             |         |              | g++ 9.4.0    | cuda✅ opencl✅ avx✅ sse✅ mkl✅ |              |
 |             |         | bazel 8.0.0  | clang 10.0.0 |                                   |              |
 |             |         |              | g++ 9.4.0    | cuda✅ opencl✅ avx✅ sse✅ mkl❌ | default g++  |
+|             | Android | cmake 3.16.3 | clang 9.0.9  | cuda❌ opencl❌ avx❌ sse❌ mkl❌ | ndk r21e     |
 
 ### Download
 

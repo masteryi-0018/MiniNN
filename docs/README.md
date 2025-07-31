@@ -39,16 +39,20 @@
 
 ### cmake
 
-| Host Platform | Build Tool | Generator             | gcc         | clang       | msvc        |
-| ------------- | ---------- | --------------------- | ----------- | ----------- | ----------- |
-| **Windows**   | cmake      | Visual Studio 17 2022 | ❌          | ❌          | ✅          |
-|               |            | Ninja                 | ✅          | ✅          | ⚠️          |
-|               |            | MinGW Makefiles       | ✅          | ✅          | ⚠️          |
-|               |            | NMake Makefiles       | vs shell    | vs shell    | vs shell    |
-|               |            | Unix Makefiles        | rename      | rename      | rename      |
-|               |            | MSYS Makefiles        | msys2 shell | msys2 shell | msys2 shell |
-| **Linux**     | cmake      | Unix Makefiles        | ✅          | ✅          | ❌          |
-|               |            | Ninja                 | ✅          | ✅          | ❌          |
+| Host        | Target  | Generator             | gcc         | clang       | msvc        |
+| ----------- | ------- | --------------------- | ----------- | ----------- | ----------- |
+| **Windows** | Windows | Visual Studio 17 2022 | ❌          | ❌          | ✅          |
+|             |         | Ninja                 | ✅          | ✅          | ⚠️          |
+|             |         | MinGW Makefiles       | ✅          | ✅          | ⚠️          |
+|             |         | NMake Makefiles       | vs shell    | vs shell    | vs shell    |
+|             |         | Unix Makefiles        | rename      | rename      | rename      |
+|             |         | MSYS Makefiles        | msys2 shell | msys2 shell | msys2 shell |
+|             | Android | Ninja                 | ❌          | ✅          | ❌          |
+|             |         | Unix Makefiles        | ❌          | ✅          | ❌          |
+| **Linux**   | Linux   | Unix Makefiles        | ✅          | ✅          | ❌          |
+|             |         | Ninja                 | ✅          | ✅          | ❌          |
+|             | Android | Ninja                 | ❌          | ✅          | ❌          |
+|             |         | Unix Makefiles        | ❌          | ✅          | ❌          |
 
 1. 使用 Unix Makefile 需要 rename mingw32-make -> make，不推荐
 2. 使用 MSYS Makefiles 需要特定的 shell，否则找不到默认的使用 sh.exe，不推荐
