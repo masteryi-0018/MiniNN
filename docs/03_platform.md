@@ -154,8 +154,21 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
 
 1. Android Studio不能运行arm64的Android镜像
 
-- 问题原因：Windows未开启Hyper-V，导致Android模拟器不能使用虚拟化技术，无法模拟arm的指令集
-- 解决方法：未解决。Windows开启Hyper-V，重启即可。但是在没有开启Hyper-V时wsl可以正常使用，因为wsl可以使用一个更轻量级的虚拟化组件，独立于 Hyper-V，避免影响 VMware/VirtualBox 等第三方虚拟化软件
+- 问题原因：较低版本的emulator不能支持较高版本的API，`PANIC: Avd's CPU Architecture 'arm64' is not supported by the QEMU2 emulator on x86_64 host.`
+- 解决方法：android studio日志目录在：`"C:\Users\masteryi\AppData\Local\Google\AndroidStudio2022.3\log\idea.log"`，删除，重新打开android studio运行模拟器，在新的日志中生成以下内容：
+
+```sh
+2025-08-03 10:17:21,943 [   7290]   INFO - Emulator: Pixel 3a API 34 - E:\android_sdk\emulator\emulator.exe -netdelay none -netspeed full -avd Pixel_3a_API_34 -qt-hide-window -grpc-use-token -idle-grpc-timeout 300
+2025-08-03 10:17:22,211 [   7558]   INFO - Emulator: Pixel 3a API 34 - PANIC: Avd's CPU Architecture 'arm64' is not supported by the QEMU2 emulator on x86_64 host.
+2025-08-03 10:17:22,211 [   7558]   INFO - Emulator: Pixel 3a API 34 - Android emulator version 35.6.11.0 (build_id 13610412) (CL:N/A)
+2025-08-03 10:17:22,211 [   7558]   INFO - Emulator: Pixel 3a API 34 - Graphics backend: gfxstream
+2025-08-03 10:17:22,211 [   7558]   INFO - Emulator: Pixel 3a API 34 - Found systemPath E:\android_sdk\system-images\android-34\google_apis\arm64-v8a\
+2025-08-03 10:17:22,211 [   7558]   INFO - Emulator: Pixel 3a API 34 - Process finished with exit code 1
+2025-08-03 10:17:22,211 [   7558] SEVERE - Emulator: Pixel 3a API 34 - Emulator terminated with exit code 1
+java.lang.Throwable: Emulator terminated with exit code 1
+```
+
+查看源码：`https://android.googlesource.com/platform/external/qemu/+/refs/heads/emu-36-1-release/android/emulator/main-emulator.cpp#1095`，发现api>28就会报错，所以降低版本试试。另：platform/external/qemu/仓库main分支不是最新的，我找的是emu-36-1-release，还有emu-dev也比较新。按照这个，就找一个api<28的，也就是27（8.1）或者26（8.0），但是事与愿违，会报另一个错：`https://android.googlesource.com/platform/external/qemu/+/refs/heads/emu-36-1-release/android/emulator/main-emulator.cpp#1340`，试了几次，都不成功，遂放弃
 
 2. WSL下直接再安装adb会报错
 
@@ -169,3 +182,8 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
 ldd /data/local/tmp/gtest-main
 ldd /data/local/tmp/demo
 ```
+
+4. 为什么emulator运行x86架构的android镜像，可以跑arm64的程序？
+
+- 问题原因：（待确认）默认情况下，Android Studio 的 x86 模拟器 启用了 ARM 二进制翻译（即使你选择的是 x86_64 镜像）
+- 解决方法：不用解决。参考：<https://www.v2ex.com/t/872539>
