@@ -1,4 +1,4 @@
-import mininn
+from mininn.predictor import Predictor
 
 import onnxruntime as ort
 import numpy as np
@@ -21,8 +21,8 @@ def l2_norm(a, b):
     return np.linalg.norm(arr_a - arr_b)
 
 def test_add():
-    filename = "../../models/add_model.gynn"
-    my_predictor= mininn.Predictor(filename)
+    filename = "models/add_model.gynn"
+    my_predictor= Predictor(filename)
 
     inputs = my_predictor.get_input()
     input1_size = inputs[0].get_size()
@@ -43,8 +43,8 @@ def test_add():
     return
 
 def test_mv2():
-    filename = "../../models/mobilenetv2-10.gynn"
-    my_predictor= mininn.Predictor(filename)
+    filename = "models/mobilenetv2-10.gynn"
+    my_predictor= Predictor(filename)
 
     inputs = my_predictor.get_input()
     input1_size = inputs[0].get_size()

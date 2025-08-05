@@ -1,3 +1,4 @@
+import sys
 from setuptools import setup, find_packages
 
 VERSION = '1.0.0'
@@ -14,7 +15,6 @@ setup(
     packages=find_packages(where="python"),
     package_dir={"": "python"},
     package_data={
-        'mininn': ['mininn_capi.pyd'],
-        'mininn': ['mininn_capi.so'],
+        'mininn': ['mininn_capi.pyd'] if sys.platform == 'win32' else ['mininn_capi.so'],
     },
 )

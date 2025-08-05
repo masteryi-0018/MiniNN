@@ -1,6 +1,7 @@
 import onnx
 from onnx import helper, TensorProto
 
+from mininn.convertor import Convertor
 
 def make_model():
     input0 = helper.make_tensor_value_info('input0', TensorProto.FLOAT, [100, 3, 224, 224])
@@ -45,7 +46,7 @@ def make_model():
 
     onnx.checker.check_model(model)
 
-    model_path = '../../../models/conv_model.onnx'
+    model_path = 'models/conv_model.onnx'
     onnx.save(model, model_path)
     print(f"模型已保存为 {model_path}")
 
@@ -55,3 +56,8 @@ def make_model():
 if __name__ == "__main__":
     make_model()
     print("模型生成完成")
+    model_path = "models/conv_model.onnx"
+    new_model_path = model_path.replace(".onnx", ".gynn")
+    my_convertor = Convertor()
+    my_convertor.load_onnx_model(model_path)
+    my_convertor.build_mininn(new_model_path)

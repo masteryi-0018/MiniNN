@@ -1,15 +1,17 @@
-import os
-import sys
+# import os
+# import sys
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../third_party/flatbuffers/python'))
+# sys.path.append(os.path.join(os.path.dirname(__file__), '../../third_party/flatbuffers/python'))
 import flatbuffers
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
-import mininn_fbs.Op
-import mininn_fbs.Attribute
-import mininn_fbs.Node
-import mininn_fbs.Tensor
-import mininn_fbs.Graph
+from mininn import mininn_fbs
+
+from mininn.mininn_fbs import Op
+from mininn.mininn_fbs import Attribute
+from mininn.mininn_fbs import Node
+from mininn.mininn_fbs import Tensor
+from mininn.mininn_fbs import Graph
+
 
 import onnx
 import numpy as np
@@ -82,7 +84,7 @@ OP_map = {
     "Constant": mininn_fbs.Op.Op().CONSTANT,
 }
 
-class convertor():
+class Convertor():
     def __init__(self):
         self.onnx_graph = None
         self.builder = flatbuffers.Builder(74741)
@@ -357,7 +359,7 @@ def read(model_path):
 if __name__ == '__main__':
     model_path = "../../models/mobilenetv2-10.onnx"
     new_model_path = model_path.replace(".onnx", ".gynn")
-    my_convertor = convertor()
+    my_convertor = Convertor()
     my_convertor.load_onnx_model(model_path)
     my_convertor.build_mininn(new_model_path)
     check_mininn(new_model_path)
