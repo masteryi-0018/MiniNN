@@ -1,32 +1,49 @@
+from mininn.convertor import Convertor
+from mininn.predictor import Predictor
+
 import onnx
 from onnx import helper, TensorProto
+import onnxruntime as ort
+import numpy as np
 
-from mininn.convertor import Convertor
 
-def make_model():
-    input0 = helper.make_tensor_value_info('input0', TensorProto.FLOAT, [100, 3, 224, 224])
+def make_model(input_shape=[1, 3, 224, 224],
+               weight_shape=[64, 3, 3, 3],
+               bias_shape=[64,],
+               output_shape=[1, 64, 224, 224],
+               dilations=[1, 1],
+               group=1,
+               kernel_shape=[3, 3],
+               pads=[1, 1, 1, 1],
+               strides=[1, 1]
+               ):
+    input0 = helper.make_tensor_value_info('input0', TensorProto.FLOAT, input_shape)
 
+    weight_value = np.random.rand(*weight_shape).astype(np.float32)
     input1 = helper.make_tensor(
         name='input1',
         data_type=TensorProto.FLOAT,
-        dims=[64, 3, 3, 3],
-        vals=(1.0,) * (64 * 3 * 3 * 3))
+        dims=weight_shape,
+        vals=weight_value)
 
+    bias_value = np.random.rand(*bias_shape).astype(np.float32)
     input2 = helper.make_tensor(
         name='input2',
         data_type=TensorProto.FLOAT,
-        dims=[64],
-        vals=(2.0,) * 64)
+        dims=bias_shape,
+        vals=bias_value)
 
-    output0 = helper.make_tensor_value_info('output0', TensorProto.FLOAT, [100, 64, 224, 224])
+    output0 = helper.make_tensor_value_info('output0', TensorProto.FLOAT, output_shape)
 
     conv_node = helper.make_node(
         'Conv',
         inputs=['input0', 'input1', 'input2'],
         outputs=['output0'],
-        kernel_shape=[3, 3],
-        pads=[1, 1, 1, 1],
-        strides=[1, 1],
+        dilations=dilations,
+        group=group,
+        kernel_shape=kernel_shape,
+        pads=pads,
+        strides=strides,
         name='conv_node'
     )
 
@@ -41,7 +58,8 @@ def make_model():
     model = helper.make_model(
         graph,
         producer_name='onnx-mininn',
-        opset_imports=[helper.make_opsetid("", 21)]
+        opset_imports=[helper.make_opsetid("", 22)], # means the imports
+        ir_version = 10 # means the format
     )
 
     onnx.checker.check_model(model)
@@ -52,12 +70,62 @@ def make_model():
 
     return model_path
 
-
-if __name__ == "__main__":
-    make_model()
-    print("模型生成完成")
-    model_path = "models/conv_model.onnx"
+def convert_model(model_path):
     new_model_path = model_path.replace(".onnx", ".gynn")
     my_convertor = Convertor()
     my_convertor.load_onnx_model(model_path)
     my_convertor.build_mininn(new_model_path)
+    return new_model_path
+
+def gen_golden(model_path, input):
+    session = ort.InferenceSession(model_path)
+
+    input0_shape = session.get_inputs()[0].shape
+    input = input.reshape(input0_shape)
+
+    outputs = session.run(
+        None,
+        {'input0': input}
+    )
+    return outputs[0]
+
+def l2_norm(a, b):
+    arr_a = np.array(a, dtype=np.float32)
+    arr_b = np.array(b, dtype=np.float32)
+    arr_b = arr_b.reshape(arr_a.shape)
+    return np.linalg.norm(arr_a - arr_b)
+
+def test_model(new_model_path, model_path):
+    my_predictor= Predictor(new_model_path)
+
+    inputs = my_predictor.get_input()
+    input0_size = inputs[0].get_size()
+    input = np.random.rand(input0_size).astype(np.float32)
+
+    my_predictor.set_data([input])
+    my_predictor.run()
+
+    outputs = my_predictor.get_output()
+    output = outputs[0]
+    print(output.get_data()[0], output.get_shape())
+
+    golden = gen_golden(model_path, input)
+    print(l2_norm(output.get_data(), golden))
+    return
+
+
+if __name__ == "__main__":
+
+    model_path = make_model(input_shape=(1, 3, 32, 32),
+                            weight_shape=(3, 3, 3, 3),
+                            bias_shape=(3,),
+                            output_shape=(1, 3, 32, 32),
+                            dilations=(1, 1),
+                            group=1,
+                            kernel_shape=(3, 3),
+                            pads=(1, 1, 1, 1),
+                            strides=(1, 1))
+
+    new_model_path = convert_model(model_path)
+
+    test_model(new_model_path, model_path)
