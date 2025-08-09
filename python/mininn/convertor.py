@@ -197,8 +197,9 @@ class Convertor():
                     else: # float32
                         shape_list = i.dims
                         shape = self.builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
-                        raw_data = i.raw_data
-                        data = self.builder.CreateNumpyVector(np.frombuffer(raw_data, dtype=np.uint8))
+                        # use float_data not raw_data
+                        float_data = i.float_data
+                        data = self.builder.CreateNumpyVector(np.array(float_data, dtype=np.float32))
                         self.add_tensor(shape, data, idx_list, onnx_tensor)
 
             for v in self.onnx_graph.value_info:
