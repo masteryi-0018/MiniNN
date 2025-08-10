@@ -54,7 +54,8 @@ void gemm_func(float* input_buffer, float* weight_buffer, float* bias_buffer, fl
                     value += bias_buffer[i * N + j];
                 }
             }
-
+            // need to zero initialize out_buffer before use
+            out_buffer[i * N + j] = 0;
             out_buffer[i * N + j] = beta_val * out_buffer[i * N + j] + value;
         }
     }

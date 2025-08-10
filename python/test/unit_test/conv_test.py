@@ -92,7 +92,7 @@ def gen_all_golden(model_path, input):
     options = ort.SessionOptions()
     options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_DISABLE_ALL
 
-    session = ort.InferenceSession(model_path, options, providers=['CPUExecutionProvider'])
+    session = ort.InferenceSession(modified_model_path, options, providers=['CPUExecutionProvider'])
     input0_shape = session.get_inputs()[0].shape
     input = input.reshape(input0_shape)
 
