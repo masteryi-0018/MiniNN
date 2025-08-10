@@ -57,7 +57,7 @@ def test_mv2():
     c = outputs[0]
     print(c.get_data()[0], c.get_shape())
 
-    golden = gen_golden("../../models/mobilenetv2-10.onnx")
+    golden = gen_golden("models/mobilenetv2-10.onnx")
     print(l2_norm(c.get_data(), golden))
     return
 

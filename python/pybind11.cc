@@ -55,7 +55,8 @@ void bind_class(py::module_ &m) {
         .def("async_run_future", &Predictor::async_run_future)
         .def("async_run_callback", &Predictor::async_run_callback)
         .def("get_input_tensors", &Predictor::get_input_tensors)
-        .def("get_output_tensors", &Predictor::get_output_tensors);
+        .def("get_output_tensors", &Predictor::get_output_tensors)
+        .def("dump_all_outputs", &Predictor::dump_all_outputs);
 }
 
 PYBIND11_MODULE(mininn_capi, m) {

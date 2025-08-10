@@ -77,6 +77,32 @@ def convert_model(model_path):
     my_convertor.build_mininn(new_model_path)
     return new_model_path
 
+def gen_all_golden(model_path, input):
+    # add all outputs to the graph
+    modified_model_path = model_path.replace(".onnx", "_all_outputs.onnx")
+
+    model = onnx.load(model_path)
+    for node in model.graph.node:
+        for output in node.output:
+            if not any(o.name == output for o in model.graph.output):
+                model.graph.output.append(helper.make_tensor_value_info(output, TensorProto.FLOAT, None))
+
+    onnx.save(model, modified_model_path)
+
+    options = ort.SessionOptions()
+    options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_DISABLE_ALL
+
+    session = ort.InferenceSession(model_path, options, providers=['CPUExecutionProvider'])
+    input0_shape = session.get_inputs()[0].shape
+    input = input.reshape(input0_shape)
+
+    outputs = session.run(
+        None,
+        {'input0': input}
+    )
+
+    return outputs
+
 def gen_golden(model_path, input):
     session = ort.InferenceSession(model_path)
 
@@ -87,7 +113,7 @@ def gen_golden(model_path, input):
         None,
         {'input0': input}
     )
-    return outputs[0]
+    return outputs
 
 def l2_norm(a, b):
     arr_a = np.array(a, dtype=np.float32)
@@ -95,7 +121,7 @@ def l2_norm(a, b):
     arr_b = arr_b.reshape(arr_a.shape)
     return np.linalg.norm(arr_a - arr_b)
 
-def test_model(new_model_path, model_path):
+def test_model(new_model_path, model_path, debug=True):
     my_predictor= Predictor(new_model_path)
 
     inputs = my_predictor.get_input()
@@ -105,27 +131,44 @@ def test_model(new_model_path, model_path):
     my_predictor.set_data([input])
     my_predictor.run()
 
-    outputs = my_predictor.get_output()
-    output = outputs[0]
-    print(output.get_data()[0], output.get_shape())
-
-    golden = gen_golden(model_path, input)
-    print(l2_norm(output.get_data(), golden))
+    if debug:
+        all_golden = gen_all_golden(model_path, input)
+        all_outputs = my_predictor.dump_all_outputs()
+        for golden, output in zip(all_golden, all_outputs):
+            print(l2_norm(output.get_data(), golden))
+    else:
+        goldens = gen_golden(model_path, input)
+        golden = goldens[0]
+        outputs = my_predictor.get_output()
+        output = outputs[0]
+        # print(output.get_data()[0], output.get_shape())
+        print(l2_norm(output.get_data(), golden))
     return
 
 
 if __name__ == "__main__":
 
-    model_path = make_model(input_shape=(1, 3, 32, 32),
-                            weight_shape=(3, 3, 3, 3),
-                            bias_shape=(3,),
-                            output_shape=(1, 3, 32, 32),
-                            dilations=(1, 1),
-                            group=1,
-                            kernel_shape=(3, 3),
-                            pads=(1, 1, 1, 1),
-                            strides=(1, 1))
+    batch_size = 1
+    hw = 224
+    ic = 3
+    oc = 64
+    dilations=[1, 1]
+    group=1
+    k_size = 3
+    pads = [1, 1, 1, 1]
+    strides = [1, 1]
+
+    model_path = make_model(input_shape=(1, ic, hw, hw),
+                            weight_shape=(oc, ic, k_size, k_size),
+                            bias_shape=(oc,),
+                            output_shape=(1, oc, hw, hw),
+                            dilations=dilations,
+                            group=group,
+                            kernel_shape=(k_size, k_size),
+                            pads=pads,
+                            strides=strides
+                            )
 
     new_model_path = convert_model(model_path)
 
-    test_model(new_model_path, model_path)
+    test_model(new_model_path, model_path, False)

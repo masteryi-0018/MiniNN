@@ -22,3 +22,7 @@ class Predictor():
     def get_output(self):
         outputs = self.Predictor.get_output_tensors()
         return outputs
+
+    def dump_all_outputs(self):
+        outputs = self.Predictor.dump_all_outputs()
+        return outputs

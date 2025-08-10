@@ -53,3 +53,14 @@ std::vector<std::shared_ptr<Tensor>> Predictor::get_output_tensors() {
     }
     return output_tensors;
 }
+
+std::vector<std::shared_ptr<Tensor>> Predictor::dump_all_outputs() {
+    std::vector<std::shared_ptr<Tensor>> all_output_tensors;
+    for (auto kernel: kernels_) {
+        Params* params = kernel->get_params();
+        if (params->output) {
+            all_output_tensors.emplace_back(params->output);
+        }
+    }
+    return all_output_tensors;
+}

@@ -6,6 +6,7 @@
 #include <thread>
 #include <chrono>
 #include <cstring> // memset
+#include <iomanip> // setprecision
 
 ConvCompute::ConvCompute() {}
 
@@ -45,6 +46,14 @@ void conv_func(float* input_buffer, float* weight_buffer, float* bias_buffer, fl
 
     int stride_height = strides[0];
     int stride_width = strides[1];
+
+    // debug, print weight buffer content
+    // LOG(INFO) << "Weight buffer content:";
+    // for (int i = 0; i < out_channels * in_group_size * kernel_height * kernel_width; ++i) {
+    //     // use std::setprecision to control the number of decimal places
+    //     std::cout << "Float: " << std::setprecision(32) << std::fixed << weight_buffer[i] << std::endl;
+    //     break;
+    // }
 
     // padding zero
     int padded_height = input_height + padding_up + padding_down;

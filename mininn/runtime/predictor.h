@@ -24,6 +24,9 @@ public:
 
     std::vector<std::shared_ptr<Tensor>> get_output_tensors();
 
+    // debug
+    std::vector<std::shared_ptr<Tensor>> dump_all_outputs();
+
 private:
     std::shared_ptr<Graph> graph_;
     std::vector<std::shared_ptr<Kernel>> kernels_;

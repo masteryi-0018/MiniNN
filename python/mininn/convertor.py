@@ -197,9 +197,12 @@ class Convertor():
                     else: # float32
                         shape_list = i.dims
                         shape = self.builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
-                        # use float_data not raw_data
-                        float_data = i.float_data
-                        data = self.builder.CreateNumpyVector(np.array(float_data, dtype=np.float32))
+                        if i.raw_data:
+                            raw_data = i.raw_data
+                            data = self.builder.CreateNumpyVector(np.frombuffer(raw_data, dtype=np.uint8))
+                        else:
+                            float_data = i.float_data
+                            data = self.builder.CreateNumpyVector(np.array(float_data, dtype=np.float32))
                         self.add_tensor(shape, data, idx_list, onnx_tensor)
 
             for v in self.onnx_graph.value_info:
@@ -358,7 +361,7 @@ def read(model_path):
 
 
 if __name__ == '__main__':
-    model_path = "../../models/mobilenetv2-10.onnx"
+    model_path = "models/mobilenetv2-10.onnx"
     new_model_path = model_path.replace(".onnx", ".gynn")
     my_convertor = Convertor()
     my_convertor.load_onnx_model(model_path)
