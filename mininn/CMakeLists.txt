@@ -12,6 +12,7 @@ option(WITH_OPENCL "build with opencl" ON)
 option(WITH_AVX "build with avx" ON)
 option(WITH_SSE "build with sse" ON)
 option(WITH_MKL "build with mkl" ON)
+option(WITH_NEON "build with neon" ON)
 
 # pybind need one static lib to produce a shared lib, so use a OBJECT to handle it
 set(LIB_TYPE OBJECT)

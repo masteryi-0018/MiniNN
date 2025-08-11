@@ -91,7 +91,8 @@ def build_cmake(args):
                            "-DWITH_OPENCL=OFF",
                            "-DWITH_AVX=OFF",
                            "-DWITH_SSE=OFF",
-                           "-DWITH_MKL=OFF"])
+                           "-DWITH_MKL=OFF",
+                           "-DWITH_NEON=OFF"])
     run_command(cmake_args)
     run_command(["cmake", "--build", "."], cwd="build")
     if args.wheel and args.target != "android":

@@ -29,6 +29,11 @@ if(WITH_MKL)
     target_link_libraries(backend mkl)
 endif()
 
+if(WITH_NEON)
+    add_subdirectory(neon)
+    target_link_libraries(backend neon)
+endif()
+
 # link backend lib
 # target_link_libraries(backend ${OpenCL_LIBRARIES})
 # target_link_libraries(backend ${MKL_LIBRARIES})

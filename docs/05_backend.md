@@ -227,3 +227,20 @@ g++ -o test test.cc -lGLEW -lGL -lglfw
 1. <https://github.com/KhronosGroup/OpenCL-Guide>
 2. 一个博客，用来在 WSL 中发现 opencl 的 cuda 设备，还没有验证有效性，<https://medium.com/@tackboon97_98523/how-to-install-opencl-on-wsl-ubuntu-to-detect-a-cuda-gpu-device-30f334a415ec>
 3. 一个 GitHub Issue，讨论在 WSL 中使用 clinfo 发现 cuda 设备的问题，讨论的很火热，并且目前还没有关闭：<https://github.com/microsoft/WSL/issues/6951>
+
+## arm neon
+
+1. x86平台，需要交叉编译的gcc版本，或者使用ndk中的clang
+2. 所以不论是Windows还是Linux，都需要交叉编译
+
+## arm neon 的测试
+
+这里的`aarch64-linux-android21-clang`中`aarch64`是目标架构，`linux`是目标内核，`android21`是ABI，`clang`是编译器。实际上ndk中只有目标架构的区别，分别是armv7a，i686，x86_64以及最新的risc-v
+
+不需要开启`-march=armv8-a+simd`，因为arm64 ABI默认开启
+
+编译命令：
+
+```sh
+E:\android_sdk\ndk\29.0.13846066\toolchains\llvm\prebuilt\windows-x86_64\bin\aarch64-linux-android21-clang .\test.cc -o test
+```

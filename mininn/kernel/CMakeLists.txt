@@ -20,5 +20,8 @@ endif()
 if (WITH_MULTI_THREADS)
     target_compile_definitions(kernel PRIVATE -DWITH_MULTI_THREADS)
 endif()
+if (WITH_NEON)
+    target_compile_definitions(kernel PRIVATE -DWITH_NEON)
+endif()
 
 message(STATUS "Source files for kernel library: ${KERNEL_SRC}")
