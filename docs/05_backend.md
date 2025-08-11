@@ -244,3 +244,17 @@ g++ -o test test.cc -lGLEW -lGL -lglfw
 ```sh
 E:\android_sdk\ndk\29.0.13846066\toolchains\llvm\prebuilt\windows-x86_64\bin\aarch64-linux-android21-clang .\test.cc -o test
 ```
+
+## arm sve
+
+支持 SVE（Scalable Vector Extension） 的 ARM CPU 主要集中在面向服务器和高性能计算的芯片，以及部分高端桌面和研发平台。移动端（比如手机和平板）绝大多数 ARM CPU 目前不支持 SVE，主要用的是 NEON（asimd）。目前的Android emulator不支持sve，红米k60是骁龙8gen1，也不支持sve。
+
+## arm sve 的测试
+
+需要开启`-march=armv8.2-a+sve`，默认不开启；很神奇的一点是，必须在cmd窗口下才行，不能用pwsh
+
+编译命令：
+
+```sh
+E:\android_sdk\ndk\29.0.13846066\toolchains\llvm\prebuilt\windows-x86_64\bin\aarch64-linux-android21-clang .\test.cc -o test -march=armv8.2-a+sve
+```
