@@ -6,25 +6,21 @@ from onnx import helper, TensorProto
 
 def make_model(input_shape=[1, 3, 224, 224],
                output_shape=[1, 3, 224, 224],
-               min=0,
-               max=6
                ):
     input0 = helper.make_tensor_value_info('input0', TensorProto.FLOAT, input_shape)
 
-    output0 = helper.make_tensor_value_info('output0', TensorProto.FLOAT, output_shape)
+    output0 = helper.make_tensor_value_info('output0', TensorProto.INT64, [len(output_shape)])
 
-    clip_node = helper.make_node(
-        'Clip',
+    shape_node = helper.make_node(
+        'Shape',
         inputs=['input0'],
         outputs=['output0'],
-        min=min,
-        max=max,
-        name='clip_node'
+        name='shape_node'
     )
 
     graph = helper.make_graph(
-        [clip_node],
-        'clip_model',
+        [shape_node],
+        'shape_model',
         [input0],
         [output0]
     )
@@ -38,7 +34,7 @@ def make_model(input_shape=[1, 3, 224, 224],
 
     onnx.checker.check_model(model)
 
-    model_path = 'models/clip_model.onnx'
+    model_path = 'models/shape_model.onnx'
     onnx.save(model, model_path)
     print(f"模型已保存为 {model_path}")
 
@@ -53,13 +49,9 @@ if __name__ == "__main__":
     width = 224
     input_shape = (batch_size, channel, height, width)
     output_shape = (batch_size, channel, height, width)
-    min = 0.0
-    max = 6.0
 
     model_path = make_model(input_shape=input_shape,
-                            output_shape=output_shape,
-                            min=min,
-                            max=max
+                            output_shape=output_shape
                             )
 
     new_model_path = convert_model(model_path)

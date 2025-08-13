@@ -56,8 +56,8 @@ def make_model(input_shape=[1, 3, 224, 224],
     model = helper.make_model(
         graph,
         producer_name='onnx-mininn',
-        opset_imports=[helper.make_opsetid("", 6)], # means the imports
-        ir_version = 10 # means the format
+        opset_imports=[helper.make_opsetid("", 10)], # means the imports
+        ir_version = 6 # means the format
     )
 
     onnx.checker.check_model(model)
