@@ -6,6 +6,7 @@
 
 #include <thread>
 #include <chrono>
+#include <numeric>
 
 GatherCompute::GatherCompute() {}
 
@@ -16,17 +17,55 @@ GatherCompute::~GatherCompute() {
     }
 }
 
+std::vector<int> compute_strides(const std::vector<int>& shape) {
+    std::vector<int> strides(shape.size(), 1);
+    for (int i = shape.size() - 2; i >= 0; --i) {
+        strides[i] = strides[i + 1] * shape[i + 1];
+    }
+    return strides;
+}
+
+int get_flat_index(const std::vector<int>& idx, const std::vector<int>& strides) {
+    int flat_idx = 0;
+    for (size_t i = 0; i < idx.size(); ++i) {
+        flat_idx += idx[i] * strides[i];
+    }
+    return flat_idx;
+}
+
 void gather_func(float* data_buffer, float* indices_buffer, float* out_buffer, std::vector<int> axis,
-                 std::vector<int> indices_shape, std::vector<int> out_shape) {
+                 std::vector<int> indices_shape, std::vector<int> data_shape, std::vector<int> out_shape) {
     // todo: only support axis == 0
     // todo: only support indices_shape is 1 dim
-    // todo: only support data_shape is 1 dim
-    // int axis_val = axis[0];
-    for (int i = 0; i < indices_shape[0]; ++i) {
-        int index = (int)(indices_buffer[i]);
-        for (int j = 0; j < out_shape[0]; ++j) {
-            out_buffer[j] = data_buffer[index];
+    int ndim = out_shape.size();
+    int gather_axis = axis[0];
+
+    std::vector<int> data_strides = compute_strides(data_shape);
+    std::vector<int> indices_strides = compute_strides(indices_shape);
+    std::vector<int> out_strides = compute_strides(out_shape);
+
+    int out_size = std::accumulate(out_shape.begin(), out_shape.end(), 1, std::multiplies<int>());
+
+    for (int i = 0; i < out_size; ++i) {
+        std::vector<int> out_idx(ndim);
+        int tmp = i;
+        for (int d = 0; d < ndim; ++d) {
+            out_idx[d] = tmp / out_strides[d];
+            tmp = tmp % out_strides[d];
         }
+
+        std::vector<int> indices_idx(indices_shape.size());
+        for (size_t d = 0; d < indices_shape.size(); ++d) {
+            indices_idx[d] = out_idx[d];
+        }
+
+        int idx_in_axis = static_cast<int>(indices_buffer[get_flat_index(indices_idx, indices_strides)]);
+        out_idx[gather_axis] = idx_in_axis;
+        // debug
+        // print_vector(out_idx);
+
+        int data_flat_idx = get_flat_index(out_idx, data_strides);
+        out_buffer[i] = data_buffer[data_flat_idx];
     }
     // print_vector(indices_shape);
     // print_vector(out_shape); // don't need to pass T when T is in params
@@ -42,13 +81,14 @@ void GatherCompute::run() {
     std::shared_ptr<Tensor> out = params->output;
     std::vector<int> axis = params_->axis;
 
+    std::vector<int> data_shape = data->get_shape();
     std::vector<int> indices_shape = indices->get_shape();
     std::vector<int> out_shape = out->get_shape();
     float* data_buffer = reinterpret_cast<float*>(data->get_buffer());
     float* indices_buffer = reinterpret_cast<float*>(indices->get_buffer());
     float* out_buffer = reinterpret_cast<float*>(out->get_buffer());
 
-    gather_func(data_buffer, indices_buffer, out_buffer, axis, indices_shape, out_shape);
+    gather_func(data_buffer, indices_buffer, out_buffer, axis, indices_shape, data_shape, out_shape);
 
     auto end_time = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed_seconds = end_time - start_time;

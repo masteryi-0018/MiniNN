@@ -188,8 +188,11 @@ class Convertor():
                     if i.data_type == 7: # int64
                         shape_list = i.dims
                         shape = self.builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
-                        raw_data = i.raw_data
-                        int64_value = np.frombuffer(raw_data, dtype=np.int64)
+                        if i.raw_data:
+                            raw_data = i.raw_data
+                            int64_value = np.frombuffer(raw_data, dtype=np.int64)
+                        else:
+                            int64_value = i.int64_data
                         float32_value = np.float32(int64_value)
                         float32_bytes = float32_value.tobytes()
                         data = self.builder.CreateNumpyVector(np.frombuffer(float32_bytes, dtype=np.uint8))
