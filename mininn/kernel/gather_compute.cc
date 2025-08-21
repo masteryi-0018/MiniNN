@@ -37,8 +37,15 @@ void gather_func(float* data_buffer, float* indices_buffer, float* out_buffer, s
                  std::vector<int> indices_shape, std::vector<int> data_shape, std::vector<int> out_shape) {
     // todo: only support axis == 0
     // todo: only support indices_shape is 1 dim
-    int ndim = out_shape.size();
     int gather_axis = axis[0];
+    if (indices_shape.data() == nullptr) {
+        indices_shape = std::vector<int>(1, 1); // treat empty indices as scalar
+    }
+    out_shape.clear();
+    out_shape.insert(out_shape.end(), data_shape.begin(), data_shape.begin() + gather_axis);
+    out_shape.insert(out_shape.end(), indices_shape.begin(), indices_shape.end());
+    out_shape.insert(out_shape.end(), data_shape.begin() + gather_axis + 1, data_shape.end());
+    int ndim = out_shape.size();
 
     std::vector<int> data_strides = compute_strides(data_shape);
     std::vector<int> indices_strides = compute_strides(indices_shape);

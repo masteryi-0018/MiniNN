@@ -12,16 +12,16 @@ def make_model(input_shape=[1, 3, 224, 224],
                ):
     input0 = helper.make_tensor_value_info('input0', TensorProto.FLOAT, input_shape)
 
-    indices_value = np.random.randint(0, input_shape[axis], size=indices_shape).astype(np.int64)
+    indices_value = np.random.randint(0, input_shape[axis], size=[1]).astype(np.int64)
     # debug
     # print(f"indices_value: {indices_value}")
     input1 = helper.make_tensor(
         name='input1',
         data_type=TensorProto.INT64,
-        dims=indices_shape,
+        dims=[],
         vals=indices_value)
 
-    output0 = helper.make_tensor_value_info('output0', TensorProto.FLOAT, output_shape)
+    output0 = helper.make_tensor_value_info('output0', TensorProto.FLOAT, [])
 
     gather_node = helper.make_node(
         'Gather',
@@ -58,10 +58,10 @@ def make_model(input_shape=[1, 3, 224, 224],
 if __name__ == "__main__":
 
     axis = 0
-    input_shape = (3, 3)
-    indices_shape = (2,)
+    input_shape = [4]
+    indices_shape = [1]
     output_shape = input_shape[:axis] + indices_shape + input_shape[axis+1:]
-    # output_shape = (2, 3)
+    # output_shape = [1]
 
     model_path = make_model(input_shape=input_shape,
                             indices_shape=indices_shape,

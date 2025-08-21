@@ -22,7 +22,8 @@ void Tensor::set_shape(std::vector<int>& shape) {
     if (shape.data() == nullptr) {
         // tensor: [1, 3, 224, 224]
         // number: [1]
-        shape_ = std::vector<int>(1, 1); // 对待空shape，初始化为一个1
+        // shape_ = std::vector<int>(1, 1); // 对待空shape，初始化为一个1
+        // 不初始化shape_，看作标量
         size_ = 1;
     } else {
         shape_ = shape;
