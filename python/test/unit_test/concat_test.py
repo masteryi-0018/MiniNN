@@ -6,25 +6,26 @@ import numpy as np
 
 
 def make_model(input_shape=[1, 3, 224, 224],
-               output_shape=[1, 3, 224, 224],
-               axes=0
+               output_shape=[1, 6, 224, 224],
+               axis=0
                ):
-    input0 = helper.make_tensor_value_info('input0', TensorProto.FLOAT, [])
+    input0 = helper.make_tensor_value_info('input0', TensorProto.FLOAT, input_shape)
+    input1 = helper.make_tensor_value_info('input1', TensorProto.FLOAT, input_shape)
 
-    output0 = helper.make_tensor_value_info('output0', TensorProto.FLOAT, [1])
+    output0 = helper.make_tensor_value_info('output0', TensorProto.FLOAT, output_shape)
 
-    unsqueeze_node = helper.make_node(
-        'Unsqueeze',
-        inputs=['input0'],
+    concat_node = helper.make_node(
+        'Concat',
+        inputs=['input0', 'input1'],
         outputs=['output0'],
-        axes=axes,
-        name='unsqueeze_node'
+        axis=axis,
+        name='concat_node'
     )
 
     graph = helper.make_graph(
-        [unsqueeze_node],
-        'unsqueeze_model',
-        [input0],
+        [concat_node],
+        'concat_model',
+        [input0, input1],
         [output0]
     )
 
@@ -37,7 +38,7 @@ def make_model(input_shape=[1, 3, 224, 224],
 
     onnx.checker.check_model(model)
 
-    model_path = 'models/unsqueeze_model.onnx'
+    model_path = 'models/concat_model.onnx'
     onnx.save(model, model_path)
     print(f"模型已保存为 {model_path}")
 
@@ -46,13 +47,13 @@ def make_model(input_shape=[1, 3, 224, 224],
 
 if __name__ == "__main__":
 
-    axes = [0]
-    input_shape = (3, 224, 224)
-    output_shape = (1, 3, 224, 224)
+    axis = 0
+    input_shape = (1, 3, 224, 224)
+    output_shape = (1, 6, 224, 224)
 
     model_path = make_model(input_shape=input_shape,
                             output_shape=output_shape,
-                            axes=axes
+                            axis=axis
                             )
 
     new_model_path = convert_model(model_path)
