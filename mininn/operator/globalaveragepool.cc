@@ -21,6 +21,9 @@ void Globalaveragepool::set_output_tensors(std::vector<std::shared_ptr<Tensor>>&
 }
 
 void Globalaveragepool::set_attributes(std::map<std::string, std::vector<int>>& attrs) {
+    if (attrs.size() != 0) {
+        LOG(INFO) << "Globalaveragepool should not have attributes.";
+    }
     return;
 }
 

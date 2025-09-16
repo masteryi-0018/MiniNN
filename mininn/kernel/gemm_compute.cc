@@ -17,7 +17,7 @@ GemmCompute::~GemmCompute() {
 
 void gemm_func(float* input_buffer, float* weight_buffer, float* bias_buffer, float* out_buffer,
                std::vector<int> input_shape, std::vector<int> weight_shape, std::vector<int> bias_shape,
-               std::vector<int> out_shape, std::vector<int> alpha, std::vector<int> beta, std::vector<int> transB) {
+               std::vector<int> alpha, std::vector<int> beta, std::vector<int> transB) {
     // C = alpha * (A * B) + beta * C
     int M = input_shape[0];
     int K = input_shape[1];
@@ -78,14 +78,13 @@ void GemmCompute::run() {
     std::vector<int> input_shape = input->get_shape();
     std::vector<int> weight_shape = weight->get_shape();
     std::vector<int> bias_shape = bias->get_shape();
-    std::vector<int> out_shape = out->get_shape();
     float* input_buffer = reinterpret_cast<float*>(input->get_buffer());
     float* weight_buffer = reinterpret_cast<float*>(weight->get_buffer());
     float* bias_buffer = reinterpret_cast<float*>(bias->get_buffer());
     float* out_buffer = reinterpret_cast<float*>(out->get_buffer());
 
     gemm_func(input_buffer, weight_buffer, bias_buffer, out_buffer,
-              input_shape, weight_shape, bias_shape, out_shape,
+              input_shape, weight_shape, bias_shape,
               alpha, beta, transB);
 
     auto end_time = std::chrono::high_resolution_clock::now();

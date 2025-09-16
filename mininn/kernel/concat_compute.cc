@@ -15,7 +15,7 @@ ConcatCompute::~ConcatCompute() {
     }
 }
 
-void concat_func(std::vector<std::shared_ptr<Tensor>> inputs, float* out_buffer, std::vector<int> axis, int size) {
+void concat_func(std::vector<std::shared_ptr<Tensor>> inputs, float* out_buffer) {
     // todo: only support axis == 0
     // int axis_val = axis[0];
     int input_size = inputs[0]->get_size();
@@ -36,12 +36,10 @@ void ConcatCompute::run() {
     ConcatParams* params = get_params();
     std::vector<std::shared_ptr<Tensor>> inputs = params->inputs;
     std::shared_ptr<Tensor> out = params->output;
-    std::vector<int> axis = params_->axis;
 
-    int size = out->get_size();
     float* out_buffer = reinterpret_cast<float*>(out->get_buffer());
 
-    concat_func(inputs, out_buffer, axis, size);
+    concat_func(inputs, out_buffer);
 
     auto end_time = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed_seconds = end_time - start_time;

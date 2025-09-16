@@ -15,8 +15,7 @@ GlobalaveragepoolCompute::~GlobalaveragepoolCompute() {
     }
 }
 
-void globalaveragepool_func(float* input_buffer, float* out_buffer,
-                            std::vector<int> input_shape, std::vector<int> out_shape) {
+void globalaveragepool_func(float* input_buffer, float* out_buffer, std::vector<int> input_shape) {
     // reserve output dims. such as [1, 1280, 1, 1]
     int batch_size = input_shape[0];
     int channels = input_shape[1];
@@ -51,11 +50,10 @@ void GlobalaveragepoolCompute::run() {
     std::shared_ptr<Tensor> out = params->output;
 
     std::vector<int> input_shape = input->get_shape();
-    std::vector<int> out_shape = out->get_shape();
     float* input_buffer = reinterpret_cast<float*>(input->get_buffer());
     float* out_buffer = reinterpret_cast<float*>(out->get_buffer());
 
-    globalaveragepool_func(input_buffer, out_buffer, input_shape, out_shape);
+    globalaveragepool_func(input_buffer, out_buffer, input_shape);
 
     auto end_time = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed_seconds = end_time - start_time;

@@ -21,7 +21,12 @@ void Reshape::set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) 
     params_->output = tensors[0];
 }
 
-void Reshape::set_attributes(std::map<std::string, std::vector<int>>& attrs) {}
+void Reshape::set_attributes(std::map<std::string, std::vector<int>>& attrs) {
+    if (attrs.size() != 0) {
+        LOG(INFO) << "Reshape should not have attributes.";
+    }
+    return;
+}
 
 void Reshape::init_kernel(std::shared_ptr<Kernel> kernel) {
     kernel->set_params(params_);

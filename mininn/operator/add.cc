@@ -21,7 +21,12 @@ void Add::set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {
     params_->output = tensors[0];
 }
 
-void Add::set_attributes(std::map<std::string, std::vector<int>>& attrs) {}
+void Add::set_attributes(std::map<std::string, std::vector<int>>& attrs) {
+    if (attrs.size() != 0) {
+        LOG(INFO) << "Add should not have attributes.";
+    }
+    return;
+}
 
 void Add::init_kernel(std::shared_ptr<Kernel> kernel) {
     kernel->set_params(params_);

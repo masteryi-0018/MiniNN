@@ -18,6 +18,10 @@ bool is_equal(float* tensor1, float* tensor2, int size) {
 }
 
 int main(int argc, char** argv) {
+    if (argc != 2) {
+        std::cerr << "Usage: " << argv[0] << " <model_file>" << std::endl;
+        return -1;
+    }
     std::string filename = argv[1];
     auto graph = std::make_shared<Graph>();
     load_model(filename, graph);

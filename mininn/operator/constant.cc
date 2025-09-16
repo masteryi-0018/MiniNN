@@ -12,7 +12,12 @@ Constant::~Constant() {
     }
 }
 
-void Constant::set_input_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {}
+void Constant::set_input_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {
+    if (tensors.size() != 0) {
+        LOG(INFO) << "Constant should not have input tensors.";
+    }
+    return;
+}
 
 void Constant::set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors) {
     params_->output = tensors[0];

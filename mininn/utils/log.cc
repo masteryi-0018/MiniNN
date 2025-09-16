@@ -13,9 +13,10 @@ Logger::~Logger() {
 
 std::string Logger::get_current_time() {
     std::time_t now = std::time(nullptr);
-    std::tm* local_time = std::localtime(&now);
+    std::tm local_time;
+    localtime_s(&local_time, &now);
     std::ostringstream oss;
-    oss << std::put_time(local_time, "%Y-%m-%d %H:%M:%S");
+    oss << std::put_time(&local_time, "%Y-%m-%d %H:%M:%S");
     return oss.str();
 }
 
