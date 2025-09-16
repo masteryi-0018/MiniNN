@@ -4,7 +4,7 @@
 #include <iomanip>
 
 Logger::Logger(LogLevel level, const char* file, int line) : level_(level), file_(file), line_(line) {
-    stream_ << "[" << get_current_time() << " " << get_level_name(level) << " " << file_ << ":" << line_ << "] ";
+    stream_ << "[" << get_current_time() << " " << get_level_name(level_) << " " << file_ << ":" << line_ << "] ";
 }
 
 Logger::~Logger() {
@@ -14,7 +14,11 @@ Logger::~Logger() {
 std::string Logger::get_current_time() {
     std::time_t now = std::time(nullptr);
     std::tm local_time;
+    #ifdef _WIN32
     localtime_s(&local_time, &now);
+    #elif __unix__
+    localtime_r(&now, &local_time);
+    #endif
     std::ostringstream oss;
     oss << std::put_time(&local_time, "%Y-%m-%d %H:%M:%S");
     return oss.str();
