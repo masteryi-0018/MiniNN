@@ -1,10 +1,12 @@
 import os
 import sys
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../build/python'))
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../bazel-bin/python'))
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../build/python"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../bazel-bin/python"))
 
 import mininn_capi
 import numpy as np
+
 
 def main():
     # Tensor
@@ -21,12 +23,14 @@ def main():
 
     # graph
     node_num = len(graph.get_nodes())
-    print(f"graph has {node_num} nodes") # py3.6+
+    print(f"graph has {node_num} nodes")  # py3.6+
     tensor_num = len(graph.get_tensors())
     print(f"graph has {tensor_num} tensors")
     tensors = graph.get_tensors()
     for i in range(tensor_num):
-        print("tensor {} shape is {}".format(i, tensors[i].get_shape()))  # py2.7+ / py3.x
+        print(
+            "tensor {} shape is {}".format(i, tensors[i].get_shape())
+        )  # py2.7+ / py3.x
     print(graph.get_inputs())
     print(graph.get_outputs())
 
@@ -54,6 +58,7 @@ def main():
     golden = np.full(output_size, 3.0, dtype=np.float32)
     assert c == golden
     return
+
 
 if __name__ == "__main__":
     main()

@@ -4,41 +4,34 @@ import onnx
 from onnx import helper, TensorProto
 
 
-def make_model(input_shape=[1, 3, 224, 224],
-               output_shape=[1, 3, 224, 224],
-               min=0,
-               max=6
-               ):
-    input0 = helper.make_tensor_value_info('input0', TensorProto.FLOAT, input_shape)
+def make_model(
+    input_shape=[1, 3, 224, 224], output_shape=[1, 3, 224, 224], min=0, max=6
+):
+    input0 = helper.make_tensor_value_info("input0", TensorProto.FLOAT, input_shape)
 
-    output0 = helper.make_tensor_value_info('output0', TensorProto.FLOAT, output_shape)
+    output0 = helper.make_tensor_value_info("output0", TensorProto.FLOAT, output_shape)
 
     clip_node = helper.make_node(
-        'Clip',
-        inputs=['input0'],
-        outputs=['output0'],
+        "Clip",
+        inputs=["input0"],
+        outputs=["output0"],
         min=min,
         max=max,
-        name='clip_node'
+        name="clip_node",
     )
 
-    graph = helper.make_graph(
-        [clip_node],
-        'clip_model',
-        [input0],
-        [output0]
-    )
+    graph = helper.make_graph([clip_node], "clip_model", [input0], [output0])
 
     model = helper.make_model(
         graph,
-        producer_name='onnx-mininn',
-        opset_imports=[helper.make_opsetid("", 10)], # means the imports
-        ir_version = 6 # means the format
+        producer_name="onnx-mininn",
+        opset_imports=[helper.make_opsetid("", 10)],  # means the imports
+        ir_version=6,  # means the format
     )
 
     onnx.checker.check_model(model)
 
-    model_path = 'models/clip_model.onnx'
+    model_path = "models/clip_model.onnx"
     onnx.save(model, model_path)
     print(f"模型已保存为 {model_path}")
 
@@ -56,11 +49,9 @@ if __name__ == "__main__":
     min = 0.0
     max = 6.0
 
-    model_path = make_model(input_shape=input_shape,
-                            output_shape=output_shape,
-                            min=min,
-                            max=max
-                            )
+    model_path = make_model(
+        input_shape=input_shape, output_shape=output_shape, min=min, max=max
+    )
 
     new_model_path = convert_model(model_path)
 

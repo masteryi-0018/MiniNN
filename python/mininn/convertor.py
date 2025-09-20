@@ -70,6 +70,7 @@ def print_graph_info(onnx_graph):
     # print("quantization_annotation 数量:", len(onnx_graph.quantization_annotation))
     # print("metadata_props:", onnx_graph.metadata_props)
 
+
 OP_map = {
     "Add": mininn_fbs.Op.Op().ADD,
     "Conv": mininn_fbs.Op.Op().CONV,
@@ -84,7 +85,8 @@ OP_map = {
     "Constant": mininn_fbs.Op.Op().CONSTANT,
 }
 
-class Convertor():
+
+class Convertor:
     def __init__(self):
         self.onnx_graph = None
         self.builder = flatbuffers.Builder(74741)
@@ -96,7 +98,6 @@ class Convertor():
         self.output_list = []
         self.name = None
 
-
     def load_onnx_model(self, model_path):
         self.name = model_path.split("/")[-1].split(".")[0]
         onnx_model = onnx.load(model_path)
@@ -104,7 +105,6 @@ class Convertor():
         onnx_graph = onnx_model_shape.graph
         print_graph_info(onnx_graph)
         self.onnx_graph = onnx_graph
-
 
     def build_mininn(self, model_path):
         self.build_node_and_tensor()
@@ -116,7 +116,6 @@ class Convertor():
             f.write(self.builder.Output())
         print(f"{self.name} 模型已转换为 {new_name} \n")
 
-
     def build_node_and_tensor(self):
         for onnx_node in self.onnx_graph.node:
             # print_node_info(onnx_node)
@@ -125,21 +124,31 @@ class Convertor():
             # print(f"node {onnx_node.name} inputs is: {onnx_node.input}")
             # print(f"node {onnx_node.name} outputs is: {onnx_node.output}")
 
-            node_inputs = self.builder.CreateNumpyVector(np.array(inputs, dtype=np.int32))
-            node_outputs = self.builder.CreateNumpyVector(np.array(outputs, dtype=np.int32))
+            node_inputs = self.builder.CreateNumpyVector(
+                np.array(inputs, dtype=np.int32)
+            )
+            node_outputs = self.builder.CreateNumpyVector(
+                np.array(outputs, dtype=np.int32)
+            )
 
             attributes_vector = []
             for attribute in onnx_node.attribute:
                 key = self.builder.CreateString(attribute.name)
                 if attribute.type == AttributeProto.INTS:
                     value = attribute.ints
-                    value_array = self.builder.CreateNumpyVector(np.array(value, dtype=np.int32))
+                    value_array = self.builder.CreateNumpyVector(
+                        np.array(value, dtype=np.int32)
+                    )
                 elif attribute.type == AttributeProto.INT:
                     value = attribute.i
-                    value_array = self.builder.CreateNumpyVector(np.array(value, dtype=np.int32))
+                    value_array = self.builder.CreateNumpyVector(
+                        np.array(value, dtype=np.int32)
+                    )
                 elif attribute.type == AttributeProto.FLOAT:
-                    value = (int)(attribute.f) # todo
-                    value_array = self.builder.CreateNumpyVector(np.array(value, dtype=np.int32))
+                    value = (int)(attribute.f)  # todo
+                    value_array = self.builder.CreateNumpyVector(
+                        np.array(value, dtype=np.int32)
+                    )
 
                 mininn_fbs.Attribute.AttributeStart(self.builder)
                 mininn_fbs.Attribute.AttributeAddKey(self.builder, key)
@@ -147,7 +156,9 @@ class Convertor():
                 attr = mininn_fbs.Attribute.AttributeEnd(self.builder)
                 attributes_vector.append(attr)
 
-            mininn_fbs.Node.NodeStartAttributesVector(self.builder, len(attributes_vector))
+            mininn_fbs.Node.NodeStartAttributesVector(
+                self.builder, len(attributes_vector)
+            )
             for attribute in reversed(attributes_vector):
                 self.builder.PrependUOffsetTRelative(attribute)
             attributes = self.builder.EndVector()
@@ -160,7 +171,6 @@ class Convertor():
             node = mininn_fbs.Node.NodeEnd(self.builder)
             self.nodes_list.append(node)
 
-
     def add_tensor(self, shape, data, idx_list, onnx_tensor):
         mininn_fbs.Tensor.TensorStart(self.builder)
         mininn_fbs.Tensor.TensorAddShape(self.builder, shape)
@@ -170,7 +180,6 @@ class Convertor():
         idx_list.append(self.tensor_idx)
         self.tensor_dict[onnx_tensor] = self.tensor_idx
         self.tensor_idx += 1
-
 
     def build_tensor(self, tensors):
         idx_list = []
@@ -185,9 +194,11 @@ class Convertor():
                     # if i.name in ['630']:
                     #     print_tensor_info(i)
                     # print("i from initializer")
-                    if i.data_type == 7: # int64
+                    if i.data_type == 7:  # int64
                         shape_list = i.dims
-                        shape = self.builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
+                        shape = self.builder.CreateNumpyVector(
+                            np.array(shape_list, dtype=np.int32)
+                        )
                         if i.raw_data:
                             raw_data = i.raw_data
                             int64_value = np.frombuffer(raw_data, dtype=np.int64)
@@ -195,17 +206,25 @@ class Convertor():
                             int64_value = i.int64_data
                         float32_value = np.float32(int64_value)
                         float32_bytes = float32_value.tobytes()
-                        data = self.builder.CreateNumpyVector(np.frombuffer(float32_bytes, dtype=np.uint8))
+                        data = self.builder.CreateNumpyVector(
+                            np.frombuffer(float32_bytes, dtype=np.uint8)
+                        )
                         self.add_tensor(shape, data, idx_list, onnx_tensor)
-                    else: # float32
+                    else:  # float32
                         shape_list = i.dims
-                        shape = self.builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
+                        shape = self.builder.CreateNumpyVector(
+                            np.array(shape_list, dtype=np.int32)
+                        )
                         if i.raw_data:
                             raw_data = i.raw_data
-                            data = self.builder.CreateNumpyVector(np.frombuffer(raw_data, dtype=np.uint8))
+                            data = self.builder.CreateNumpyVector(
+                                np.frombuffer(raw_data, dtype=np.uint8)
+                            )
                         else:
                             float_data = i.float_data
-                            data = self.builder.CreateNumpyVector(np.array(float_data, dtype=np.float32))
+                            data = self.builder.CreateNumpyVector(
+                                np.array(float_data, dtype=np.float32)
+                            )
                         self.add_tensor(shape, data, idx_list, onnx_tensor)
 
             for v in self.onnx_graph.value_info:
@@ -219,7 +238,9 @@ class Convertor():
                             shape_list.append(1)
                         else:
                             shape_list.append(dim.dim_value)
-                    shape = self.builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
+                    shape = self.builder.CreateNumpyVector(
+                        np.array(shape_list, dtype=np.int32)
+                    )
                     data = 0
                     self.add_tensor(shape, data, idx_list, onnx_tensor)
 
@@ -234,7 +255,9 @@ class Convertor():
                             shape_list.append(1)
                         else:
                             shape_list.append(dim.dim_value)
-                    shape = self.builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
+                    shape = self.builder.CreateNumpyVector(
+                        np.array(shape_list, dtype=np.int32)
+                    )
                     data = 0
                     self.add_tensor(shape, data, idx_list, onnx_tensor)
 
@@ -249,16 +272,21 @@ class Convertor():
                             shape_list.append(1)
                         else:
                             shape_list.append(dim.dim_value)
-                    shape = self.builder.CreateNumpyVector(np.array(shape_list, dtype=np.int32))
+                    shape = self.builder.CreateNumpyVector(
+                        np.array(shape_list, dtype=np.int32)
+                    )
                     data = 0
                     self.add_tensor(shape, data, idx_list, onnx_tensor)
 
         return idx_list
 
-
     def build_graph(self):
-        graph_inputs = self.builder.CreateNumpyVector(np.array(self.input_list, dtype=np.int32))
-        graph_outputs = self.builder.CreateNumpyVector(np.array(self.output_list, dtype=np.int32))
+        graph_inputs = self.builder.CreateNumpyVector(
+            np.array(self.input_list, dtype=np.int32)
+        )
+        graph_outputs = self.builder.CreateNumpyVector(
+            np.array(self.output_list, dtype=np.int32)
+        )
 
         mininn_fbs.Graph.GraphStartNodesVector(self.builder, len(self.nodes_list))
         for i in reversed(range(len(self.nodes_list))):
@@ -363,7 +391,7 @@ def read(model_path):
         print(data[0])
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     model_path = "models/mobilenetv2-10.onnx"
     new_model_path = model_path.replace(".onnx", ".gynn")
     my_convertor = Convertor()

@@ -5,6 +5,7 @@ import shutil
 import argparse
 import platform
 
+
 def run_command(cmd, cwd=None):
     print(f"Running command: {' '.join(cmd)}")
     try:
@@ -12,6 +13,7 @@ def run_command(cmd, cwd=None):
     except subprocess.CalledProcessError as e:
         print(f"Command failed with exit code {e.returncode}")
         sys.exit(e.returncode)
+
 
 def build_cmake(args):
     cmake_args = ["cmake", "-B", "build", "-S", "."]
@@ -24,7 +26,9 @@ def build_cmake(args):
         elif args.generator == "make":
             cmake_args.extend(["-G", "Unix Makefiles"])
         else:
-            print("Unsupported generator for Android. Use 'ninja' or 'make'. Set default generator to 'ninja'.")
+            print(
+                "Unsupported generator for Android. Use 'ninja' or 'make'. Set default generator to 'ninja'."
+            )
             cmake_args.extend(["-G", "Ninja"])
 
         # if set compiler, cmake will re-generate the build files of linux target
@@ -35,11 +39,21 @@ def build_cmake(args):
         #     cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
 
         if current_platform == "windows":
-            cmake_args.extend(["-DCMAKE_TOOLCHAIN_FILE=E:\\android_sdk\\ndk\\25.2.9519653\\build\\cmake\\android.toolchain.cmake"])
+            cmake_args.extend(
+                [
+                    "-DCMAKE_TOOLCHAIN_FILE=E:\\android_sdk\\ndk\\25.2.9519653\\build\\cmake\\android.toolchain.cmake"
+                ]
+            )
         elif current_platform == "linux":
-            cmake_args.extend(["-DCMAKE_TOOLCHAIN_FILE=/home/gy/tools/android-ndk-r21e/build/cmake/android.toolchain.cmake"])
+            cmake_args.extend(
+                [
+                    "-DCMAKE_TOOLCHAIN_FILE=/home/gy/tools/android-ndk-r21e/build/cmake/android.toolchain.cmake"
+                ]
+            )
         cmake_args.extend(["-DANDROID_ABI=arm64-v8a"])
-        cmake_args.extend(["-DANDROID_PLATFORM=android-21"]) # Android 5 (Lollipop)	android-21, minimal version
+        cmake_args.extend(
+            ["-DANDROID_PLATFORM=android-21"]
+        )  # Android 5 (Lollipop)	android-21, minimal version
 
     elif current_platform == "windows":
 
@@ -50,21 +64,31 @@ def build_cmake(args):
         elif args.generator == "vs2022":
             cmake_args.extend(["-G", "Visual Studio 17 2022"])
         else:
-            print("Unsupported generator for Windows. Use 'ninja', 'mingw', or 'vs2022'. Set default generator to 'ninja'.")
+            print(
+                "Unsupported generator for Windows. Use 'ninja', 'mingw', or 'vs2022'. Set default generator to 'ninja'."
+            )
             cmake_args.extend(["-G", "Ninja"])
 
         if args.compiler == "clang":
-            cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
+            cmake_args.extend(
+                ["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"]
+            )
         elif args.compiler == "gcc":
             cmake_args.extend(["-DCMAKE_C_COMPILER=gcc", "-DCMAKE_CXX_COMPILER=g++"])
         elif args.compiler == "cl":
             cmake_args.extend(["-DCMAKE_C_COMPILER=cl", "-DCMAKE_CXX_COMPILER=cl"])
         else:
-            print("Unsupported compiler for Windows. Use 'clang', 'gcc', or 'cl'. Set default compiler to 'clang'.")
-            cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
+            print(
+                "Unsupported compiler for Windows. Use 'clang', 'gcc', or 'cl'. Set default compiler to 'clang'."
+            )
+            cmake_args.extend(
+                ["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"]
+            )
 
         if args.generator == "vs2022" and args.compiler != "cl":
-            print("Visual Studio generator only uses the MSVC compiler. Set default compiler to 'cl'.")
+            print(
+                "Visual Studio generator only uses the MSVC compiler. Set default compiler to 'cl'."
+            )
             cmake_args.extend(["-DCMAKE_C_COMPILER=cl", "-DCMAKE_CXX_COMPILER=cl"])
 
     elif current_platform == "linux":
@@ -74,25 +98,37 @@ def build_cmake(args):
         elif args.generator == "make":
             cmake_args.extend(["-G", "Unix Makefiles"])
         else:
-            print("Unsupported generator for Linux. Use 'ninja' or 'make'. Set default generator to 'ninja'.")
+            print(
+                "Unsupported generator for Linux. Use 'ninja' or 'make'. Set default generator to 'ninja'."
+            )
             cmake_args.extend(["-G", "Ninja"])
 
         if args.compiler == "clang":
-            cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
+            cmake_args.extend(
+                ["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"]
+            )
         elif args.compiler == "gcc":
             cmake_args.extend(["-DCMAKE_C_COMPILER=gcc", "-DCMAKE_CXX_COMPILER=g++"])
         else:
-            print("Unsupported compiler for Linux. Use 'clang' or 'gcc'. Set default compiler to 'clang'.")
-            cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
+            print(
+                "Unsupported compiler for Linux. Use 'clang' or 'gcc'. Set default compiler to 'clang'."
+            )
+            cmake_args.extend(
+                ["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"]
+            )
 
     if args.wheel or args.target == "android":
-        cmake_args.extend(["-DWITH_MULTI_THREADS=OFF",
-                           "-DWITH_CUDA=OFF",
-                           "-DWITH_OPENCL=OFF",
-                           "-DWITH_AVX=OFF",
-                           "-DWITH_SSE=OFF",
-                           "-DWITH_MKL=OFF",
-                           "-DWITH_NEON=OFF"])
+        cmake_args.extend(
+            [
+                "-DWITH_MULTI_THREADS=OFF",
+                "-DWITH_CUDA=OFF",
+                "-DWITH_OPENCL=OFF",
+                "-DWITH_AVX=OFF",
+                "-DWITH_SSE=OFF",
+                "-DWITH_MKL=OFF",
+                "-DWITH_NEON=OFF",
+            ]
+        )
     run_command(cmake_args)
     run_command(["cmake", "--build", "."], cwd="build")
     if args.wheel and args.target != "android":
@@ -107,10 +143,14 @@ def clean_cmake():
         print(f"No directory to remove: 'build'")
 
     if os.path.exists("pybuild"):
-        print(f"Removing pybuild directory: 'pybuild', 'dist', and 'python/mininn.egg-info'")
+        print(
+            f"Removing pybuild directory: 'pybuild', 'dist', and 'python/mininn.egg-info'"
+        )
         shutil.rmtree("pybuild")
     else:
-        print(f"No directory to remove: 'pybuild', 'dist', and 'python/mininn.egg-info'")
+        print(
+            f"No directory to remove: 'pybuild', 'dist', and 'python/mininn.egg-info'"
+        )
     if os.path.exists("dist"):
         shutil.rmtree("dist")
     if os.path.exists("python/mininn.egg-info"):
@@ -127,17 +167,23 @@ def build_bazel(args):
         bazel_args.extend(["--define", "with_wheel=1"])
     run_command(bazel_args)
 
+
 def clean_bazel():
     # use --expunge to clean all
     run_command(["bazel", "clean", "--expunge"])
     os.remove("MODULE.bazel.lock")
 
+
 def build_wheel(args):
     if args.tool == "cmake":
         if sys.platform == "win32":
-            cmake_output = os.path.abspath("./build/python/mininn_capi.cp313-win_amd64.pyd")
+            cmake_output = os.path.abspath(
+                "./build/python/mininn_capi.cp313-win_amd64.pyd"
+            )
         elif sys.platform == "linux":
-            cmake_output = os.path.abspath("./build/python/mininn_capi.cpython-313-x86_64-linux-gnu.so")
+            cmake_output = os.path.abspath(
+                "./build/python/mininn_capi.cpython-313-x86_64-linux-gnu.so"
+            )
 
     elif args.tool == "bazel":
         if sys.platform == "win32":
@@ -158,16 +204,24 @@ def build_wheel(args):
         elif sys.platform == "linux":
             shutil.copyfile(cmake_output, os.path.join(target_dir, "mininn_capi.so"))
     else:
-        raise FileNotFoundError(f"{cmake_output} does not exist. Build with CMake first.")
+        raise FileNotFoundError(
+            f"{cmake_output} does not exist. Build with CMake first."
+        )
 
-    run_command(["python", "setup.py", "build" ,"--build-base", "pybuild", "bdist_wheel"])
+    run_command(
+        ["python", "setup.py", "build", "--build-base", "pybuild", "bdist_wheel"]
+    )
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Build and clean script for multiple tools, generator and compiler")
+    parser = argparse.ArgumentParser(
+        description="Build and clean script for multiple tools, generator and compiler"
+    )
     parser.add_argument("--target", choices=["windows", "linux", "android"])
     parser.add_argument("--tool", choices=["cmake", "bazel"], default="cmake")
-    parser.add_argument("--generator", choices=["ninja", "mingw", "vs2022", "make"], default="ninja")
+    parser.add_argument(
+        "--generator", choices=["ninja", "mingw", "vs2022", "make"], default="ninja"
+    )
     parser.add_argument("--compiler", choices=["gcc", "clang", "cl"], default="clang")
     parser.add_argument("--clean", action="store_true")
     parser.add_argument("--wheel", action="store_true")
@@ -189,6 +243,7 @@ def main():
     else:
         print(f"Unsupported tool: {args.tool}. Use 'cmake' or 'bazel'.")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

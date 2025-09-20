@@ -2,6 +2,7 @@ import onnx
 import onnxruntime as ort
 import numpy as np
 
+
 def add_node_outputs_as_graph_outputs(model_path, output_node_names, new_model_path):
     model = onnx.load(model_path)
     onnx.checker.check_model(model)
@@ -32,7 +33,10 @@ def add_node_outputs_as_graph_outputs(model_path, output_node_names, new_model_p
                     new_output = onnx.helper.make_tensor_value_info(
                         value_info.name,
                         value_info.type.tensor_type.elem_type,
-                        [dim.dim_value for dim in value_info.type.tensor_type.shape.dim]
+                        [
+                            dim.dim_value
+                            for dim in value_info.type.tensor_type.shape.dim
+                        ],
                     )
                     new_outputs.append(new_output)
                     print(f"add node {node.name}'s output {output} as graph's output")
@@ -42,16 +46,14 @@ def add_node_outputs_as_graph_outputs(model_path, output_node_names, new_model_p
     onnx.save(model, new_model_path)
     print(f"新模型已保存为: {new_model_path}")
 
+
 def run(model_path):
     session = ort.InferenceSession(model_path)
 
     input_shape = (1, 3, 224, 224)
     input = np.full(input_shape, 1.0, dtype=np.float32)
 
-    outputs = session.run(
-        None,
-        {'input': input}
-    )
+    outputs = session.run(None, {"input": input})
 
     for out in outputs:
         print(out.shape)
@@ -60,7 +62,7 @@ def run(model_path):
 if __name__ == "__main__":
     input_model = "../../models/mobilenetv2-10-shape.onnx"
     nodes_to_output = ["Gather_100", "Unsqueeze_101"]
-    output_model = input_model.replace('.onnx', '-modified.onnx')
+    output_model = input_model.replace(".onnx", "-modified.onnx")
 
     add_node_outputs_as_graph_outputs(input_model, nodes_to_output, output_model)
     run(output_model)

@@ -2,9 +2,11 @@ import os
 import sys
 
 # by use this, you won't use pip install to install flatbuffers locally
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../../third_party/flatbuffers/python'))
+sys.path.append(
+    os.path.join(os.path.dirname(__file__), "../../../third_party/flatbuffers/python")
+)
 # give path to mininn_fbs
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../'))
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../"))
 
 import flatbuffers
 
@@ -17,6 +19,7 @@ import mininn_fbs.Graph
 import numpy as np
 
 # Example of how to use FlatBuffers to create and read binary buffers.
+
 
 def write(model_path):
     builder = flatbuffers.Builder(74741)
@@ -118,9 +121,10 @@ def write(model_path):
 
     builder.Finish(graph)
     buf = builder.Output()
-    with open(model_path, 'wb') as f:
+    with open(model_path, "wb") as f:
         f.write(buf)
     print(f"模型已保存为 {model_path} \n")
+
 
 def read(model_path):
     # read
@@ -163,7 +167,7 @@ def read(model_path):
         assert data == 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     model_path = "../../../models/mininn_test.gynn"
     write(model_path)
     read(model_path)

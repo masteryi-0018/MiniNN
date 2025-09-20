@@ -3,26 +3,26 @@ from mininn.predictor import Predictor
 import onnxruntime as ort
 import numpy as np
 
+
 def gen_golden(filename):
     session = ort.InferenceSession(filename)
 
     input_shape = (1, 3, 224, 224)
     input0 = np.full(input_shape, 1.0, dtype=np.float32)
 
-    outputs = session.run(
-        None,
-        {'input': input0}
-    )
+    outputs = session.run(None, {"input": input0})
     return outputs[0]
+
 
 def l2_norm(a, b):
     arr_a = np.array(a, dtype=np.float32)
     arr_b = np.array(b, dtype=np.float32)
     return np.linalg.norm(arr_a - arr_b)
 
+
 def test_add():
     filename = "models/add_model.gynn"
-    my_predictor= Predictor(filename)
+    my_predictor = Predictor(filename)
 
     inputs = my_predictor.get_input()
     input1_size = inputs[0].get_size()
@@ -42,9 +42,10 @@ def test_add():
     assert c.get_data() == golden
     return
 
+
 def test_mv2():
     filename = "models/mobilenetv2-10.gynn"
-    my_predictor= Predictor(filename)
+    my_predictor = Predictor(filename)
 
     inputs = my_predictor.get_input()
     input1_size = inputs[0].get_size()
@@ -60,6 +61,7 @@ def test_mv2():
     golden = gen_golden("models/mobilenetv2-10.onnx")
     print(l2_norm(c.get_data(), golden))
     return
+
 
 def main():
     test_add()

@@ -1,6 +1,7 @@
 from mininn import mininn_capi
 
-class Predictor():
+
+class Predictor:
     def __init__(self, filename):
         graph = mininn_capi.Graph()
         mininn_capi.load_model(filename, graph)

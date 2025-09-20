@@ -23,3 +23,19 @@
 2. windows 下使用 pybind11 编译产物.pyd 导入时报错
 
 报错“ImportError: DLL load failed while importing mininn_capi: 找不到指定的模块”，可以使用 dumpbin /dependents 查看 pyd 依赖的 DLL 是否都在路径中。在 Windows 下推荐用 msvc 或者 clang（基于 msvc 的 toolchain），否则会有 gcc 相关的动态库，导致导入时缺少依赖。
+
+## 格式化
+
+1. black
+
+```sh
+pip install black
+
+black .
+
+# 如果找不到命令
+python -m black .
+
+# 排除某些目录
+python -m black . --exclude="third_party|fbs_schema|python/mininn/mininn_fbs"
+```

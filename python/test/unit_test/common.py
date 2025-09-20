@@ -14,6 +14,7 @@ def convert_model(model_path):
     my_convertor.build_mininn(new_model_path)
     return new_model_path
 
+
 def gen_all_golden(model_path, inputs_data):
     # add all outputs to the graph
     modified_model_path = model_path.replace(".onnx", "_all_outputs.onnx")
@@ -22,14 +23,18 @@ def gen_all_golden(model_path, inputs_data):
     for node in model.graph.node:
         for output in node.output:
             if not any(o.name == output for o in model.graph.output):
-                model.graph.output.append(helper.make_tensor_value_info(output, TensorProto.FLOAT, None))
+                model.graph.output.append(
+                    helper.make_tensor_value_info(output, TensorProto.FLOAT, None)
+                )
 
     onnx.save(model, modified_model_path)
 
     options = ort.SessionOptions()
     options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_DISABLE_ALL
 
-    session = ort.InferenceSession(modified_model_path, options, providers=['CPUExecutionProvider'])
+    session = ort.InferenceSession(
+        modified_model_path, options, providers=["CPUExecutionProvider"]
+    )
     inputs = session.get_inputs()
     all_inputs = {}
     for i in range(len(inputs)):
@@ -37,12 +42,10 @@ def gen_all_golden(model_path, inputs_data):
         input = inputs_data[i].reshape(input_shape)
         all_inputs[inputs[i].name] = input
 
-    outputs = session.run(
-        None,
-        all_inputs
-    )
+    outputs = session.run(None, all_inputs)
 
     return outputs
+
 
 def gen_golden(model_path, inputs_data):
     session = ort.InferenceSession(model_path)
@@ -54,12 +57,10 @@ def gen_golden(model_path, inputs_data):
         input = inputs_data[i].reshape(input_shape)
         all_inputs[inputs[i].name] = input
 
-    outputs = session.run(
-        None,
-        all_inputs
-    )
+    outputs = session.run(None, all_inputs)
 
     return outputs
+
 
 def l2_norm(a, b):
     arr_a = np.array(a, dtype=np.float32)
@@ -67,8 +68,9 @@ def l2_norm(a, b):
     arr_b = arr_b.reshape(arr_a.shape)
     return np.linalg.norm(arr_a - arr_b)
 
+
 def test_model(new_model_path, model_path, debug=True):
-    my_predictor= Predictor(new_model_path)
+    my_predictor = Predictor(new_model_path)
 
     inputs = my_predictor.get_input()
 
@@ -77,7 +79,9 @@ def test_model(new_model_path, model_path, debug=True):
         input_size = inputs[i].get_size()
         input = np.random.rand(input_size).astype(np.float32)
         if model_path == "models/clip_model.onnx":
-            input = np.random.uniform(low=-10, high=10, size=input_size).astype(np.float32)
+            input = np.random.uniform(low=-10, high=10, size=input_size).astype(
+                np.float32
+            )
         all_inputs.append(input)
 
     my_predictor.set_data(all_inputs)
