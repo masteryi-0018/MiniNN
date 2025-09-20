@@ -22,8 +22,6 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 message(STATUS "Default cmake build type: ${CMAKE_BUILD_TYPE}")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror")
 
 
 ####################  二、env  ####################

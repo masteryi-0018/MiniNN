@@ -19,6 +19,17 @@ set(LIB_TYPE OBJECT)
 # set(LIB_TYPE SHARED)
 # set(LIB_TYPE STATIC)
 
+# use interface library to manage compile options
+add_library(mininn_compile_options INTERFACE)
+
+# set strict compile options for the interface library
+target_compile_options(mininn_compile_options INTERFACE
+    -Werror
+    -Wall
+    -Wextra
+    -Wpedantic
+)
+
 # 2. subdirectory
 add_subdirectory(runtime)
 add_subdirectory(parser)
