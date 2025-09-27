@@ -26,6 +26,8 @@
 
 ## 格式化
 
+考虑black+isort方案
+
 1. black
 
 ```sh
@@ -40,7 +42,7 @@ python -m black .
 python -m black . --exclude="third_party|fbs_schema|python/mininn/mininn_fbs"
 ```
 
-1. isort
+2. isort
 
 ```sh
 pip install isort
@@ -53,3 +55,14 @@ python -m isort .
 # 排除某些目录
 python -m isort . --skip-glob "third_party/*" --skip-glob "fbs_schema/*" --skip-glob "python/mininn/mininn_fbs/*"
 ```
+
+3. 其他
+
+- ruff(43k star): 据说是一键式完成，https://github.com/astral-sh/ruff
+- 和black一个作用：
+  - autopep8: ，python -m autopep8 --in-place --recursive .
+  - yapf
+- 静态检查Linter
+  - flake8: python -m flake8 .
+  - pylint
+  - pycodestyle
