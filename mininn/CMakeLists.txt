@@ -75,3 +75,8 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E copy ${MININN_SOURCE_DIR}/mininn/graph/register_helper.h ${MININN_SOURCE_DIR}/mininn_sdk/include/mininn/graph/register_helper.h
     COMMENT "Copying mininn_lib and headers to SDK directory"
 )
+
+file(GLOB_RECURSE ALL_SOURCE_FILES *.cc *.h)
+add_custom_target(format
+    COMMAND clang-format -i ${ALL_SOURCE_FILES}
+)

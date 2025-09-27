@@ -126,3 +126,15 @@ int main() {
     return 0;
 }
 ```
+
+## 格式化
+
+考虑clang-format
+
+```sh
+# 安装LLVM自动带有clang-format
+
+# 在cmake中构建为目标，就不用复杂的命令去抓取repo下的全部cpp文件了
+cmake -B build -S .
+cmake --build build --target format
+```
