@@ -1,5 +1,5 @@
-import onnxruntime as ort
 import numpy as np
+import onnxruntime as ort
 
 model_path = "../../../../models/add_model.onnx"
 session = ort.InferenceSession(model_path)

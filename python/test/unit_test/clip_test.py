@@ -1,7 +1,6 @@
-from common import convert_model, test_model
-
 import onnx
-from onnx import helper, TensorProto
+from common import convert_model, test_model
+from onnx import TensorProto, helper
 
 
 def make_model(

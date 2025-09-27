@@ -1,6 +1,6 @@
+import numpy as np
 import onnx
 import onnxruntime as ort
-import numpy as np
 
 
 def add_node_outputs_as_graph_outputs(model_path, output_node_names, new_model_path):

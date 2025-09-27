@@ -1,9 +1,9 @@
-import os
-import sys
-import subprocess
-import shutil
 import argparse
+import os
 import platform
+import shutil
+import subprocess
+import sys
 
 
 def run_command(cmd, cwd=None):

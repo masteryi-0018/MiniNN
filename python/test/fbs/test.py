@@ -9,13 +9,11 @@ sys.path.append(
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../"))
 
 import flatbuffers
-
-import mininn_fbs.Op
 import mininn_fbs.Attribute
-import mininn_fbs.Node
-import mininn_fbs.Tensor
 import mininn_fbs.Graph
-
+import mininn_fbs.Node
+import mininn_fbs.Op
+import mininn_fbs.Tensor
 import numpy as np
 
 # Example of how to use FlatBuffers to create and read binary buffers.

@@ -1,5 +1,5 @@
 import onnx
-from onnx import helper, TensorProto
+from onnx import TensorProto, helper
 
 input0 = helper.make_tensor_value_info("input0", TensorProto.FLOAT, [100, 3, 224, 224])
 input1 = helper.make_tensor_value_info("input1", TensorProto.FLOAT, [100, 3, 224, 224])

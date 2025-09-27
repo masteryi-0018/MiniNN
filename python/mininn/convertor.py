@@ -3,19 +3,12 @@
 
 # sys.path.append(os.path.join(os.path.dirname(__file__), '../../third_party/flatbuffers/python'))
 import flatbuffers
+import numpy as np
+import onnx
+from mininn.mininn_fbs import Attribute, Graph, Node, Op, Tensor
+from onnx import AttributeProto
 
 from mininn import mininn_fbs
-
-from mininn.mininn_fbs import Op
-from mininn.mininn_fbs import Attribute
-from mininn.mininn_fbs import Node
-from mininn.mininn_fbs import Tensor
-from mininn.mininn_fbs import Graph
-
-
-import onnx
-import numpy as np
-from onnx import AttributeProto
 
 
 def print_node_info(onnx_node):

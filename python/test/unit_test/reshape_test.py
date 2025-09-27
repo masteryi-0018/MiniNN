@@ -1,8 +1,7 @@
-from common import convert_model, test_model
-
-import onnx
-from onnx import helper, TensorProto
 import numpy as np
+import onnx
+from common import convert_model, test_model
+from onnx import TensorProto, helper
 
 
 def make_model(input_shape=[1, 1280, 1, 1], output_shape=[1, 1280], shape=[1, 1280]):

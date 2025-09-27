@@ -1,7 +1,6 @@
-from mininn.predictor import Predictor
-
-import onnxruntime as ort
 import numpy as np
+import onnxruntime as ort
+from mininn.predictor import Predictor
 
 
 def gen_golden(filename):

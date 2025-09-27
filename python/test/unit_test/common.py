@@ -1,10 +1,9 @@
+import numpy as np
+import onnx
+import onnxruntime as ort
 from mininn.convertor import Convertor
 from mininn.predictor import Predictor
-
-import onnx
-from onnx import helper, TensorProto
-import onnxruntime as ort
-import numpy as np
+from onnx import TensorProto, helper
 
 
 def convert_model(model_path):

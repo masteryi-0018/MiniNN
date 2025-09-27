@@ -39,3 +39,17 @@ python -m black .
 # 排除某些目录
 python -m black . --exclude="third_party|fbs_schema|python/mininn/mininn_fbs"
 ```
+
+1. isort
+
+```sh
+pip install isort
+
+isort .
+
+# 如果找不到命令
+python -m isort .
+
+# 排除某些目录
+python -m isort . --skip-glob "third_party/*" --skip-glob "fbs_schema/*" --skip-glob "python/mininn/mininn_fbs/*"
+```
