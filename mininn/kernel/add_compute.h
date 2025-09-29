@@ -3,21 +3,21 @@
 
 #include "mininn/graph/kernel.h"
 
-class AddCompute: public Kernel {
-public:
-    AddCompute();
+class AddCompute : public Kernel {
+ public:
+  AddCompute();
 
-    ~AddCompute();
+  ~AddCompute();
 
-    void run();
+  void run();
 
-    // and use reinterpret_cast to AddParams
-    void set_params(Params* params);
+  // and use reinterpret_cast to AddParams
+  void set_params(Params* params);
 
-    AddParams* get_params();
+  AddParams* get_params();
 
-private:
-    AddParams* params_;
+ private:
+  AddParams* params_;
 };
 
-#endif // ADD_COMPUTE_H
+#endif  // ADD_COMPUTE_H

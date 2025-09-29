@@ -3,20 +3,20 @@
 
 #include "mininn/graph/kernel.h"
 
-class ShapeCompute: public Kernel {
-public:
-    ShapeCompute();
+class ShapeCompute : public Kernel {
+ public:
+  ShapeCompute();
 
-    ~ShapeCompute();
+  ~ShapeCompute();
 
-    void run();
+  void run();
 
-    void set_params(Params* params);
+  void set_params(Params* params);
 
-    ShapeParams* get_params();
+  ShapeParams* get_params();
 
-private:
-    ShapeParams* params_;
+ private:
+  ShapeParams* params_;
 };
 
-#endif // SHAPE_COMPUTE_H
+#endif  // SHAPE_COMPUTE_H

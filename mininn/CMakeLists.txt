@@ -78,5 +78,5 @@ add_custom_command(
 
 file(GLOB_RECURSE ALL_SOURCE_FILES *.cc *.h)
 add_custom_target(format
-    COMMAND clang-format -i ${ALL_SOURCE_FILES}
+    COMMAND clang-format -style=google -i ${ALL_SOURCE_FILES}
 )

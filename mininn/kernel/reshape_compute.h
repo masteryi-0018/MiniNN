@@ -3,20 +3,20 @@
 
 #include "mininn/graph/kernel.h"
 
-class ReshapeCompute: public Kernel {
-public:
-    ReshapeCompute();
+class ReshapeCompute : public Kernel {
+ public:
+  ReshapeCompute();
 
-    ~ReshapeCompute();
+  ~ReshapeCompute();
 
-    void run();
+  void run();
 
-    void set_params(Params* params);
+  void set_params(Params* params);
 
-    ReshapeParams* get_params();
+  ReshapeParams* get_params();
 
-private:
-    ReshapeParams* params_;
+ private:
+  ReshapeParams* params_;
 };
 
-#endif // RESHAPE_COMPUTE_H
+#endif  // RESHAPE_COMPUTE_H

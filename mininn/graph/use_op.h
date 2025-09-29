@@ -16,4 +16,4 @@ USE_OP(RESHAPE);
 USE_OP(GEMM);
 USE_OP(CONSTANT);
 
-#endif // USE_OP_H
+#endif  // USE_OP_H

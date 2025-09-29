@@ -3,20 +3,20 @@
 
 #include "mininn/graph/kernel.h"
 
-class GlobalaveragepoolCompute: public Kernel {
-public:
-    GlobalaveragepoolCompute();
+class GlobalaveragepoolCompute : public Kernel {
+ public:
+  GlobalaveragepoolCompute();
 
-    ~GlobalaveragepoolCompute();
+  ~GlobalaveragepoolCompute();
 
-    void run();
+  void run();
 
-    void set_params(Params* params);
+  void set_params(Params* params);
 
-    GlobalaveragepoolParams* get_params();
+  GlobalaveragepoolParams* get_params();
 
-private:
-    GlobalaveragepoolParams* params_;
+ private:
+  GlobalaveragepoolParams* params_;
 };
 
-#endif // GLOBALAVERAGEPOOL_COMPUTE_H
+#endif  // GLOBALAVERAGEPOOL_COMPUTE_H

@@ -3,20 +3,20 @@
 
 #include "mininn/graph/kernel.h"
 
-class ConvCompute: public Kernel {
-public:
-    ConvCompute();
+class ConvCompute : public Kernel {
+ public:
+  ConvCompute();
 
-    ~ConvCompute();
+  ~ConvCompute();
 
-    void run();
+  void run();
 
-    void set_params(Params* params);
+  void set_params(Params* params);
 
-    ConvParams* get_params();
+  ConvParams* get_params();
 
-private:
-    ConvParams* params_;
+ private:
+  ConvParams* params_;
 };
 
-#endif // CONV_COMPUTE_H
+#endif  // CONV_COMPUTE_H

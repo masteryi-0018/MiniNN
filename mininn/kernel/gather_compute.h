@@ -3,20 +3,20 @@
 
 #include "mininn/graph/kernel.h"
 
-class GatherCompute: public Kernel {
-public:
-    GatherCompute();
+class GatherCompute : public Kernel {
+ public:
+  GatherCompute();
 
-    ~GatherCompute();
+  ~GatherCompute();
 
-    void run();
+  void run();
 
-    void set_params(Params* params);
+  void set_params(Params* params);
 
-    GatherParams* get_params();
+  GatherParams* get_params();
 
-private:
-    GatherParams* params_;
+ private:
+  GatherParams* params_;
 };
 
-#endif // GATHER_COMPUTE_H
+#endif  // GATHER_COMPUTE_H

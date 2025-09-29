@@ -3,20 +3,20 @@
 
 #include "mininn/graph/kernel.h"
 
-class ConcatCompute: public Kernel {
-public:
-    ConcatCompute();
+class ConcatCompute : public Kernel {
+ public:
+  ConcatCompute();
 
-    ~ConcatCompute();
+  ~ConcatCompute();
 
-    void run();
+  void run();
 
-    void set_params(Params* params);
+  void set_params(Params* params);
 
-    ConcatParams* get_params();
+  ConcatParams* get_params();
 
-private:
-    ConcatParams* params_;
+ private:
+  ConcatParams* params_;
 };
 
-#endif // CONCAT_COMPUTE_H
+#endif  // CONCAT_COMPUTE_H

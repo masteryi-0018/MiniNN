@@ -137,4 +137,7 @@ int main() {
 # 在cmake中构建为目标，就不用复杂的命令去抓取repo下的全部cpp文件了
 cmake -B build -S .
 cmake --build build --target format
+
+# 单独的文件
+clang-format -style=google -i main.cc
 ```

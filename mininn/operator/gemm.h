@@ -2,25 +2,25 @@
 #define GEMM_H
 
 #include "mininn/graph/node.h"
-#include "mininn/graph/type.h"
 #include "mininn/graph/param.h"
+#include "mininn/graph/type.h"
 
-class Gemm: public Node {
-public:
-    Gemm(Op type);
+class Gemm : public Node {
+ public:
+  Gemm(Op type);
 
-    ~Gemm();
+  ~Gemm();
 
-    void set_input_tensors(std::vector<std::shared_ptr<Tensor>>& tensors);
+  void set_input_tensors(std::vector<std::shared_ptr<Tensor>>& tensors);
 
-    void set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors);
+  void set_output_tensors(std::vector<std::shared_ptr<Tensor>>& tensors);
 
-    void set_attributes(std::map<std::string, std::vector<int>>& attrs);
+  void set_attributes(std::map<std::string, std::vector<int>>& attrs);
 
-    void init_kernel(std::shared_ptr<Kernel> kernel);
+  void init_kernel(std::shared_ptr<Kernel> kernel);
 
-private:
-    GemmParams* params_;
+ private:
+  GemmParams* params_;
 };
 
-#endif // GEMM_H
+#endif  // GEMM_H

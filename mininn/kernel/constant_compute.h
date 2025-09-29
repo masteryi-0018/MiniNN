@@ -3,20 +3,20 @@
 
 #include "mininn/graph/kernel.h"
 
-class ConstantCompute: public Kernel {
-public:
-    ConstantCompute();
+class ConstantCompute : public Kernel {
+ public:
+  ConstantCompute();
 
-    ~ConstantCompute();
+  ~ConstantCompute();
 
-    void run();
+  void run();
 
-    void set_params(Params* params);
+  void set_params(Params* params);
 
-    ConstantParams* get_params();
+  ConstantParams* get_params();
 
-private:
-    ConstantParams* params_;
+ private:
+  ConstantParams* params_;
 };
 
-#endif // CONSTANT_COMPUTE_H
+#endif  // CONSTANT_COMPUTE_H

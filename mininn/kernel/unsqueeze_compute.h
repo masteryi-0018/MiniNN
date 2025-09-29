@@ -3,20 +3,20 @@
 
 #include "mininn/graph/kernel.h"
 
-class UnsqueezeCompute: public Kernel {
-public:
-    UnsqueezeCompute();
+class UnsqueezeCompute : public Kernel {
+ public:
+  UnsqueezeCompute();
 
-    ~UnsqueezeCompute();
+  ~UnsqueezeCompute();
 
-    void run();
+  void run();
 
-    void set_params(Params* params);
+  void set_params(Params* params);
 
-    UnsqueezeParams* get_params();
+  UnsqueezeParams* get_params();
 
-private:
-    UnsqueezeParams* params_;
+ private:
+  UnsqueezeParams* params_;
 };
 
-#endif // UNSQUEEZE_COMPUTE_H
+#endif  // UNSQUEEZE_COMPUTE_H

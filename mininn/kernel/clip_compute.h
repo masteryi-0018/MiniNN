@@ -3,20 +3,20 @@
 
 #include "mininn/graph/kernel.h"
 
-class ClipCompute: public Kernel {
-public:
-    ClipCompute();
+class ClipCompute : public Kernel {
+ public:
+  ClipCompute();
 
-    ~ClipCompute();
+  ~ClipCompute();
 
-    void run();
+  void run();
 
-    void set_params(Params* params);
+  void set_params(Params* params);
 
-    ClipParams* get_params();
+  ClipParams* get_params();
 
-private:
-    ClipParams* params_;
+ private:
+  ClipParams* params_;
 };
 
-#endif // CLIP_COMPUTE_H
+#endif  // CLIP_COMPUTE_H

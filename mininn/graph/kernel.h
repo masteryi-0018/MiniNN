@@ -4,16 +4,16 @@
 #include "mininn/graph/param.h"
 
 class Kernel {
-public:
-    Kernel() = default;
+ public:
+  Kernel() = default;
 
-    virtual ~Kernel() = default;
+  virtual ~Kernel() = default;
 
-    virtual void run() = 0;
+  virtual void run() = 0;
 
-    virtual void set_params(Params* params) = 0;
+  virtual void set_params(Params* params) = 0;
 
-    virtual Params* get_params() = 0;
+  virtual Params* get_params() = 0;
 };
 
-#endif // KERNEL_H
+#endif  // KERNEL_H
