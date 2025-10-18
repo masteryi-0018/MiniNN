@@ -13,8 +13,8 @@ setup(
     author_email="<1536474741@qq.com>",
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
-    packages=find_packages(where="python"),
     package_dir={"": "python"},
+    packages=find_packages(where="python"),
     package_data={
         "mininn": (
             ["mininn_capi.pyd"] if sys.platform == "win32" else ["mininn_capi.so"]

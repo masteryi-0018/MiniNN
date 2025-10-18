@@ -51,19 +51,19 @@ git clone --recursive git@github.com:masteryi-0018/MiniNN.git
 
 ```sh
 # cmake
-python build.py
+python build_mininn.py
 
 # bazel
-python build.py --tool bazel
+python build_mininn.py --tool bazel
 
 # if you want to identify generator, add this flag
-python build.py --tool bazel --generator ninja
+python build_mininn.py --tool bazel --generator ninja
 
 # if you want to identify compiler, add this flag
-python build.py --tool bazel --compiler clang
+python build_mininn.py --tool bazel --compiler clang
 
 # if you want build python wheel, add this flag
-python build.py --tool bazel --wheel
+python build_mininn.py --tool bazel --wheel
 ```
 
 ## Unit Test

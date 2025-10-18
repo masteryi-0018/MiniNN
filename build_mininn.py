@@ -142,23 +142,36 @@ def clean_cmake():
     else:
         print(f"No directory to remove: 'build'")
 
-    if os.path.exists("pybuild"):
-        print(
-            f"Removing pybuild directory: 'pybuild', 'dist', and 'python/mininn.egg-info'"
-        )
-        shutil.rmtree("pybuild")
+    if os.path.exists("mininn_sdk"):
+        print(f"Removing mininn_sdk directory: 'mininn_sdk'")
+        shutil.rmtree("mininn_sdk")
     else:
-        print(
-            f"No directory to remove: 'pybuild', 'dist', and 'python/mininn.egg-info'"
-        )
+        print(f"No directory to remove: 'mininn_sdk'")
+
     if os.path.exists("dist"):
         shutil.rmtree("dist")
-    if os.path.exists("python/mininn.egg-info"):
-        shutil.rmtree("python/mininn.egg-info")
+    if os.path.exists("mininn.egg-info"):
+        shutil.rmtree("mininn.egg-info")
     if os.path.exists("python/mininn/mininn_capi.pyd"):
         os.remove("python/mininn/mininn_capi.pyd")
     if os.path.exists("python/mininn/mininn_capi.so"):
         os.remove("python/mininn/mininn_capi.so")
+
+    pycache_count = 0
+    for root, dirs, files in os.walk("."):
+        if "__pycache__" in dirs:
+            pycache_path = os.path.join(root, "__pycache__")
+            try:
+                shutil.rmtree(pycache_path)
+                print(f"Removing pycache directory: '{pycache_path}'")
+                pycache_count += 1
+            except Exception as e:
+                print(f"Error removing {pycache_path}: {e}")
+
+    if pycache_count > 0:
+        print(f"Removed {pycache_count} __pycache__ directories")
+    else:
+        print("No __pycache__ directories to remove")
 
 
 def build_bazel(args):
@@ -209,7 +222,7 @@ def build_wheel(args):
         )
 
     run_command(
-        ["python", "setup.py", "build", "--build-base", "pybuild", "bdist_wheel"]
+        ["python", "-m", "build"]
     )
 
 
