@@ -148,10 +148,10 @@ def clean_cmake():
     else:
         print(f"No directory to remove: 'mininn_sdk'")
 
-    if os.path.exists("dist"):
-        shutil.rmtree("dist")
-    if os.path.exists("mininn.egg-info"):
-        shutil.rmtree("mininn.egg-info")
+    if os.path.exists("python/dist"):
+        shutil.rmtree("python/dist")
+    if os.path.exists("python/mininn.egg-info"):
+        shutil.rmtree("python/mininn.egg-info")
     if os.path.exists("python/mininn/mininn_capi.pyd"):
         os.remove("python/mininn/mininn_capi.pyd")
     if os.path.exists("python/mininn/mininn_capi.so"):
@@ -222,7 +222,7 @@ def build_wheel(args):
         )
 
     run_command(
-        ["python", "-m", "build"]
+        ["python", "-m", "build"], cwd="python"
     )
 
 

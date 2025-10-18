@@ -7,6 +7,8 @@
 1. 通过`python setup.py install`安装的包不会通过 pip show 显示，但可以通过 pip uninstall 卸载，即将弃用
 2. 通过`pip install .`或者`pip install -e .`，不需要先构建 whl 再安装，适用于调试
 3. 通过`python setup.py bdist_wheel`之后`pip install dist/xxx.whl`，更接近 pypi 的流程
+4. 通过`python -m zipfile -l python/dist/mininn-1.0.0-py3-none-any.whl`来查看whl里面的内容
+5. 通过`tar -tzf python/dist/mininn-1.0.0.tar.gz`来查看tar.gz里面的内容
 
 ## 上传 pypi
 
