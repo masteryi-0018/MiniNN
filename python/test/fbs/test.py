@@ -6,7 +6,7 @@ sys.path.append(
     os.path.join(os.path.dirname(__file__), "../../../third_party/flatbuffers/python")
 )
 # give path to mininn_fbs
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../mininn"))
 
 import flatbuffers
 import mininn_fbs.Attribute
@@ -166,6 +166,6 @@ def read(model_path):
 
 
 if __name__ == "__main__":
-    model_path = "../../../models/mininn_test.gynn"
+    model_path = "models/mininn_test.gynn"
     write(model_path)
     read(model_path)
