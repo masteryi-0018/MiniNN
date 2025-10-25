@@ -20,7 +20,7 @@ def l2_norm(a, b):
 
 
 def test_add():
-    filename = "models/add_model.gynn"
+    filename = "./models/mininn_test.gynn"
     my_predictor = Predictor(filename)
 
     inputs = my_predictor.get_input()
@@ -42,29 +42,8 @@ def test_add():
     return
 
 
-def test_mv2():
-    filename = "models/mobilenetv2-10.gynn"
-    my_predictor = Predictor(filename)
-
-    inputs = my_predictor.get_input()
-    input1_size = inputs[0].get_size()
-    a = np.full(input1_size, 1.0, dtype=np.float32)
-
-    my_predictor.set_data([a])
-    my_predictor.run()
-
-    outputs = my_predictor.get_output()
-    c = outputs[0]
-    print(c.get_data()[0], c.get_shape())
-
-    golden = gen_golden("models/mobilenetv2-10.onnx")
-    print(l2_norm(c.get_data(), golden))
-    return
-
-
 def main():
     test_add()
-    test_mv2()
 
 
 if __name__ == "__main__":

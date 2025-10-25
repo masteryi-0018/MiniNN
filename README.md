@@ -17,12 +17,11 @@ pip install mininn
 pip install onnxruntime
 python python/test/pip_test.py
 
-# other test
-# 1. convert mv2 into gynn
+# 1. convert onnx into gynn
 python python/mininn/convertor.py
 
-# 2. unit test
-python python/test/unit_test/add_test.py
+# 2. run all tests
+python python/run_all_test.py
 ```
 
 ## Build from source

@@ -100,7 +100,7 @@ def test_model(new_model_path, model_path, debug=True):
 
 
 if __name__ == "__main__":
-    model_path = "models/mobilenetv2-10.onnx"
-    new_model_path = "models/mobilenetv2-10.gynn"
+    model_path = "./models/mobilenetv2-10.onnx"
+    new_model_path = "./models/mobilenetv2-10.gynn"
 
     test_model(new_model_path, model_path, True)

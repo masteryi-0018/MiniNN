@@ -166,6 +166,6 @@ def read(model_path):
 
 
 if __name__ == "__main__":
-    model_path = "models/mininn_test.gynn"
+    model_path = "./models/mininn_test.gynn"
     write(model_path)
     read(model_path)

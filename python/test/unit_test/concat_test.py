@@ -40,7 +40,7 @@ def make_model(input_shape=[1, 3, 224, 224], output_shape=[1, 6, 224, 224], axis
 
 if __name__ == "__main__":
 
-    axis = 0
+    axis = 1
     input_shape = (1, 3, 224, 224)
     output_shape = (1, 6, 224, 224)
 

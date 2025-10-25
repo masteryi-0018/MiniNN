@@ -15,9 +15,11 @@ def main():
     print(tensor.get_shape())
     print(tensor.get_size())
     print(tensor.get_buffer())
+    tensor.set_data(np.full(tensor.get_size(), 1.0, dtype=np.float32))
+    print(tensor.get_data()[0])
 
     # parser
-    filename = "../../models/mininn_test.gynn"
+    filename = "./models/mininn_test.gynn"
     graph = mininn_capi.Graph()
     mininn_capi.load_model(filename, graph)
 
@@ -56,7 +58,7 @@ def main():
     print(c[0], output[0].get_shape())
 
     golden = np.full(output_size, 3.0, dtype=np.float32)
-    assert c == golden
+    assert (c == golden).all()
     return
 
 
