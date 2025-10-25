@@ -50,9 +50,11 @@ TEST(Operator_Conv, run) {
   std::vector<std::shared_ptr<Tensor>> input_tensors =
       predictor->get_input_tensors();
   float* input1 = reinterpret_cast<float*>(input_tensors[0]->get_buffer());
-  int size = input_tensors[0]->get_size();
-  for (int i = 0; i < size; ++i) {
-    input1[i] = 1.0f;
+  int input_size = input_tensors[0]->get_size();
+
+  std::vector<float> input = load_txt("./models/mv2_input.txt");
+  for (int i = 0; i < input_size; ++i) {
+    input1[i] = input[i];
   }
 
   predictor->run();
@@ -60,11 +62,11 @@ TEST(Operator_Conv, run) {
   std::vector<std::shared_ptr<Tensor>> output_tensors =
       predictor->get_output_tensors();
   float* output = reinterpret_cast<float*>(output_tensors[0]->get_buffer());
-  float* golden = reinterpret_cast<float*>(std::malloc(size * sizeof(float)));
-  for (int i = 0; i < size; ++i) {
-    golden[i] = 3.0f;
-  }
-  bool result = is_equal(output, golden, size);
-  free(golden);
-  EXPECT_EQ(result, true);
+
+  int out_size = output_tensors[0]->get_size();
+  std::vector<float> golden = load_txt("./models/mv2_golden.txt");
+
+  double result = l2_norm(output, golden.data(), out_size);
+  printf("L2 norm: %f\n", result);
+  EXPECT_LT(result, 1e-3);
 }

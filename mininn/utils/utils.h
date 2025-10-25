@@ -6,6 +6,10 @@
 
 bool is_equal(float* tensor1, float* tensor2, int size);
 
+double l2_norm(float* tensor1, float* tensor2, int size);
+
+std::vector<float> load_txt(const std::string& filename);
+
 template <typename T>
 void print_vector(const std::vector<T>& vec) {
   std::cout << "[";

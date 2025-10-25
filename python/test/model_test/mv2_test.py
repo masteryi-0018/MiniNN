@@ -71,6 +71,7 @@ def test_model(new_model_path, model_path, debug=True):
 
     inputs = my_predictor.get_input()
     input0_size = inputs[0].get_size()
+    np.random.seed(0)
     input = np.random.rand(input0_size).astype(np.float32)
 
     my_predictor.set_data([input])
@@ -90,6 +91,14 @@ def test_model(new_model_path, model_path, debug=True):
             # if l2_norm(output.get_data(), golden) == 0:
             #     print("output value" , output.get_data())
             #     print("golden value" , golden)
+        input = input.flatten()
+        with open("./models/mv2_input.txt", 'w') as f:
+            for value in input:
+                f.write(f"{value}\n")
+        golden = all_golden[-1].flatten()
+        with open("./models/mv2_golden.txt", 'w') as f:
+            for value in golden:
+                f.write(f"{value}\n")
     else:
         goldens = gen_golden(model_path, input)
         golden = goldens[0]
@@ -103,4 +112,4 @@ if __name__ == "__main__":
     model_path = "./models/mobilenetv2-10.onnx"
     new_model_path = "./models/mobilenetv2-10.gynn"
 
-    test_model(new_model_path, model_path, True)
+    test_model(new_model_path, model_path, False)
