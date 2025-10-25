@@ -1,4 +1,5 @@
 #include <fstream>
+#include <cmath>
 
 #include "mininn/utils/utils.h"
 
