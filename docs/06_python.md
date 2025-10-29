@@ -16,6 +16,21 @@
 2. python setup.py sdist bdist_wheel
 3. twine upload dist/\*
 
+## pybind
+
+可以选择在cmake中编译pybind或者在setup.py中编译pybind
+
+1. cmake
+- 需要手动复制到python包源码目录中
+- 需要指明package_data
+- 需要增加build_ext来标记这是一个包含了cpp拓展的包
+
+2. setup.py
+- 需要手写编译的源文件头文件链接等，这个在python setup.py才能使用，如果用python -m build的虚拟环境中，实现很麻烦
+- 再加上现在推荐python -m build，所以就不在setup.py中写了
+- 即使用pyproject.toml，也需要setup.py才能处理cpp拓展
+
+
 ## bug
 
 1. cpp 可以正常注册算子，但是 py 逻辑不成功
