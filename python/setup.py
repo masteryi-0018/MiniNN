@@ -3,7 +3,7 @@ import sys
 from setuptools import find_packages, setup, Extension
 from setuptools.command.build_ext import build_ext
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 DESCRIPTION = "python interface of MiniNN"
 LONG_DESCRIPTION = "Build a deep learning inference framework from scratch"
 
@@ -29,4 +29,8 @@ setup(
     },
     ext_modules=ext_modules,
     cmdclass={"build_ext": DummyBuildExt},
+    install_requires=[
+        "onnxruntime", # >=1.23.2
+        "onnx", # >=1.19.1
+    ],
 )
