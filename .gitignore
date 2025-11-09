@@ -10,9 +10,9 @@ MODULE.bazel.lock
 
 # py
 __pycache__
-*.egg-info
 dist
-pybuild
+*.egg-info
+wheelhouse
 *.pyd
 *.so
 

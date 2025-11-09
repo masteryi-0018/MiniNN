@@ -15,6 +15,8 @@
 1. pip install twine
 2. python setup.py sdist bdist_wheel
 3. twine upload dist/\*
+4. 上传需要API tokens，建议在user目录下创建`.pypirc`文件
+5. windows和linux的wheel不同，可以分别编译好上传pypi，使用同一个版本号
 
 ## pybind
 
@@ -40,6 +42,15 @@
 2. windows 下使用 pybind11 编译产物.pyd 导入时报错
 
 报错“ImportError: DLL load failed while importing mininn_capi: 找不到指定的模块”，可以使用 dumpbin /dependents 查看 pyd 依赖的 DLL 是否都在路径中。在 Windows 下推荐用 msvc 或者 clang（基于 msvc 的 toolchain），否则会有 gcc 相关的动态库，导致导入时缺少依赖。
+
+3. linux下编译wheel的话会有tag：`linux_x86_64`，这个wheel不能直接上传pypi
+
+需要转换为manylinux，可以用docker或者CICD来构建，本地有一个叫做auditwheel的工具也可以尝试
+  - pip install auditwheel
+  - pip install patchelf
+  - auditwheel repair python/dist/mininn-1.1.0-cp313-cp313-linux_x86_64.whl
+最终转换为`manylinux_2_31_x86_64.whl`，这个`2_31`表示glibc的版本
+
 
 ## 格式化
 
