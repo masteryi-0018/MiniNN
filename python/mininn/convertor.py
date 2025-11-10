@@ -385,7 +385,7 @@ def read(model_path):
 
 
 if __name__ == "__main__":
-    model_path = "models/mobilenetv2-10.onnx"
+    model_path = "./models/mobilenetv2-10.onnx"
     new_model_path = model_path.replace(".onnx", ".gynn")
     my_convertor = Convertor()
     my_convertor.load_onnx_model(model_path)

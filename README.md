@@ -7,21 +7,16 @@ Build a deep learning inference framework from scratch
 envirooment requirement：
 
 - conda，python=3.13
-- onnxruntime
-- mininn_test.gynn [download](https://github.com/masteryi-0018/MiniNN/releases/download/mininn-0.0.1/mininn_test.gynn)
+- your onnx model like: [mobilenetv2-10.onnx]https://github.com/masteryi-0018/MiniNN/blob/main/models/mobilenetv2-10.onnx
 
 ```sh
 conda create -n mininn python=3.13
 conda activate mininn
 pip install mininn
-pip install onnxruntime
-python python/test/pip_test.py
 
-# 1. convert onnx into gynn
-python python/mininn/convertor.py
-
-# 2. run all tests
-python python/run_all_test.py
+# download mv2 onnx
+wget https://raw.githubusercontent.com/masteryi-0018/MiniNN/main/models/mobilenetv2-10.onnx
+python python/test/model_test/mv2_test.py
 ```
 
 ## Build from source
@@ -56,6 +51,10 @@ git clone --recursive git@github.com:masteryi-0018/MiniNN.git
 ### Build
 
 ```sh
+# common
+python build_mininn.py --wheel
+python build_mininn.py --wheel --clean
+
 # cmake
 python build_mininn.py
 
@@ -63,13 +62,13 @@ python build_mininn.py
 python build_mininn.py --tool bazel
 
 # if you want to identify generator, add this flag
-python build_mininn.py --tool bazel --generator ninja
+python build_mininn.py --generator ninja
 
 # if you want to identify compiler, add this flag
-python build_mininn.py --tool bazel --compiler clang
+python build_mininn.py --compiler clang
 
 # if you want build python wheel, add this flag
-python build_mininn.py --tool bazel --wheel
+python build_mininn.py --wheel
 ```
 
 ## Unit Test
@@ -92,6 +91,26 @@ python build_mininn.py --tool bazel --wheel
 
 # bazel
 ./bazel-bin/mininn/gtest-main
+```
+
+### python
+
+```sh
+# 1. convert onnx into gynn
+python python/mininn/convertor.py
+
+# 2. run all tests
+python python/run_all_test.py
+```
+
+## demo
+
+```sh
+# win
+.\build\demo\demo.exe .\models\add_model.gynn
+
+# linux
+./build/demo/demo ./models/add_model.gynn
 ```
 
 ## TODO
