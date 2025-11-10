@@ -117,7 +117,25 @@ def build_cmake(args):
                 ["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"]
             )
 
-    if args.wheel or args.target == "android":
+    if args.target == "android":
+        cmake_args.extend(
+            [
+                "-DWITH_MULTI_THREADS=OFF",
+                "-DWITH_CUDA=OFF",
+                "-DWITH_OPENCL=OFF",
+                "-DWITH_AVX=OFF",
+                "-DWITH_SSE=OFF",
+                "-DWITH_MKL=OFF",
+                "-DWITH_NEON=ON",
+            ]
+        )
+    else:
+        cmake_args.extend(
+            [
+                "-DWITH_NEON=OFF",
+            ]
+        )
+    if args.wheel:
         cmake_args.extend(
             [
                 "-DWITH_MULTI_THREADS=OFF",

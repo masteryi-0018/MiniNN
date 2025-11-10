@@ -7,7 +7,7 @@ Build a deep learning inference framework from scratch
 envirooment requirement：
 
 - conda，python=3.13
-- your onnx model like: [mobilenetv2-10.onnx]https://github.com/masteryi-0018/MiniNN/blob/main/models/mobilenetv2-10.onnx
+- your onnx model like: [mobilenetv2-10.onnx](https://github.com/masteryi-0018/MiniNN/blob/main/models/mobilenetv2-10.onnx)
 
 ```sh
 conda create -n mininn python=3.13

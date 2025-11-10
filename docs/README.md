@@ -73,3 +73,23 @@ cmd /c "`"E:\visual studio\VC\Auxiliary\Build\vcvarsall.bat`" x64 && pwsh"
 | ------------- | ---------- | --- | ----- | ---- |
 | **Windows**   | bazel      | ❌  | ❌    | ✅   |
 | **Linux**     | bazel      | ✅  | ❌    | ❌   |
+
+### 命令
+
+```ps1
+# win
+python .\build_mininn.py --target windows --tool cmake --generator ninja --compiler clang
+
+```
+
+
+## 第三方依赖
+
+| third_party | version |
+| ------------- | ---------- |
+| flatbuffers   | v25.9.23      |
+| googletest     | v1.17.0      |
+| pybind11     | v3.0.1      |
+| pybind11_bazel     | v3.0.0      |
+| rules_cuda     | v0.2.5      |
+| rules_python     | 1.6.2      |
