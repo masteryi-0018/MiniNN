@@ -192,6 +192,8 @@ sudo apt install intel-oneapi-mkl-devel
 g++ test.cc -o test -I/opt/intel/oneapi/mkl/latest/include -L/opt/intel/oneapi/mkl/latest/lib -lmkl_rt -lpthread -Wl,-rpath,/opt/intel/oneapi/mkl/latest/lib
 ```
 
+Windows下需要链接`mkl_intel_lp64.lib，mkl_core.lib，mkl_sequential.lib`，如果链接`mkl_rt.lib`就会在运行时缺少dll导致失败。
+
 ## opengl
 
 有以下 opengl 的分类：

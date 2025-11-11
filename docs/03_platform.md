@@ -86,6 +86,11 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
 - 问题原因：使用 clang 编译器时无法导出某些符号，导致编译动态库失败
 - 解决方法：强制指定编译静态库（-DBUILD_SHARED_LIBS=OFF），或者使用 gcc 编译器
 
+14. windows 执行 gtest 时不打印任何信息就结束
+
+- 问题原因：在终端执行遇到这个问题，可以双击exe，一般是缺少动态库
+- 解决方法：找到动态库就行，或者将动态依赖修改为静态
+
 ## Linux，x86
 
 1. 额外安装的 SDK 运行时出现`cannot open shared object file: No such file or directory`

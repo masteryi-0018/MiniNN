@@ -17,7 +17,7 @@ const char* readKernelSource(std::string& filename) {
   ss << file.rdbuf();
   std::string content = ss.str();
   char* source = new char[content.size() + 1];
-  std::strcpy(source, content.c_str());
+  strcpy_s(source, content.size() + 1, content.c_str());
   return source;
 }
 
