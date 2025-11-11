@@ -15,7 +15,7 @@ TEST(Graph, add_node) {
   graph->add_tensor(shape, data);
   graph->add_tensor(shape, data);
   graph->add_tensor(shape, data);
-  int tensor_num = graph->get_tensors().size();
+  int tensor_num = static_cast<int>(graph->get_tensors().size());
   EXPECT_EQ(tensor_num, 3);
 
   std::shared_ptr<Node> node = OpFactory::global().create(ADD);
@@ -23,7 +23,7 @@ TEST(Graph, add_node) {
   std::vector<int> outputs = {2};
   std::map<std::string, std::vector<int>> attrs;
   graph->add_node(node, inputs, outputs, attrs);
-  int node_num = graph->get_nodes().size();
+  int node_num = static_cast<int>(graph->get_nodes().size());
   EXPECT_EQ(node_num, 1);
 }
 
@@ -32,7 +32,7 @@ TEST(Graph, add_tensor) {
   std::vector<int> shape = {1, 3, 224, 224};
   void* data = nullptr;
   graph->add_tensor(shape, data);
-  int tensor_num = graph->get_tensors().size();
+  int tensor_num = static_cast<int>(graph->get_tensors().size());
   EXPECT_EQ(tensor_num, 1);
 }
 

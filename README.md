@@ -27,7 +27,7 @@ python python/test/model_test/mv2_test.py
 | ----------- | ------- | ------------ | ------------ | --------------------------------- | ------------ |
 | **Windows** | Windows | cmake 3.26.4 | msvc 14.44   | cuda✅ opencl✅ avx✅ sse✅ mkl✅ | use VS shell |
 |             |         |              | clang 20.1.5 | cuda❌ opencl✅ avx✅ sse✅ mkl✅ |              |
-|             |         |              | g++ 13.1.0   | cuda❌ opencl✅ avx✅ sse✅ mkl✅ |              |
+|             |         |              | g++ 13.1.0   | cuda❌ opencl✅ avx✅ sse✅ mkl❌ |              |
 |             |         | bazel 7.3.1  | msvc 14.44   | cuda✅ opencl✅ avx✅ sse✅ mkl✅ | default msvc |
 |             |         |              | clang 20.1.5 |                                   |              |
 |             |         |              | g++ 13.1.0   |                                   |              |

@@ -18,7 +18,7 @@ ShapeCompute::~ShapeCompute() {
 void shape_func(float* out_buffer, std::vector<int> input_shape,
                 std::vector<int> out_shape) {
   for (int i = 0; i < out_shape[0]; ++i) {
-    out_buffer[i] = input_shape[i];
+    out_buffer[i] = static_cast<float>(input_shape[i]);
   }
 }
 

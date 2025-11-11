@@ -21,9 +21,9 @@ void clip_func(float* input_buffer, float* out_buffer, std::vector<int> max,
   int min_val = min[0];
   for (int i = 0; i < size; ++i) {
     if (input_buffer[i] > max_val) {
-      out_buffer[i] = max_val;
+      out_buffer[i] = static_cast<float>(max_val);
     } else if (input_buffer[i] < min_val) {
-      out_buffer[i] = min_val;
+      out_buffer[i] = static_cast<float>(min_val);
     } else {
       out_buffer[i] = input_buffer[i];
     }

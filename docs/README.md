@@ -80,6 +80,11 @@ cmd /c "`"E:\visual studio\VC\Auxiliary\Build\vcvarsall.bat`" x64 && pwsh"
 # win
 python .\build_mininn.py --target windows --tool cmake --generator ninja --compiler clang
 
+# mkl是msvc的格式，不兼容mingw
+python .\build_mininn.py --target windows --tool cmake --generator ninja --compiler gcc
+
+# 需要shell环境
+python .\build_mininn.py --target windows --tool cmake --generator ninja --compiler cl
 ```
 
 

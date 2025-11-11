@@ -28,7 +28,7 @@ void reshape_func(float* input_buffer, float* shape_buffer,
       out_shape.emplace_back(new_size);
     } else {
       out_shape.emplace_back(static_cast<int>(shape_buffer[i]));
-      sum *= shape_buffer[i];
+      sum *= static_cast<int>(shape_buffer[i]);
     }
   }
   out->set_shape(out_shape);

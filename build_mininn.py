@@ -75,6 +75,7 @@ def build_cmake(args):
             )
         elif args.compiler == "gcc":
             cmake_args.extend(["-DCMAKE_C_COMPILER=gcc", "-DCMAKE_CXX_COMPILER=g++"])
+            cmake_args.extend(["-DWITH_MKL=OFF"])  # MKL not supported with MinGW
         elif args.compiler == "cl":
             cmake_args.extend(["-DCMAKE_C_COMPILER=cl", "-DCMAKE_CXX_COMPILER=cl"])
         else:

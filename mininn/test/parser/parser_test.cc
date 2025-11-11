@@ -15,10 +15,10 @@ TEST(Parser, load_model_add) {
   std::vector<int> outputs_ = graph->get_outputs();
   EXPECT_EQ(outputs_, outputs);
 
-  int tensor_num = graph->get_tensors().size();
+  int tensor_num = static_cast<int>(graph->get_tensors().size());
   EXPECT_EQ(tensor_num, 3);
 
-  int node_num = graph->get_nodes().size();
+  int node_num = static_cast<int>(graph->get_nodes().size());
   EXPECT_EQ(node_num, 1);
 }
 
@@ -35,9 +35,9 @@ TEST(Parser, load_model_mv2) {
   std::vector<int> outputs_ = graph->get_outputs();
   EXPECT_EQ(outputs_, outputs);
 
-  int tensor_num = graph->get_tensors().size();
+  int tensor_num = static_cast<int>(graph->get_tensors().size());
   EXPECT_EQ(tensor_num, 213);
 
-  int node_num = graph->get_nodes().size();
+  int node_num = static_cast<int>(graph->get_nodes().size());
   EXPECT_EQ(node_num, 105);
 }

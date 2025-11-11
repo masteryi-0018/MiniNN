@@ -18,7 +18,7 @@ ConstantCompute::~ConstantCompute() {
 void constant_func(float* out_buffer, std::vector<int> value, int size) {
   int val = value[0];
   for (int i = 0; i < size; ++i) {
-    out_buffer[i] = val;
+    out_buffer[i] = static_cast<float>(val);
   }
 }
 

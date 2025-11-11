@@ -32,10 +32,10 @@ void add_func_multi_threads(float* x_buffer, float* y_buffer, float* out_buffer,
                             int size) {
   const size_t num_threads = std::thread::hardware_concurrency();
   std::vector<std::thread> threads;
-  int chunk_size = size / num_threads;
+  int chunk_size = static_cast<int>(size / num_threads);
 
   for (size_t i = 0; i < num_threads; ++i) {
-    int start = i * chunk_size;
+    int start = static_cast<int>(i * chunk_size);
     int end = (i == num_threads - 1) ? size : start + chunk_size;
     threads.emplace_back(add_func, x_buffer, y_buffer, out_buffer, start, end);
   }

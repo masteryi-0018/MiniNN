@@ -25,7 +25,7 @@ TEST(Operator_Conv, get_input_tensors) {
   auto predictor = std::make_shared<Predictor>(graph);
   std::vector<std::shared_ptr<Tensor>> input_tensors =
       predictor->get_input_tensors();
-  int input_num = input_tensors.size();
+  int input_num = static_cast<int>(input_tensors.size());
   EXPECT_EQ(input_num, 1);
 }
 
@@ -36,7 +36,7 @@ TEST(Operator_Conv, get_output_tensors) {
   auto predictor = std::make_shared<Predictor>(graph);
   std::vector<std::shared_ptr<Tensor>> output_tensors =
       predictor->get_output_tensors();
-  int output_num = output_tensors.size();
+  int output_num = static_cast<int>(output_tensors.size());
   EXPECT_EQ(output_num, 1);
 }
 

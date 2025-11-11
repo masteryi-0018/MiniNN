@@ -23,12 +23,19 @@ set(LIB_TYPE OBJECT)
 add_library(mininn_compile_options INTERFACE)
 
 # set strict compile options for the interface library
-target_compile_options(mininn_compile_options INTERFACE
-    -Werror
-    -Wall
-    -Wextra
-    -Wpedantic
-)
+if(MSVC)
+    target_compile_options(mininn_compile_options INTERFACE
+        /W3       # warning level 3, default
+        /WX       # treat warnings as errors
+    )
+else()
+    target_compile_options(mininn_compile_options INTERFACE
+        -Werror
+        -Wall
+        -Wextra
+        -Wpedantic
+    )
+endif()
 
 # 2. subdirectory
 add_subdirectory(runtime)

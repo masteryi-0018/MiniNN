@@ -19,7 +19,7 @@ GatherCompute::~GatherCompute() {
 
 std::vector<int> compute_strides(const std::vector<int>& shape) {
   std::vector<int> strides(shape.size(), 1);
-  for (int i = shape.size() - 2; i >= 0; --i) {
+  for (size_t i = shape.size() - 2; i >= 0; --i) {
     strides[i] = strides[i + 1] * shape[i + 1];
   }
   return strides;
@@ -49,7 +49,7 @@ void gather_func(float* data_buffer, float* indices_buffer, float* out_buffer,
   out_shape.insert(out_shape.end(), indices_shape.begin(), indices_shape.end());
   out_shape.insert(out_shape.end(), data_shape.begin() + gather_axis + 1,
                    data_shape.end());
-  int ndim = out_shape.size();
+  int ndim = static_cast<int>(out_shape.size());
 
   std::vector<int> data_strides = compute_strides(data_shape);
   std::vector<int> indices_strides = compute_strides(indices_shape);
