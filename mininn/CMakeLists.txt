@@ -24,8 +24,9 @@ add_library(mininn_compile_options INTERFACE)
 
 # set strict compile options for the interface library
 if(MSVC)
+    string(REGEX REPLACE "/W[0-4]" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
     target_compile_options(mininn_compile_options INTERFACE
-        /W3       # warning level 3, default
+        /W4       # default warning is level 3
         /WX       # treat warnings as errors
     )
 else()

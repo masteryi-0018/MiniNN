@@ -73,27 +73,27 @@ void load_model(std::string& filename, std::shared_ptr<Graph> graph) {
     Op type = static_cast<Op>(fbs_node->type());
     std::shared_ptr<Node> node = OpFactory::global().create(type);
 
-    auto fbs_inputs = fbs_node->inputs();
-    std::vector<int> inputs;
-    for (auto i : *fbs_inputs) {
-      inputs.emplace_back(i);
+    auto fbs_node_inputs = fbs_node->inputs();
+    std::vector<int> node_inputs;
+    for (auto j : *fbs_node_inputs) {
+      node_inputs.emplace_back(j);
     }
 
-    auto fbs_outputs = fbs_node->outputs();
-    std::vector<int> outputs;
-    for (auto o : *fbs_outputs) {
-      outputs.emplace_back(o);
+    auto fbs_node_outputs = fbs_node->outputs();
+    std::vector<int> node_outputs;
+    for (auto o : *fbs_node_outputs) {
+      node_outputs.emplace_back(o);
     }
 
     auto fbs_attrs = fbs_node->attributes();
     std::map<std::string, std::vector<int>> attrs;
     for (auto a : *fbs_attrs) {
-      for (uint32_t i = 0; i < a->value()->size(); ++i) {
-        attrs[a->key()->c_str()].emplace_back(a->value()->Get(i));
+      for (uint32_t j = 0; j < a->value()->size(); ++j) {
+        attrs[a->key()->c_str()].emplace_back(a->value()->Get(j));
       }
     }
 
-    graph->add_node(node, inputs, outputs, attrs);
+    graph->add_node(node, node_inputs, node_outputs, attrs);
   }
 
   return;

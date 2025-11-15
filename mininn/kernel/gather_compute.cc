@@ -19,7 +19,7 @@ GatherCompute::~GatherCompute() {
 
 std::vector<int> compute_strides(const std::vector<int>& shape) {
   std::vector<int> strides(shape.size(), 1);
-  for (size_t i = shape.size() - 2; i >= 0; --i) {
+    for (int i = static_cast<int>(shape.size()) - 2; i >= 0; --i) {
     strides[i] = strides[i + 1] * shape[i + 1];
   }
   return strides;

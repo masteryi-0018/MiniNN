@@ -172,6 +172,17 @@ g++ test.cc -o test -mavx512vnni
 g++ test.cc -o test -msse4.2
 ```
 
+avx和sse对应的msvc编译器选项：
+```ps1
+/arch:<SSE2|SSE4.2|AVX|AVX2|AVX512|AVX10.x> 最低 CPU 体系结构要求，以下之一:
+   SSE2 - (默认)允许使用通过支持 SSE2 的 CPU 提供的指令
+   SSE4.2 - 允许使用通过支持 SSE4.2 的 CPU 提供的指令
+   AVX - 允许使用通过支持 AVX 的 CPU 提供的指令
+   AVX2 - 允许使用通过支持 AVX2 的 CPU 提供的指令
+   AVX512 - 允许使用通过支持 AVX-512 的 CPU 提供的指令
+   AVX - 允许使用通过支持 AVX10.x 的 CPU 提供的指令。x 的有效值为 1
+```
+
 ## intel MKL
 
 安装页面：[官网](https://www.intel.cn/content/www/cn/zh/developer/tools/oneapi/onemkl-download.html?operatingsystem=linux&linux-install=apt)
