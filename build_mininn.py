@@ -209,9 +209,14 @@ def clean_bazel():
 def build_wheel(args):
     if args.tool == "cmake":
         if sys.platform == "win32":
-            cmake_output = os.path.abspath(
-                "./build/python/mininn_capi.cp313-win_amd64.pyd"
-            )
+            if args.generator == "vs2022":
+                cmake_output = os.path.abspath(
+                    "./build/python/Debug/mininn_capi.cp313-win_amd64.pyd"
+                )
+            else:
+                cmake_output = os.path.abspath(
+                    "./build/python/mininn_capi.cp313-win_amd64.pyd"
+                )
         elif sys.platform == "linux":
             cmake_output = os.path.abspath(
                 "./build/python/mininn_capi.cpython-313-x86_64-linux-gnu.so"

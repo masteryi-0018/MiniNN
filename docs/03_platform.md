@@ -91,6 +91,11 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
 - 问题原因：在终端执行遇到这个问题，可以双击exe，一般是缺少动态库
 - 解决方法：找到动态库就行，或者将动态依赖修改为静态
 
+15. Windows使用vs2022编译时，出现LINK : warning LNK4098: 默认库“LIBCMT”与其他库的使用冲突；
+
+- 问题原因：同一个对象既链接了LIBCMT（静态多线程 CRT），又链接了MSVCRT（动态 CRT），在mininn里面是因为cuda自己编译的时候使用的时/MDd，但其他的应该是静态链接，所以同时出现了二者；提供静态库的时候一般是使用了/MT。动态库和可执行文件使用了/MD，可以用dumpbin /dependents xxx来查看
+- 解决方法：目前来看应该是所有目标统一使用一种，但还没成功，后续应该会去掉cuda依赖
+
 ## Linux，x86
 
 1. 额外安装的 SDK 运行时出现`cannot open shared object file: No such file or directory`
