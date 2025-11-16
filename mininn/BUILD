@@ -156,7 +156,9 @@ cc_library(
         "E:/oneAPI/mkl/2024.2/include"
     ],
     linkopts = [
-        "E:/oneAPI/mkl/2024.2/lib/mkl_rt.lib"
+        "E:/oneAPI/mkl/2024.2/lib/mkl_intel_lp64.lib",
+        "E:/oneAPI/mkl/2024.2/lib/mkl_core.lib",
+        "E:/oneAPI/mkl/2024.2/lib/mkl_sequential.lib"
     ],
     # linux will get include path '/opt/intel/oneapi/mkl/latest/include'
     # references a path outside of the execution root.
@@ -209,6 +211,7 @@ cc_binary(
     srcs = glob([
         "test/*.cc",
         "test/graph/*.cc",
+        "test/model/*.cc",
         "test/operator/*.cc",
         "test/parser/*.cc",
         "test/runtime/*.cc",

@@ -16,6 +16,7 @@ py_library(
     name = "mininn_py",
     srcs = glob([
         "mininn/*.py",
+        "mininn/mininn_fbs/*.py",
     ]),
 )
 

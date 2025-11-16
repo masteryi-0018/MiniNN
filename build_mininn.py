@@ -194,7 +194,7 @@ def clean_cmake():
 
 
 def build_bazel(args):
-    bazel_args = ["bazel", "build", "//mininn/...", "//python/..."]
+    bazel_args = ["bazel", "build", "//mininn/...", "//python/...", "//demo/..."]
     if args.wheel:
         bazel_args.extend(["--define", "with_wheel=1"])
     run_command(bazel_args)

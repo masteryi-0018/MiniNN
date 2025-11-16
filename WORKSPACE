@@ -36,19 +36,19 @@ local_repository(
 )
 
 # external pybind11 lib
-# local_repository(
-#     name = "pybind11",
-#     path = "third_party/pybind11",
-# )
+local_repository(
+    name = "pybind11",
+    path = "third_party/pybind11",
+)
 
 # We still require the pybind library from http_archive because pybind11 repo do not have a WORKSPACE file.
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-http_archive(
-  name = "pybind11",
-  build_file = "@pybind11_bazel//:pybind11-BUILD.bazel",
-  strip_prefix = "pybind11-2.13.6",
-  urls = ["https://github.com/pybind/pybind11/archive/v2.13.6.zip"],
-)
+# load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+# http_archive(
+#   name = "pybind11",
+#   build_file = "@pybind11_bazel//:pybind11-BUILD.bazel",
+#   strip_prefix = "pybind11-2.13.6",
+#   urls = ["https://github.com/pybind/pybind11/archive/v2.13.6.zip"],
+# )
 
 # external rules_python lib,
 # https://rules-python.readthedocs.io/en/latest/getting-started.html#using-a-workspace-file
