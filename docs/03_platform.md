@@ -140,20 +140,13 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
 4. 在Android Studio中下载一个模拟器，相当于一个虚拟的Android手机，型号不重要，下载好点击启动，就可以在adb中发现设备并且使用其运行程序了
 5. 命令：
    ```sh
-   adb shell
-   cd /data/local/tmp/
-   mkdir models
-
    adb push ./build/mininn/test/gtest-main /data/local/tmp
    adb push ./build/demo/demo /data/local/tmp
-   adb push ./models/mininn_test.gynn /data/local/tmp/models/
-   adb push ./models/add_model.gynn /data/local/tmp/models/
-   adb push ./models/mobilenetv2-10.gynn /data/local/tmp/models/
+   adb push ./models/ /data/local/tmp
 
    adb shell
    cd /data/local/tmp/
-   chmod +x ./gtest-main
-   chmod +x ./demo
+   chmod +x ./gtest-main ./demo
 
    ./gtest-main
    ./demo ./models/add_model.gynn

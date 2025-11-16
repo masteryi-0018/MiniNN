@@ -74,7 +74,9 @@ include_directories("third_party/flatbuffers/include")
 
 # 2. subdirectory
 add_subdirectory(third_party/googletest)
-add_subdirectory(third_party/pybind11)
+if(NOT ANDROID)
+    add_subdirectory(third_party/pybind11)
+endif()
 add_subdirectory(mininn)
 if(NOT ANDROID)
     add_subdirectory(python)
