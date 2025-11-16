@@ -50,7 +50,7 @@ local_repository(
 #   urls = ["https://github.com/pybind/pybind11/archive/v2.13.6.zip"],
 # )
 
-# external rules_python lib,
+# external rules_python lib
 # https://rules-python.readthedocs.io/en/latest/getting-started.html#using-a-workspace-file
 local_repository(
     name = "rules_python",
@@ -73,3 +73,14 @@ python_register_toolchains(
 #     python_interpreter_target = "@python_3_13_host//:python",
 #     requirements_lock = "//:requirements.txt",
 # )
+
+# external rules_android_ndk lib
+local_repository(
+    name = "rules_android_ndk",
+    path = "third_party/rules_android_ndk",
+)
+load("@rules_android_ndk//:rules.bzl", "android_ndk_repository")
+android_ndk_repository(
+    name = "androidndk", # Name *must* be "androidndk".
+    path = "E:/android_sdk/ndk/29.0.13846066", # Optional. Can be omitted if `ANDROID_NDK_HOME` environment variable is set.
+)

@@ -39,3 +39,11 @@ ExternalProject_Add(
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${GLOG_BINARY_DIR}
 )
 ```
+
+## bazel
+
+Bazel 可以在许多不同的 build 配置中运行，包括使用 Android 原生开发套件 (NDK) 工具链的几种配置。这意味着，正常的 cc_library 和 cc_binary 规则可以直接在 Bazel 中针对 Android 进行编译。Bazel 通过使用 android_ndk_repository 代码库规则及其相关的 bzlmod 扩展程序来实现此目的。
+
+android_ndk_repository是自带的，不支持新的ndk；使用新的ndk就需要用rules_android_ndk；如果用enable_bzlmod，需要手动设置`$env:ANDROID_NDK_HOME = "D:\project\MiniNN\29.0.13846066"`，但是也会报错，不推荐。
+
+参考：<https://bazel.google.cn/docs/android-ndk?hl=zh-cn>

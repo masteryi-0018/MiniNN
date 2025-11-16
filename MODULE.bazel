@@ -68,3 +68,16 @@ use_repo(python, "python_3_13")
 # dep platforms
 # todo: windows do not need
 bazel_dep(name = "platforms", version = "1.0.0")
+
+# override path of dep rules_android_ndk
+# bazel_dep(name = "rules_android_ndk", version = "head")
+# local_path_override(
+#     module_name = "rules_android_ndk",
+#     path = "third_party/rules_android_ndk",
+# )
+# android_ndk_repository_extension = use_extension(
+#     "@rules_android_ndk//:extension.bzl",
+#     "android_ndk_repository_extension"
+#     )
+# use_repo(android_ndk_repository_extension, "androidndk")
+# register_toolchains("@androidndk//:all")
