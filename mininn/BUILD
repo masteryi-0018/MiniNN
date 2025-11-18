@@ -69,7 +69,6 @@ cc_library(
         "backend/mkl/*.h",
     ]),
     defines = select({
-        ":with_wheel": [],
         "@platforms//os:windows": [
             "WITH_MULTI_THREADS",
             "WITH_CUDA",
@@ -101,6 +100,7 @@ cc_library(
 # backend lib
 cuda_library(
     name = "cuda",
+    # can not pass empty srcs to cuda_library
     srcs = glob([
         "backend/cuda/*.cu",
     ]),
@@ -111,9 +111,12 @@ cuda_library(
 
 cc_library(
     name = "opencl",
-    srcs = glob([
-        "backend/opencl/*.cc",
-    ]),
+    srcs = select({
+        ":WITH_OPENCL": glob([
+            "backend/opencl/*.cc",
+        ]),
+        "//conditions:default": [],
+    }),
     # includes = [
     #     "C:/PROGRA~1/NVIDIA~2/CUDA/v12.9/include"
     # ],
@@ -129,29 +132,48 @@ cc_library(
 
 cc_library(
     name = "avx",
-    srcs = glob([
-        "backend/avx/*.cc",
-    ]),
-    copts = [
-        "-mavx512vnni",
-    ],
+    srcs = select({
+        ":WITH_AVX": glob([
+            "backend/avx/*.cc",
+        ]),
+        "//conditions:default": [],
+    }),
+    copts = select({
+        "@platforms//os:windows": [
+            "/arch:AVX512",
+        ],
+        "@platforms//os:linux": [
+            "-mavx512vnni",
+        ],
+    }),
 )
 
 cc_library(
     name = "sse",
-    srcs = glob([
-        "backend/sse/*.cc",
-    ]),
-    copts = [
-        "-msse4.2",
-    ],
+    srcs = select({
+        ":WITH_SSE": glob([
+            "backend/sse/*.cc",
+        ]),
+        "//conditions:default": [],
+    }),
+    copts = select({
+        "@platforms//os:windows": [
+            "/arch:SSE4.2",
+        ],
+        "@platforms//os:linux": [
+            "-mavx512vnni",
+        ],
+    }),
 )
 
 cc_library(
     name = "mkl",
-    srcs = glob([
-        "backend/mkl/*.cc",
-    ]),
+    srcs = select({
+        ":WITH_MKL": glob([
+            "backend/mkl/*.cc",
+        ]),
+        "//conditions:default": [],
+    }),
     includes = [
         "E:/oneAPI/mkl/2024.2/include"
     ],
@@ -166,29 +188,72 @@ cc_library(
     target_compatible_with = ["@platforms//os:windows"],
 )
 
+cc_library(
+    name = "neon",
+    srcs = select({
+        ":WITH_NEON": glob([
+            "backend/neon/*.cc",
+        ]),
+        "//conditions:default": [],
+    }),
+)
+
 config_setting(
-    name = "with_wheel",
-    values = {"define": "with_wheel=1"},
+    name = "WITH_MULTI_THREADS",
+    define_values = {"WITH_MULTI_THREADS": "ON"},
+)
+
+config_setting(
+    name = "WITH_CUDA",
+    define_values = {"WITH_CUDA": "ON"},
+)
+
+config_setting(
+    name = "WITH_OPENCL",
+    define_values = {"WITH_OPENCL": "ON"},
+)
+
+config_setting(
+    name = "WITH_AVX",
+    define_values = {"WITH_AVX": "ON"},
+)
+
+config_setting(
+    name = "WITH_SSE",
+    define_values = {"WITH_SSE": "ON"},
+)
+
+config_setting(
+    name = "WITH_MKL",
+    define_values = {"WITH_MKL": "ON"},
+)
+
+config_setting(
+    name = "WITH_NEON",
+    define_values = {"WITH_NEON": "ON"},
 )
 
 cc_library(
     name = "backend",
     deps = select({
-        ":with_wheel": [],
-        "@platforms//os:windows": [
-            ":cuda",
-            ":opencl",
-            ":avx",
-            ":sse",
-            ":mkl",
-        ],
-        "@platforms//os:linux": [
-            ":cuda",
-            ":opencl",
-            ":avx",
-            ":sse",
-        ],
-    }),
+            "WITH_CUDA": [":cuda"],
+            "//conditions:default": [],
+        }) + select({
+            "WITH_OPENCL": [":opencl"],
+            "//conditions:default": [],
+        }) + select({
+            "WITH_AVX": [":avx"],
+            "//conditions:default": [],
+        }) + select({
+            "WITH_SSE": [":sse"],
+            "//conditions:default": [],
+        }) + select({
+            "WITH_MKL": [":mkl"],
+            "//conditions:default": [],
+        }) + select({
+            "WITH_NEON": [":neon"],
+            "//conditions:default": [],
+        }),
 )
 
 cc_library(

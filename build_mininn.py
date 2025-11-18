@@ -196,8 +196,37 @@ def clean_cmake():
 def build_bazel(args):
     bazel_args = ["bazel", "build", "//mininn/...", "//python/...", "//demo/..."]
     if args.wheel:
-        bazel_args.extend(["--define", "with_wheel=1"])
+        bazel_args.extend(
+            [
+                "--define","WITH_MULTI_THREADS=OFF",
+                "--define","WITH_CUDA=OFF",
+                "--define","WITH_OPENCL=OFF",
+                "--define","WITH_AVX=OFF",
+                "--define","WITH_SSE=OFF",
+                "--define","WITH_MKL=OFF",
+                "--define","WITH_NEON=OFF",
+            ]
+        )
+    else:
+        if args.target == "android":
+            bazel_args.extend(
+                [
+                    "--define","WITH_CUDA=OFF",
+                    "--define","WITH_OPENCL=OFF",
+                    "--define","WITH_AVX=OFF",
+                    "--define","WITH_SSE=OFF",
+                    "--define","WITH_MKL=OFF",
+                ]
+            )
+        else:
+            bazel_args.extend(
+                [
+                    "--define","WITH_NEON=OFF",
+                ]
+            )
     run_command(bazel_args)
+    if args.wheel and args.target != "android":
+        build_wheel(args)
 
 
 def clean_bazel():
