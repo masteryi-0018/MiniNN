@@ -16,6 +16,3 @@
 [submodule "third_party/rules_python"]
 	path = third_party/rules_python
 	url = https://github.com/bazel-contrib/rules_python.git
-[submodule "third_party/rules_android_ndk"]
-	path = third_party/rules_android_ndk
-	url = https://github.com/bazelbuild/rules_android_ndk.git
