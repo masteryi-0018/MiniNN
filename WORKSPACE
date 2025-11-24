@@ -35,12 +35,6 @@ local_repository(
     path = "third_party/pybind11_bazel",
 )
 
-# external pybind11 lib
-local_repository(
-    name = "pybind11",
-    path = "third_party/pybind11",
-)
-
 # We still require the pybind library from http_archive because pybind11 repo do not have a WORKSPACE file.
 # load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 # http_archive(

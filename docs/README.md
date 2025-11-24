@@ -104,6 +104,12 @@ python .\build_mininn.py --target windows --tool cmake --generator make --compil
 
 # cmake msys（后续移除）
 python .\build_mininn.py --target windows --tool cmake --generator msys --compiler gcc
+
+# bazel msvc workspace
+python .\build_mininn.py --target windows --tool bazel
+
+# bazel msvc bzlmod
+python .\build_mininn.py --target windows --tool bazel
 ```
 
 2. windows android

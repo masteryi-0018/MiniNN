@@ -7,7 +7,7 @@
 
 module(
     name = "mininn",
-    version = "1.0.0",
+    version = "1.2.0",
 )
 
 # override path of dep flatbuffers

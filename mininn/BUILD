@@ -1,5 +1,40 @@
 load("@rules_cuda//cuda:defs.bzl", "cuda_library")
 
+config_setting(
+    name = "WITH_MULTI_THREADS",
+    define_values = {"WITH_MULTI_THREADS": "ON"},
+)
+
+config_setting(
+    name = "WITH_CUDA",
+    define_values = {"WITH_CUDA": "ON"},
+)
+
+config_setting(
+    name = "WITH_OPENCL",
+    define_values = {"WITH_OPENCL": "ON"},
+)
+
+config_setting(
+    name = "WITH_AVX",
+    define_values = {"WITH_AVX": "ON"},
+)
+
+config_setting(
+    name = "WITH_SSE",
+    define_values = {"WITH_SSE": "ON"},
+)
+
+config_setting(
+    name = "WITH_MKL",
+    define_values = {"WITH_MKL": "ON"},
+)
+
+config_setting(
+    name = "WITH_NEON",
+    define_values = {"WITH_NEON": "ON"},
+)
+
 cc_library(
     name = "runtime",
     srcs = glob([
@@ -68,23 +103,6 @@ cc_library(
         "backend/sse/*.h",
         "backend/mkl/*.h",
     ]),
-    defines = select({
-        "@platforms//os:windows": [
-            "WITH_MULTI_THREADS",
-            "WITH_CUDA",
-            "WITH_OPENCL",
-            "WITH_AVX",
-            "WITH_SSE",
-            "WITH_MKL",
-        ],
-        "@platforms//os:linux": [
-            "WITH_MULTI_THREADS",
-            "WITH_CUDA",
-            "WITH_OPENCL",
-            "WITH_AVX",
-            "WITH_SSE",
-        ],
-    }),
 )
 
 cc_library(
@@ -97,6 +115,7 @@ cc_library(
     ]),
 )
 
+# TODO: make these optional
 # backend lib
 cuda_library(
     name = "cuda",
@@ -198,43 +217,11 @@ cc_library(
     }),
 )
 
-config_setting(
-    name = "WITH_MULTI_THREADS",
-    define_values = {"WITH_MULTI_THREADS": "ON"},
-)
-
-config_setting(
-    name = "WITH_CUDA",
-    define_values = {"WITH_CUDA": "ON"},
-)
-
-config_setting(
-    name = "WITH_OPENCL",
-    define_values = {"WITH_OPENCL": "ON"},
-)
-
-config_setting(
-    name = "WITH_AVX",
-    define_values = {"WITH_AVX": "ON"},
-)
-
-config_setting(
-    name = "WITH_SSE",
-    define_values = {"WITH_SSE": "ON"},
-)
-
-config_setting(
-    name = "WITH_MKL",
-    define_values = {"WITH_MKL": "ON"},
-)
-
-config_setting(
-    name = "WITH_NEON",
-    define_values = {"WITH_NEON": "ON"},
-)
-
 cc_library(
     name = "backend",
+    srcs = glob([
+        "backend/*.cc",
+    ]),
     deps = select({
             "WITH_CUDA": [":cuda"],
             "//conditions:default": [],

@@ -166,7 +166,10 @@ def clean_cmake():
         shutil.rmtree("mininn_sdk")
     else:
         print(f"No directory to remove: 'mininn_sdk'")
+    clean_wheel()
 
+
+def clean_wheel():
     if os.path.exists("python/dist"):
         shutil.rmtree("python/dist")
     if os.path.exists("python/mininn.egg-info"):
@@ -208,22 +211,11 @@ def build_bazel(args):
             ]
         )
     else:
-        if args.target == "android":
-            bazel_args.extend(
-                [
-                    "--define","WITH_CUDA=OFF",
-                    "--define","WITH_OPENCL=OFF",
-                    "--define","WITH_AVX=OFF",
-                    "--define","WITH_SSE=OFF",
-                    "--define","WITH_MKL=OFF",
-                ]
-            )
-        else:
-            bazel_args.extend(
-                [
-                    "--define","WITH_NEON=OFF",
-                ]
-            )
+        bazel_args.extend(
+            [
+                "--define","WITH_NEON=OFF",
+            ]
+        )
     run_command(bazel_args)
     if args.wheel and args.target != "android":
         build_wheel(args)
@@ -233,6 +225,7 @@ def clean_bazel():
     # use --expunge to clean all
     run_command(["bazel", "clean", "--expunge"])
     os.remove("MODULE.bazel.lock")
+    clean_wheel()
 
 
 def build_wheel(args):
@@ -253,9 +246,9 @@ def build_wheel(args):
 
     elif args.tool == "bazel":
         if sys.platform == "win32":
-            cmake_output = os.path.abspath("../bazel-bin/python/mininn_capi.pyd")
+            cmake_output = os.path.abspath("./bazel-bin/python/mininn_capi.pyd")
         elif sys.platform == "linux":
-            cmake_output = os.path.abspath("../bazel-bin/python/mininn_capi.so")
+            cmake_output = os.path.abspath("./bazel-bin/python/mininn_capi.so")
 
     # you can cp .pyd/.so file to pybuild/lib/mininn directly, but you should mkdir before python setup.py
     # target_dir = os.path.join("pybuild/lib", "mininn")
@@ -301,6 +294,9 @@ def main():
             build_cmake(args)
 
     elif args.tool == "bazel":
+        if args.target == "android":
+            print("Bazel Android build is not supported yet.")
+            sys.exit(1)
         if args.clean:
             clean_bazel()
         else:
