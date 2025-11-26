@@ -33,4 +33,4 @@ void Conv::init_kernel(std::shared_ptr<Kernel> kernel) {
   kernel->set_params(params_);
 }
 
-REGISTER_OP(CONV, Conv);
+REGISTER_OP(CONV, Conv)

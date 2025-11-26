@@ -28,4 +28,4 @@ void Clip::init_kernel(std::shared_ptr<Kernel> kernel) {
   kernel->set_params(params_);
 }
 
-REGISTER_OP(CLIP, Clip);
+REGISTER_OP(CLIP, Clip)

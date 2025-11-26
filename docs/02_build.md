@@ -47,3 +47,18 @@ Bazel 可以在许多不同的 build 配置中运行，包括使用 Android 原�
 android_ndk_repository是自带的，不支持新的ndk；使用新的ndk就需要用rules_android_ndk；如果用enable_bzlmod，需要手动设置`$env:ANDROID_NDK_HOME = "D:\project\MiniNN\29.0.13846066"`，但是也会报错，不推荐。
 
 参考：<https://bazel.google.cn/docs/android-ndk?hl=zh-cn>
+
+## 环境依赖
+
+1. cmake
+
+推荐通过pip install cmake，因为旧的cmake和新的pybind11版本会导致不认识py313的版本，报错：
+```sh
+CMake Error at /usr/share/cmake-3.16/Modules/FindPackageHandleStandardArgs.cmake:146 (message):
+Could NOT find Python (missing: Python_LIBRARIES Python_INCLUDE_DIRS Development)
+(found suitable version "3.13.9", minimum required is "3.8")
+```
+
+2. 其他开发需要的
+
+- pip install build twine

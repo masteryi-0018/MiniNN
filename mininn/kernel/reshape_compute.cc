@@ -68,4 +68,4 @@ void ReshapeCompute::set_params(Params* params) {
 
 ReshapeParams* ReshapeCompute::get_params() { return params_; }
 
-REGISTER_KERNEL(RESHAPE, ReshapeCompute);
+REGISTER_KERNEL(RESHAPE, ReshapeCompute)

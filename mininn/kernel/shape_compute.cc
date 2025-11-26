@@ -48,4 +48,4 @@ void ShapeCompute::set_params(Params* params) {
 
 ShapeParams* ShapeCompute::get_params() { return params_; }
 
-REGISTER_KERNEL(SHAPE, ShapeCompute);
+REGISTER_KERNEL(SHAPE, ShapeCompute)

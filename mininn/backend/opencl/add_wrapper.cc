@@ -17,7 +17,11 @@ const char* readKernelSource(std::string& filename) {
   ss << file.rdbuf();
   std::string content = ss.str();
   char* source = new char[content.size() + 1];
+#ifdef _WIN32
   strcpy_s(source, content.size() + 1, content.c_str());
+#elif __unix__
+  std::strcpy(source, content.c_str());
+#endif
   return source;
 }
 

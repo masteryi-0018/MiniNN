@@ -122,6 +122,19 @@ python .\build_mininn.py --target android --tool cmake --generator ninja --compi
 python .\build_mininn.py --target android --tool cmake --generator make --compiler clang
 ```
 
+3. linux local
+
+```sh
+# cmake ninja
+python ./build_mininn.py --target linux --tool cmake --generator ninja --compiler clang
+python ./build_mininn.py --target linux --tool cmake --generator ninja --compiler gcc
+
+# cmake make
+python ./build_mininn.py --target windows --tool cmake --generator make --compiler clang
+python ./build_mininn.py --target windows --tool cmake --generator make --compiler gcc
+
+```
+
 ## 第三方依赖
 
 | third_party    | version  |

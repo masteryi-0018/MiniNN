@@ -28,4 +28,4 @@ void Gather::init_kernel(std::shared_ptr<Kernel> kernel) {
   kernel->set_params(params_);
 }
 
-REGISTER_OP(GATHER, Gather);
+REGISTER_OP(GATHER, Gather)

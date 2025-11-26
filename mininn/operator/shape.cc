@@ -30,4 +30,4 @@ void Shape::init_kernel(std::shared_ptr<Kernel> kernel) {
   kernel->set_params(params_);
 }
 
-REGISTER_OP(SHAPE, Shape);
+REGISTER_OP(SHAPE, Shape)

@@ -29,4 +29,4 @@ void Unsqueeze::init_kernel(std::shared_ptr<Kernel> kernel) {
   kernel->set_params(params_);
 }
 
-REGISTER_OP(UNSQUEEZE, Unsqueeze);
+REGISTER_OP(UNSQUEEZE, Unsqueeze)

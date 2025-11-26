@@ -31,4 +31,4 @@ void Gemm::init_kernel(std::shared_ptr<Kernel> kernel) {
   kernel->set_params(params_);
 }
 
-REGISTER_OP(GEMM, Gemm);
+REGISTER_OP(GEMM, Gemm)

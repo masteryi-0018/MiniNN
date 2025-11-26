@@ -137,4 +137,4 @@ void AddCompute::set_params(Params* params) {
 
 AddParams* AddCompute::get_params() { return params_; }
 
-REGISTER_KERNEL(ADD, AddCompute);
+REGISTER_KERNEL(ADD, AddCompute)

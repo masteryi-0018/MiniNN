@@ -54,4 +54,4 @@ void ConcatCompute::set_params(Params* params) {
 
 ConcatParams* ConcatCompute::get_params() { return params_; }
 
-REGISTER_KERNEL(CONCAT, ConcatCompute);
+REGISTER_KERNEL(CONCAT, ConcatCompute)

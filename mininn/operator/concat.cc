@@ -31,4 +31,4 @@ void Concat::init_kernel(std::shared_ptr<Kernel> kernel) {
   kernel->set_params(params_);
 }
 
-REGISTER_OP(CONCAT, Concat);
+REGISTER_OP(CONCAT, Concat)

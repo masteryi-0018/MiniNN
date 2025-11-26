@@ -164,4 +164,4 @@ void ConvCompute::set_params(Params* params) {
 
 ConvParams* ConvCompute::get_params() { return params_; }
 
-REGISTER_KERNEL(CONV, ConvCompute);
+REGISTER_KERNEL(CONV, ConvCompute)

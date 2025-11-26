@@ -31,4 +31,4 @@ void Add::init_kernel(std::shared_ptr<Kernel> kernel) {
   kernel->set_params(params_);
 }
 
-REGISTER_OP(ADD, Add);
+REGISTER_OP(ADD, Add)

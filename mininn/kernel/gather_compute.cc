@@ -116,4 +116,4 @@ void GatherCompute::set_params(Params* params) {
 
 GatherParams* GatherCompute::get_params() { return params_; }
 
-REGISTER_KERNEL(GATHER, GatherCompute);
+REGISTER_KERNEL(GATHER, GatherCompute)

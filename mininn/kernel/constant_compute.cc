@@ -47,4 +47,4 @@ void ConstantCompute::set_params(Params* params) {
 
 ConstantParams* ConstantCompute::get_params() { return params_; }
 
-REGISTER_KERNEL(CONSTANT, ConstantCompute);
+REGISTER_KERNEL(CONSTANT, ConstantCompute)

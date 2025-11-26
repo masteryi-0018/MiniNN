@@ -32,4 +32,4 @@ void Constant::init_kernel(std::shared_ptr<Kernel> kernel) {
   kernel->set_params(params_);
 }
 
-REGISTER_OP(CONSTANT, Constant);
+REGISTER_OP(CONSTANT, Constant)

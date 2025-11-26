@@ -35,4 +35,4 @@ void Globalaveragepool::init_kernel(std::shared_ptr<Kernel> kernel) {
   kernel->set_params(params_);
 }
 
-REGISTER_OP(GLOBALAVERAGEPOOL, Globalaveragepool);
+REGISTER_OP(GLOBALAVERAGEPOOL, Globalaveragepool)

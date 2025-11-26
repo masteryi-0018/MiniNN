@@ -102,4 +102,4 @@ void GemmCompute::set_params(Params* params) {
 
 GemmParams* GemmCompute::get_params() { return params_; }
 
-REGISTER_KERNEL(GEMM, GemmCompute);
+REGISTER_KERNEL(GEMM, GemmCompute)

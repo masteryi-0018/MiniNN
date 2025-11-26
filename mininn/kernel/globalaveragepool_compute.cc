@@ -71,4 +71,4 @@ GlobalaveragepoolParams* GlobalaveragepoolCompute::get_params() {
   return params_;
 }
 
-REGISTER_KERNEL(GLOBALAVERAGEPOOL, GlobalaveragepoolCompute);
+REGISTER_KERNEL(GLOBALAVERAGEPOOL, GlobalaveragepoolCompute)

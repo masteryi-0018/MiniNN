@@ -58,4 +58,4 @@ void ClipCompute::set_params(Params* params) {
 
 ClipParams* ClipCompute::get_params() { return params_; }
 
-REGISTER_KERNEL(CLIP, ClipCompute);
+REGISTER_KERNEL(CLIP, ClipCompute)

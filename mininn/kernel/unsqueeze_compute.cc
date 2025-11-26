@@ -49,4 +49,4 @@ void UnsqueezeCompute::set_params(Params* params) {
 
 UnsqueezeParams* UnsqueezeCompute::get_params() { return params_; }
 
-REGISTER_KERNEL(UNSQUEEZE, UnsqueezeCompute);
+REGISTER_KERNEL(UNSQUEEZE, UnsqueezeCompute)
