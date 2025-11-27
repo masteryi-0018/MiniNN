@@ -5,7 +5,7 @@
 // Vector addition function using SSE/SSE2
 void sse_add_wrapper(const float* h_A, const float* h_B, float* h_C,
                      int numElements) {
-  size_t i = 0;
+  int i = 0;
   // Process 4 floats at a time (SSE works with 128-bit registers, which hold 4
   // floats)
   for (; i + 3 < numElements; i += 4) {

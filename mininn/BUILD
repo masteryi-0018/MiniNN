@@ -102,6 +102,7 @@ cc_library(
         "backend/avx/*.h",
         "backend/sse/*.h",
         "backend/mkl/*.h",
+        "backend/neon/*.h",
     ]),
 )
 
@@ -254,6 +255,10 @@ cc_library(
         ":utils",
         ":backend"
     ],
+    linkopts = select({
+        "@platforms//os:windows": [],
+        "@platforms//os:linux": ["-lpthread"],
+    }),
     visibility = ["//visibility:public"],
 )
 

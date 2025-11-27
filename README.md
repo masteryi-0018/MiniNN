@@ -34,7 +34,7 @@ python python/test/model_test/mv2_test.py
 |             | Android | cmake 3.26.4 | Clang 14.0.7 | cuda❌ opencl❌ avx❌ sse❌ mkl❌ | ndk 25.2     |
 | **Linux**   | Linux   | cmake 3.16.3 | clang 10.0.0 | cuda✅ opencl✅ avx✅ sse✅ mkl✅ |              |
 |             |         |              | g++ 9.4.0    | cuda✅ opencl✅ avx✅ sse✅ mkl✅ |              |
-|             |         | bazel 8.0.0  | clang 10.0.0 |                                   |              |
+|             |         | bazel 8.4.2  | clang 10.0.0 |                                   |              |
 |             |         |              | g++ 9.4.0    | cuda✅ opencl✅ avx✅ sse✅ mkl❌ | default g++  |
 |             | Android | cmake 3.16.3 | clang 9.0.9  | cuda❌ opencl❌ avx❌ sse❌ mkl❌ | ndk r21e     |
 

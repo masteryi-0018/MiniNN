@@ -3,7 +3,7 @@
 // vectorAdd use avx/avx2
 void avx_add_wrapper(const float* h_A, const float* h_B, float* h_C,
                      int numElements) {
-  size_t i = 0;
+  int i = 0;
   // 32bit(float) * 8 = 256bit
   for (; i + 7 < numElements; i += 8) {
     // load 8 number of float32 to register

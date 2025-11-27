@@ -130,9 +130,24 @@ python ./build_mininn.py --target linux --tool cmake --generator ninja --compile
 python ./build_mininn.py --target linux --tool cmake --generator ninja --compiler gcc
 
 # cmake make
-python ./build_mininn.py --target windows --tool cmake --generator make --compiler clang
-python ./build_mininn.py --target windows --tool cmake --generator make --compiler gcc
+python ./build_mininn.py --target linux --tool cmake --generator make --compiler clang
+python ./build_mininn.py --target linux --tool cmake --generator make --compiler gcc
 
+# bazel gcc workspace
+python ./build_mininn.py --target linux --tool bazel
+
+# bazel gcc bzlmod
+python ./build_mininn.py --target linux --tool bazel
+```
+
+4. linux android
+
+```sh
+# cmake ninja
+python ./build_mininn.py --target android --tool cmake --generator ninja --compiler clang
+
+# cmake make
+python ./build_mininn.py --target android --tool cmake --generator make --compiler clang
 ```
 
 ## 第三方依赖
