@@ -63,6 +63,12 @@ def build_cmake(args):
             cmake_args.extend(["-G", "MinGW Makefiles"])
         elif args.generator == "vs2022":
             cmake_args.extend(["-G", "Visual Studio 17 2022"])
+        elif args.generator == "nmake":
+            cmake_args.extend(["-G", "NMake Makefiles"])
+        elif args.generator == "make":
+            cmake_args.extend(["-G", "Unix Makefiles"])
+        elif args.generator == "msys2":
+            cmake_args.extend(["-G", "MSYS Makefiles"])
         else:
             print(
                 "Unsupported generator for Windows. Use 'ninja', 'mingw', or 'vs2022'. Set default generator to 'ninja'."
@@ -211,11 +217,20 @@ def build_bazel(args):
             ]
         )
     else:
-        bazel_args.extend(
-            [
-                "--define","WITH_NEON=OFF",
-            ]
-        )
+        if args.target == "windows":
+            bazel_args.extend(
+                [
+                    "--config=windows",
+                    "--define","WITH_NEON=OFF",
+                ]
+            )
+        else:
+            bazel_args.extend(
+                [
+                    "--config=linux",
+                    "--define","WITH_NEON=OFF",
+                ]
+            )
     run_command(bazel_args)
     if args.wheel and args.target != "android":
         build_wheel(args)
@@ -279,7 +294,7 @@ def main():
     parser.add_argument("--target", choices=["windows", "linux", "android"])
     parser.add_argument("--tool", choices=["cmake", "bazel"], default="cmake")
     parser.add_argument(
-        "--generator", choices=["ninja", "mingw", "vs2022", "make"], default="ninja"
+        "--generator", choices=["ninja", "mingw", "vs2022", "make", "nmake", "msys2"], default="ninja"
     )
     parser.add_argument("--compiler", choices=["gcc", "clang", "cl"], default="clang")
     parser.add_argument("--clean", action="store_true")

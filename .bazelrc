@@ -1,6 +1,5 @@
-# build --enable_workspace
-build --enable_bzlmod
-build --cxxopt=-std=c++17
+build:windows --cxxopt=/std:c++17
+build:linux --cxxopt=-std=c++17
 
 build --define WITH_MULTI_THREADS=ON
 build --define WITH_CUDA=ON

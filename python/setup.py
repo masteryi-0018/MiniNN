@@ -3,7 +3,7 @@ import sys
 from setuptools import find_packages, setup, Extension
 from setuptools.command.build_ext import build_ext
 
-VERSION = "1.2.0"
+VERSION = "1.3.0"
 DESCRIPTION = "python interface of MiniNN"
 LONG_DESCRIPTION = "Build a deep learning inference framework from scratch"
 

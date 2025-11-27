@@ -102,11 +102,8 @@ python .\build_mininn.py --target windows --tool cmake --generator make --compil
 python .\build_mininn.py --target windows --tool cmake --generator make --compiler gcc
 python .\build_mininn.py --target windows --tool cmake --generator make --compiler cl
 
-# cmake msys（后续移除）
-python .\build_mininn.py --target windows --tool cmake --generator msys --compiler gcc
-
-# bazel msvc workspace
-python .\build_mininn.py --target windows --tool bazel
+# cmake msys2（后续移除）
+python .\build_mininn.py --target windows --tool cmake --generator msys2 --compiler gcc
 
 # bazel msvc bzlmod
 python .\build_mininn.py --target windows --tool bazel

@@ -1,37 +1,37 @@
 load("@rules_cuda//cuda:defs.bzl", "cuda_library")
 
 config_setting(
-    name = "WITH_MULTI_THREADS",
+    name = "with_multi_threads",
     define_values = {"WITH_MULTI_THREADS": "ON"},
 )
 
 config_setting(
-    name = "WITH_CUDA",
+    name = "with_cuda",
     define_values = {"WITH_CUDA": "ON"},
 )
 
 config_setting(
-    name = "WITH_OPENCL",
+    name = "with_opencl",
     define_values = {"WITH_OPENCL": "ON"},
 )
 
 config_setting(
-    name = "WITH_AVX",
+    name = "with_avx",
     define_values = {"WITH_AVX": "ON"},
 )
 
 config_setting(
-    name = "WITH_SSE",
+    name = "with_sse",
     define_values = {"WITH_SSE": "ON"},
 )
 
 config_setting(
-    name = "WITH_MKL",
+    name = "with_mkl",
     define_values = {"WITH_MKL": "ON"},
 )
 
 config_setting(
-    name = "WITH_NEON",
+    name = "with_neon",
     define_values = {"WITH_NEON": "ON"},
 )
 
@@ -104,6 +104,28 @@ cc_library(
         "backend/mkl/*.h",
         "backend/neon/*.h",
     ]),
+    copts = select({
+        ":with_multi_threads": [ "-DWITH_MULTI_THREADS" ],
+        "//conditions:default": [],
+    }) + select({
+        ":with_cuda": [ "-DWITH_CUDA" ],
+        "//conditions:default": [],
+    }) + select({
+        ":with_opencl": [ "-DWITH_OPENCL" ],
+        "//conditions:default": [],
+    }) + select({
+        ":with_avx": [ "-DWITH_AVX" ],
+        "//conditions:default": [],
+    }) + select({
+        ":with_sse": [ "-DWITH_SSE" ],
+        "//conditions:default": [],
+    }) + select({
+        ":with_mkl": [ "-DWITH_MKL" ],
+        "//conditions:default": [],
+    }) + select({
+        ":with_neon": [ "-DWITH_NEON" ],
+        "//conditions:default": [],
+    })
 )
 
 cc_library(
@@ -132,7 +154,7 @@ cuda_library(
 cc_library(
     name = "opencl",
     srcs = select({
-        ":WITH_OPENCL": glob([
+        ":with_opencl": glob([
             "backend/opencl/*.cc",
         ]),
         "//conditions:default": [],
@@ -153,7 +175,7 @@ cc_library(
 cc_library(
     name = "avx",
     srcs = select({
-        ":WITH_AVX": glob([
+        ":with_avx": glob([
             "backend/avx/*.cc",
         ]),
         "//conditions:default": [],
@@ -171,7 +193,7 @@ cc_library(
 cc_library(
     name = "sse",
     srcs = select({
-        ":WITH_SSE": glob([
+        ":with_sse": glob([
             "backend/sse/*.cc",
         ]),
         "//conditions:default": [],
@@ -189,7 +211,7 @@ cc_library(
 cc_library(
     name = "mkl",
     srcs = select({
-        ":WITH_MKL": glob([
+        ":with_mkl": glob([
             "backend/mkl/*.cc",
         ]),
         "//conditions:default": [],
@@ -211,7 +233,7 @@ cc_library(
 cc_library(
     name = "neon",
     srcs = select({
-        ":WITH_NEON": glob([
+        ":with_neon": glob([
             "backend/neon/*.cc",
         ]),
         "//conditions:default": [],
@@ -224,22 +246,22 @@ cc_library(
         "backend/*.cc",
     ]),
     deps = select({
-            "WITH_CUDA": [":cuda"],
+            "with_cuda": [":cuda"],
             "//conditions:default": [],
         }) + select({
-            "WITH_OPENCL": [":opencl"],
+            "with_opencl": [":opencl"],
             "//conditions:default": [],
         }) + select({
-            "WITH_AVX": [":avx"],
+            "with_avx": [":avx"],
             "//conditions:default": [],
         }) + select({
-            "WITH_SSE": [":sse"],
+            "with_sse": [":sse"],
             "//conditions:default": [],
         }) + select({
-            "WITH_MKL": [":mkl"],
+            "with_mkl": [":mkl"],
             "//conditions:default": [],
         }) + select({
-            "WITH_NEON": [":neon"],
+            "with_neon": [":neon"],
             "//conditions:default": [],
         }),
 )
