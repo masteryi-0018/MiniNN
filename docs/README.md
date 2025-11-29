@@ -130,9 +130,6 @@ python ./build_mininn.py --target linux --tool cmake --generator ninja --compile
 python ./build_mininn.py --target linux --tool cmake --generator make --compiler clang
 python ./build_mininn.py --target linux --tool cmake --generator make --compiler gcc
 
-# bazel gcc workspace
-python ./build_mininn.py --target linux --tool bazel
-
 # bazel gcc bzlmod
 python ./build_mininn.py --target linux --tool bazel
 ```

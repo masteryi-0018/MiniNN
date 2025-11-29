@@ -207,13 +207,13 @@ def build_bazel(args):
     if args.wheel:
         bazel_args.extend(
             [
-                "--define","WITH_MULTI_THREADS=OFF",
-                "--define","WITH_CUDA=OFF",
-                "--define","WITH_OPENCL=OFF",
-                "--define","WITH_AVX=OFF",
-                "--define","WITH_SSE=OFF",
-                "--define","WITH_MKL=OFF",
-                "--define","WITH_NEON=OFF",
+                "--define", "WITH_MULTI_THREADS=OFF",
+                "--define", "WITH_CUDA=OFF",
+                "--define", "WITH_OPENCL=OFF",
+                "--define", "WITH_AVX=OFF",
+                "--define", "WITH_SSE=OFF",
+                "--define", "WITH_MKL=OFF",
+                "--define", "WITH_NEON=OFF",
             ]
         )
     else:
@@ -221,14 +221,15 @@ def build_bazel(args):
             bazel_args.extend(
                 [
                     "--config=windows",
-                    "--define","WITH_NEON=OFF",
+                    "--define", "WITH_NEON=OFF",
                 ]
             )
         else:
             bazel_args.extend(
                 [
                     "--config=linux",
-                    "--define","WITH_NEON=OFF",
+                    "--define", "WITH_MKL=OFF",
+                    "--define", "WITH_NEON=OFF",
                 ]
             )
     run_command(bazel_args)
