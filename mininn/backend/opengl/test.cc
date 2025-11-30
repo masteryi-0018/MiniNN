@@ -6,7 +6,15 @@
 #include <sstream>
 #include <vector>
 
-// Function to check OpenGL errors
+// Load shader source from file
+std::string loadShaderSource(const std::string& path) {
+  std::ifstream file(path);
+  std::stringstream ss;
+  ss << file.rdbuf();
+  return ss.str();
+}
+
+// Check OpenGL errors
 void checkError(GLenum error, const char* msg) {
   if (error != GL_NO_ERROR) {
     std::cerr << msg << " - OpenGL Error: " << error << std::endl;
@@ -14,67 +22,35 @@ void checkError(GLenum error, const char* msg) {
   }
 }
 
-// Function to load a shader source from a file
-std::string loadShaderSource(const std::string& path) {
-  std::ifstream file(path);
-  std::stringstream buffer;
-  buffer << file.rdbuf();
-  return buffer.str();
-}
-
-// Function to initialize OpenGL
-void initOpenGL() {
-  if (!glfwInit()) {
-    std::cerr << "Failed to initialize GLFW!" << std::endl;
-    exit(1);
-  }
-
-  GLFWwindow* window =
-      glfwCreateWindow(800, 600, "OpenGL Vector Add", nullptr, nullptr);
-  if (!window) {
-    glfwTerminate();
-    std::cerr << "Failed to create GLFW window!" << std::endl;
-    exit(1);
-  }
-  glfwMakeContextCurrent(window);
-  glewInit();
-  checkError(glGetError(), "GLEW Initialization failed");
-
-  std::cout << "OpenGL Initialized!" << std::endl;
-}
-
-// Function to create and compile the compute shader program
-GLuint createComputeShaderProgram(const std::string& shaderSource) {
-  GLuint program = glCreateProgram();
+// Create compute shader program
+GLuint createComputeProgram(const std::string& src) {
   GLuint shader = glCreateShader(GL_COMPUTE_SHADER);
-  const char* shaderSrc = shaderSource.c_str();
-  glShaderSource(shader, 1, &shaderSrc, nullptr);
+  const char* c_src = src.c_str();
+  glShaderSource(shader, 1, &c_src, nullptr);
   glCompileShader(shader);
 
-  GLint compiled;
-  glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
-  if (!compiled) {
-    GLint logLength;
-    glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
-    char* log = new char[logLength];
-    glGetShaderInfoLog(shader, logLength, nullptr, log);
-    std::cerr << "Shader Compilation Failed:\n" << log << std::endl;
-    delete[] log;
+  GLint status;
+  glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
+  if (!status) {
+    GLint len;
+    glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &len);
+    std::vector<char> log(len);
+    glGetShaderInfoLog(shader, len, nullptr, log.data());
+    std::cerr << "Compute Shader Compile Error:\n" << log.data() << std::endl;
     exit(1);
   }
 
+  GLuint program = glCreateProgram();
   glAttachShader(program, shader);
   glLinkProgram(program);
 
-  GLint linked;
-  glGetProgramiv(program, GL_LINK_STATUS, &linked);
-  if (!linked) {
-    GLint logLength;
-    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
-    char* log = new char[logLength];
-    glGetProgramInfoLog(program, logLength, nullptr, log);
-    std::cerr << "Program Linking Failed:\n" << log << std::endl;
-    delete[] log;
+  glGetProgramiv(program, GL_LINK_STATUS, &status);
+  if (!status) {
+    GLint len;
+    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &len);
+    std::vector<char> log(len);
+    glGetProgramInfoLog(program, len, nullptr, log.data());
+    std::cerr << "Program Link Error:\n" << log.data() << std::endl;
     exit(1);
   }
 
@@ -82,67 +58,70 @@ GLuint createComputeShaderProgram(const std::string& shaderSource) {
   return program;
 }
 
-// Function to create a buffer object and bind it to the correct binding point
-GLuint createBufferObject(const std::vector<float>& data, GLuint bindingPoint) {
+// Create and bind buffer object
+GLuint createBuffer(const std::vector<float>& data, GLuint binding) {
   GLuint buffer;
-  glGenBuffers(1, &buffer);  // Generate a buffer object
-  glBindBuffer(
-      GL_SHADER_STORAGE_BUFFER,
-      buffer);  // Bind the buffer to the GL_SHADER_STORAGE_BUFFER target
+  glGenBuffers(1, &buffer);
+  glBindBuffer(GL_SHADER_STORAGE_BUFFER, buffer);
   glBufferData(GL_SHADER_STORAGE_BUFFER, data.size() * sizeof(float),
-               data.data(), GL_STATIC_DRAW);  // Upload data to the buffer
-
-  // Bind buffer to the specific binding point
-  glBindBufferBase(GL_SHADER_STORAGE_BUFFER, bindingPoint, buffer);
-  checkError(glGetError(), "Buffer Creation Failed");
-
+               data.data(), GL_STATIC_DRAW);
+  glBindBufferBase(GL_SHADER_STORAGE_BUFFER, binding, buffer);
   return buffer;
 }
 
 int main() {
-  initOpenGL();
+  // Initialize GLFW + OpenGL
+  if (!glfwInit()) {
+    std::cerr << "Failed to init GLFW\n";
+    return -1;
+  }
 
-  // Load shader source code
-  std::string shaderSource = loadShaderSource("add.glsl");
+  glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);  // hidden window
+  GLFWwindow* window = glfwCreateWindow(1, 1, "", nullptr, nullptr);
+  glfwMakeContextCurrent(window);
 
-  // Create and use the compute shader program
-  GLuint program = createComputeShaderProgram(shaderSource);
+  glewExperimental = GL_TRUE;
+  if (glewInit() != GLEW_OK) {
+    std::cerr << "GLEW init failed\n";
+    return -1;
+  }
+
+  // Load compute shader
+  std::string shaderSrc = loadShaderSource("add.glsl");
+  GLuint program = createComputeProgram(shaderSrc);
   glUseProgram(program);
 
-  // Initialize input data
+  // Vector size
   const int size = 1024;
-  std::vector<float> A(size, 1.0f);  // Input vector A
-  std::vector<float> B(size, 2.0f);  // Input vector B
-  std::vector<float> C(size, 0.0f);  // Output vector C (initialized to zero)
+  std::vector<float> A(size, 1.0f);
+  std::vector<float> B(size, 2.0f);
+  std::vector<float> C(size, 0.0f);
 
-  // Create buffer objects for the input and output vectors
-  GLuint bufferA = createBufferObject(A, 0);  // A binding 0
-  GLuint bufferB = createBufferObject(B, 1);  // B binding 1
-  GLuint bufferC = createBufferObject(C, 2);  // C binding 2
+  // Create buffers
+  GLuint bufA = createBuffer(A, 0);
+  GLuint bufB = createBuffer(B, 1);
+  GLuint bufC = createBuffer(C, 2);
 
-  // Dispatch compute shader to process the data
-  glDispatchCompute(size / 256, 1, 1);  // 4 work groups for 1024 elements
-  glMemoryBarrier(
-      GL_SHADER_STORAGE_BARRIER_BIT);  // Ensure completion of writes
+  // Dispatch compute shader
+  const int localSize = 256;                           // must match shader
+  int numGroups = (size + localSize - 1) / localSize;  // ceil division
+  glDispatchCompute(numGroups, 1, 1);
+  glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 
-  // Retrieve results from buffer C
-  glBindBuffer(GL_SHADER_STORAGE_BUFFER, bufferC);
-  float* ptr = (float*)glMapBufferRange(
-      GL_SHADER_STORAGE_BUFFER, 0, C.size() * sizeof(float), GL_MAP_READ_BIT);
-  checkError(glGetError(), "Mapping Buffer Failed");
+  // Read back results safely
+  glBindBuffer(GL_SHADER_STORAGE_BUFFER, bufC);
+  glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, size * sizeof(float),
+                     C.data());
 
-  // Output the first 10 results
+  // Print first 10 results
   std::cout << "Result of vector addition: ";
-  for (int i = 0; i < 10; i++) {  // Print first 10 results
-    std::cout << ptr[i] << " ";
-  }
+  for (int i = 0; i < 10; ++i) std::cout << C[i] << " ";
   std::cout << "..." << std::endl;
 
-  // Clean up resources
-  glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
-  glDeleteBuffers(1, &bufferA);
-  glDeleteBuffers(1, &bufferB);
-  glDeleteBuffers(1, &bufferC);
+  // Cleanup
+  glDeleteBuffers(1, &bufA);
+  glDeleteBuffers(1, &bufB);
+  glDeleteBuffers(1, &bufC);
   glDeleteProgram(program);
   glfwTerminate();
 

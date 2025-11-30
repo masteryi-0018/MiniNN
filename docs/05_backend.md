@@ -216,6 +216,18 @@ Windows下需要链接`mkl_intel_lp64.lib，mkl_core.lib，mkl_sequential.lib`�
 
 ## opengl in Windows
 
+也需要下载对应的Windows的glew和glfw：
+- glew：http://glew.sourceforge.net/
+- glfw：https://www.glfw.org/download.html
+
+很多Windows平台的包不提供mingw的版本（.a, .so），只提供msvc的（.lib, .dll），所以建议使用msvc/clang-msvc
+
+```ps1
+clang++ -o test.exe test.cc -I "E:\glew-2.1.0\include" -I "E:\glfw-3.4.bin.WIN64\include" -L "E:\glfw-3.4.bin.WIN64\lib-vc2022" -L "E:\glew-2.1.0\lib\Release\x64" -lopengl32 -lglew32 -lglfw3 -luser32 -lgdi32 -lshell32 -lmsvcrt
+```
+
+不加-lmsvcrt会找不到一些标准库的符号，加上会报错找不到glew32.dll，不建议折腾。
+
 1. 一般来说，安装了 NV 的 driver 就会有 opengl，但实际发现并没有，opengl 也不是跟随 CUDA 安装的，这一点和 opencl 不同。
 2. 链接：<https://developer.nvidia.com/opengl>，虽然说 NV 支持 opengl，但是下面的更新到 2016 年就没有了，驱动链接点进去也是 NV 的 driver 官网，合理推测希望大家都使用 cuda 的接口。
 3. 在 Windows 上依靠 NV 进行 opengl 开发应该不可行
@@ -226,13 +238,13 @@ Windows下需要链接`mkl_intel_lp64.lib，mkl_core.lib，mkl_sequential.lib`�
 
 1. 依赖：`sudo apt install mesa-utils`
 2. 执行：`glxinfo | grep "OpenGL version"`，安装了 NV 的 cuda 后，这个就直接有了
-3. 依赖：`sudo apt-get install libglfw3 libglfw3-dev`，`glfw`不是 OpenGL 本身的必需部分，但它是一个非常流行且实用的库[https://github.com/glfw/glfw](https://github.com/glfw/glfw)，通常用来简化一些与窗口管理、输入处理、上下文创建等相关的工作。简单来说，GLFW 为 OpenGL 提供了一个平台无关的窗口管理和输入处理的框架，方便开发者进行图形编程
+3. 依赖：`sudo apt install libglew-dev libglfw3-dev`，`glfw`不是 OpenGL 本身的必需部分，但它是一个非常流行且实用的库[https://github.com/glfw/glfw](https://github.com/glfw/glfw)，通常用来简化一些与窗口管理、输入处理、上下文创建等相关的工作。简单来说，GLFW 为 OpenGL 提供了一个平台无关的窗口管理和输入处理的框架，方便开发者进行图形编程
 4. 与 opencl 类似，在 WSL 中，即使安装了 NV 的驱动（使用 nvidia-smi 有输出），opengl 也是只能借助 MS 的虚拟机实现
 
 编译命令：
 
 ```sh
-g++ -o test test.cc -lGLEW -lGL -lglfw
+g++ test.cc -o test -lGL -lGLEW -lglfw
 ```
 
 ## 参考资料
