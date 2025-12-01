@@ -202,69 +202,20 @@ def clean_wheel():
         print("No __pycache__ directories to remove")
 
 
-def build_bazel(args):
-    bazel_args = ["bazel", "build", "//mininn/...", "//python/...", "//demo/..."]
-    if args.wheel:
-        bazel_args.extend(
-            [
-                "--define", "WITH_MULTI_THREADS=OFF",
-                "--define", "WITH_CUDA=OFF",
-                "--define", "WITH_OPENCL=OFF",
-                "--define", "WITH_AVX=OFF",
-                "--define", "WITH_SSE=OFF",
-                "--define", "WITH_MKL=OFF",
-                "--define", "WITH_NEON=OFF",
-            ]
-        )
-    else:
-        if args.target == "windows":
-            bazel_args.extend(
-                [
-                    "--config=windows",
-                    "--define", "WITH_NEON=OFF",
-                ]
+def build_wheel(args):
+    if sys.platform == "win32":
+        if args.generator == "vs2022":
+            cmake_output = os.path.abspath(
+                "./build/python/Debug/mininn_capi.cp313-win_amd64.pyd"
             )
         else:
-            bazel_args.extend(
-                [
-                    "--config=linux",
-                    "--define", "WITH_MKL=OFF",
-                    "--define", "WITH_NEON=OFF",
-                ]
-            )
-    run_command(bazel_args)
-    if args.wheel and args.target != "android":
-        build_wheel(args)
-
-
-def clean_bazel():
-    # use --expunge to clean all
-    run_command(["bazel", "clean", "--expunge"])
-    os.remove("MODULE.bazel.lock")
-    clean_wheel()
-
-
-def build_wheel(args):
-    if args.tool == "cmake":
-        if sys.platform == "win32":
-            if args.generator == "vs2022":
-                cmake_output = os.path.abspath(
-                    "./build/python/Debug/mininn_capi.cp313-win_amd64.pyd"
-                )
-            else:
-                cmake_output = os.path.abspath(
-                    "./build/python/mininn_capi.cp313-win_amd64.pyd"
-                )
-        elif sys.platform == "linux":
             cmake_output = os.path.abspath(
-                "./build/python/mininn_capi.cpython-313-x86_64-linux-gnu.so"
+                "./build/python/mininn_capi.cp313-win_amd64.pyd"
             )
-
-    elif args.tool == "bazel":
-        if sys.platform == "win32":
-            cmake_output = os.path.abspath("./bazel-bin/python/mininn_capi.pyd")
-        elif sys.platform == "linux":
-            cmake_output = os.path.abspath("./bazel-bin/python/mininn_capi.so")
+    elif sys.platform == "linux":
+        cmake_output = os.path.abspath(
+            "./build/python/mininn_capi.cpython-313-x86_64-linux-gnu.so"
+        )
 
     # you can cp .pyd/.so file to pybuild/lib/mininn directly, but you should mkdir before python setup.py
     # target_dir = os.path.join("pybuild/lib", "mininn")
@@ -293,7 +244,6 @@ def main():
         description="Build and clean script for multiple tools, generator and compiler"
     )
     parser.add_argument("--target", choices=["windows", "linux", "android"])
-    parser.add_argument("--tool", choices=["cmake", "bazel"], default="cmake")
     parser.add_argument(
         "--generator", choices=["ninja", "mingw", "vs2022", "make", "nmake", "msys2"], default="ninja"
     )
@@ -303,24 +253,10 @@ def main():
 
     args = parser.parse_args()
 
-    if args.tool == "cmake":
-        if args.clean:
-            clean_cmake()
-        else:
-            build_cmake(args)
-
-    elif args.tool == "bazel":
-        if args.target == "android":
-            print("Bazel Android build is not supported yet.")
-            sys.exit(1)
-        if args.clean:
-            clean_bazel()
-        else:
-            build_bazel(args)
-
+    if args.clean:
+        clean_cmake()
     else:
-        print(f"Unsupported tool: {args.tool}. Use 'cmake' or 'bazel'.")
-        sys.exit(1)
+        build_cmake(args)
 
 
 if __name__ == "__main__":

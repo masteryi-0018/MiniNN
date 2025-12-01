@@ -4,10 +4,6 @@
 build
 mininn_sdk
 
-# bazel
-bazel-*
-MODULE.bazel.lock
-
 # py
 __pycache__
 dist

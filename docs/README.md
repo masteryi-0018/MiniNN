@@ -65,15 +65,6 @@
 cmd /c "`"E:\visual studio\VC\Auxiliary\Build\vcvarsall.bat`" x64 && pwsh"
 ```
 
-### bazel
-
-自己配置 cpp 工具链比较负责，使用默认的测试
-
-| Host Platform | Build Tool | gcc | clang | msvc |
-| ------------- | ---------- | --- | ----- | ---- |
-| **Windows**   | bazel      | ❌  | ❌    | ✅   |
-| **Linux**     | bazel      | ✅  | ❌    | ❌   |
-
 ### 命令
 
 1. windows local
@@ -104,9 +95,6 @@ python .\build_mininn.py --target windows --tool cmake --generator make --compil
 
 # cmake msys2（后续移除）
 python .\build_mininn.py --target windows --tool cmake --generator msys2 --compiler gcc
-
-# bazel msvc bzlmod
-python .\build_mininn.py --target windows --tool bazel
 ```
 
 2. windows android
@@ -129,9 +117,6 @@ python ./build_mininn.py --target linux --tool cmake --generator ninja --compile
 # cmake make
 python ./build_mininn.py --target linux --tool cmake --generator make --compiler clang
 python ./build_mininn.py --target linux --tool cmake --generator make --compiler gcc
-
-# bazel gcc bzlmod
-python ./build_mininn.py --target linux --tool bazel
 ```
 
 4. linux android
@@ -151,6 +136,3 @@ python ./build_mininn.py --target android --tool cmake --generator make --compil
 | flatbuffers    | v25.9.23 |
 | googletest     | v1.17.0  |
 | pybind11       | v3.0.1   |
-| pybind11_bazel | v3.0.0   |
-| rules_cuda     | v0.2.5   |
-| rules_python   | 1.6.2    |

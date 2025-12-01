@@ -14,3 +14,10 @@ git submodule add https://github.com/google/googletest.git third_party/googletes
 - （作为项目的一部分）使用 cmake 的函数`FetchContent_MakeAvailable`
 
 这时候对照 ncnn 项目，ncnn 确实没有使用任何三方库，单元测试也是自己写的。
+
+2. git删除submodule
+
+```
+git submodule deinit -f .\third_party\xxx
+git rm -f  .\third_party\xxx
+```

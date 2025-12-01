@@ -28,14 +28,9 @@ python python/test/model_test/mv2_test.py
 | **Windows** | Windows | cmake 3.26.4 | msvc 14.44   | cuda✅ opencl✅ avx✅ sse✅ mkl✅ | use VS shell |
 |             |         |              | clang 20.1.5 | cuda❌ opencl✅ avx✅ sse✅ mkl✅ |              |
 |             |         |              | g++ 13.1.0   | cuda❌ opencl✅ avx✅ sse✅ mkl❌ |              |
-|             |         | bazel 8.4.2  | msvc 14.44   | cuda✅ opencl✅ avx✅ sse✅ mkl✅ | default msvc |
-|             |         |              | clang 20.1.5 |                                   |              |
-|             |         |              | g++ 13.1.0   |                                   |              |
 |             | Android | cmake 3.26.4 | Clang 14.0.7 | cuda❌ opencl❌ avx❌ sse❌ mkl❌ | ndk 25.2     |
 | **Linux**   | Linux   | cmake 3.16.3 | clang 10.0.0 | cuda✅ opencl✅ avx✅ sse✅ mkl✅ |              |
 |             |         |              | g++ 9.4.0    | cuda✅ opencl✅ avx✅ sse✅ mkl✅ |              |
-|             |         | bazel 8.4.2  | clang 10.0.0 |                                   |              |
-|             |         |              | g++ 9.4.0    | cuda✅ opencl✅ avx✅ sse✅ mkl❌ | default g++  |
 |             | Android | cmake 3.16.3 | clang 9.0.9  | cuda❌ opencl❌ avx❌ sse❌ mkl❌ | ndk r21e     |
 
 ### Download
@@ -55,20 +50,14 @@ git clone --recursive git@github.com:masteryi-0018/MiniNN.git
 python build_mininn.py --wheel
 python build_mininn.py --wheel --clean
 
-# cmake
-python build_mininn.py
-
-# bazel
-python build_mininn.py --tool bazel
-
 # if you want to identify generator, add this flag
 python build_mininn.py --generator ninja
 
 # if you want to identify compiler, add this flag
 python build_mininn.py --compiler clang
 
-# if you want build python wheel, add this flag
-python build_mininn.py --wheel
+# if you want to build all backends
+python build_mininn.py
 ```
 
 ## Unit Test
@@ -78,9 +67,6 @@ python build_mininn.py --wheel
 ```ps1
 # cmake
 .\build\mininn\test\gtest-main.exe
-
-# bazel
-.\bazel-bin\mininn\gtest-main.exe
 ```
 
 ### linux
@@ -88,9 +74,6 @@ python build_mininn.py --wheel
 ```sh
 # cmake
 ./build/mininn/test/gtest-main
-
-# bazel
-./bazel-bin/mininn/gtest-main
 ```
 
 ### python
@@ -142,7 +125,6 @@ python python/run_all_test.py
 5. mininn build
 
 - [x] cmake
-- [x] bazel
 - [x] clang++
 - [x] g++
 - [x] msvc
