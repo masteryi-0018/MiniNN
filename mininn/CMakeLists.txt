@@ -2,16 +2,9 @@
 option(WITH_GTEST "build with gtest" ON)
 option(WITH_MULTI_THREADS "build with multi_threads" ON)
 
-if((WIN32 AND MSVC) OR (UNIX AND NOT ANDROID))
-    option(WITH_CUDA "build with cuda" ON)
-else()
-    option(WITH_CUDA "build with cuda" OFF)
-endif()
-
 option(WITH_OPENCL "build with opencl" ON)
 option(WITH_AVX "build with avx" ON)
 option(WITH_SSE "build with sse" ON)
-option(WITH_MKL "build with mkl" ON)
 option(WITH_NEON "build with neon" ON)
 
 # pybind need one static lib to produce a shared lib, so use a OBJECT to handle it

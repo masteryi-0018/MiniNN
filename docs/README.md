@@ -39,20 +39,16 @@
 
 ### cmake
 
-| Host        | Target  | Generator             | gcc         | clang                  | msvc     |
-| ----------- | ------- | --------------------- | ----------- | ---------------------- | -------- |
-| **Windows** | Windows | Visual Studio 17 2022 | ❌          | ❌                     | ✅       |
-|             |         | Ninja                 | ✅          | ✅                     | ⚠️       |
-|             |         | MinGW Makefiles       | ✅          | ✅                     | ⚠️       |
-|             |         | NMake Makefiles       | vs shell    | vs shell               | vs shell |
-|             |         | Unix Makefiles        | rename      | rename                 | rename   |
-|             |         | MSYS Makefiles        | msys2 shell | mingw-w64-x86_64-clang | ⚠️       |
-|             | Android | Ninja                 | ❌          | ✅                     | ❌       |
-|             |         | Unix Makefiles        | ❌          | ✅                     | ❌       |
-| **Linux**   | Linux   | Unix Makefiles        | ✅          | ✅                     | ❌       |
-|             |         | Ninja                 | ✅          | ✅                     | ❌       |
-|             | Android | Ninja                 | ❌          | ✅                     | ❌       |
-|             |         | Unix Makefiles        | ❌          | ✅                     | ❌       |
+| Host        | Target  | Generator             | gcc | clang | msvc |
+| ----------- | ------- | --------------------- | --- | ----- | ---- |
+| **Windows** | Windows | Ninja                 | ✅  | ✅    | ⚠️   |
+|             |         | Visual Studio 17 2022 | ❌  | ❌    | ✅   |
+|             | Android | Ninja                 | ❌  | ✅    | ❌   |
+|             |         | Unix Makefiles        | ❌  | ✅    | ❌   |
+| **Linux**   | Linux   | Ninja                 | ✅  | ✅    | ❌   |
+|             |         | Unix Makefiles        | ✅  | ✅    | ❌   |
+|             | Android | Ninja                 | ❌  | ✅    | ❌   |
+|             |         | Unix Makefiles        | ❌  | ✅    | ❌   |
 
 1. 使用 Unix Makefile 需要 rename mingw32-make -> make，不推荐
 2. 使用 MSYS Makefiles 需要特定的 shell，否则找不到默认的使用 sh.exe，不推荐，而且不容易配置 clang 和 cl
@@ -71,68 +67,49 @@ cmd /c "`"E:\visual studio\VC\Auxiliary\Build\vcvarsall.bat`" x64 && pwsh"
 
 ```ps1
 # cmake ninja
-python .\build_mininn.py --target windows --tool cmake --generator ninja --compiler clang
-python .\build_mininn.py --target windows --tool cmake --generator ninja --compiler gcc
-python .\build_mininn.py --target windows --tool cmake --generator ninja --compiler cl
+python .\build_mininn.py --target windows --generator ninja --compiler clang
+python .\build_mininn.py --target windows --generator ninja --compiler cl
 
 # cmake vs2022
-python .\build_mininn.py --target windows --tool cmake --generator vs2022 --compiler cl
-
-# cmake mingw（后续移除）
-python .\build_mininn.py --target windows --tool cmake --generator mingw --compiler clang
-python .\build_mininn.py --target windows --tool cmake --generator mingw --compiler gcc
-python .\build_mininn.py --target windows --tool cmake --generator mingw --compiler cl
-
-# cmake nmake（后续移除）
-python .\build_mininn.py --target windows --tool cmake --generator nmake --compiler clang
-python .\build_mininn.py --target windows --tool cmake --generator nmake --compiler gcc
-python .\build_mininn.py --target windows --tool cmake --generator nmake --compiler cl
-
-# cmake make（后续移除）
-python .\build_mininn.py --target windows --tool cmake --generator make --compiler clang
-python .\build_mininn.py --target windows --tool cmake --generator make --compiler gcc
-python .\build_mininn.py --target windows --tool cmake --generator make --compiler cl
-
-# cmake msys2（后续移除）
-python .\build_mininn.py --target windows --tool cmake --generator msys2 --compiler gcc
+python .\build_mininn.py --target windows --generator vs2022 --compiler cl
 ```
 
 2. windows android
 
 ```ps1
 # cmake ninja
-python .\build_mininn.py --target android --tool cmake --generator ninja --compiler clang
+python .\build_mininn.py --target android --generator ninja --compiler clang
 
 # cmake make
-python .\build_mininn.py --target android --tool cmake --generator make --compiler clang
+python .\build_mininn.py --target android --generator make --compiler clang
 ```
 
 3. linux local
 
 ```sh
 # cmake ninja
-python ./build_mininn.py --target linux --tool cmake --generator ninja --compiler clang
-python ./build_mininn.py --target linux --tool cmake --generator ninja --compiler gcc
+python ./build_mininn.py --target linux --generator ninja --compiler clang
+python ./build_mininn.py --target linux --generator ninja --compiler gcc
 
 # cmake make
-python ./build_mininn.py --target linux --tool cmake --generator make --compiler clang
-python ./build_mininn.py --target linux --tool cmake --generator make --compiler gcc
+python ./build_mininn.py --target linux --generator make --compiler clang
+python ./build_mininn.py --target linux --generator make --compiler gcc
 ```
 
 4. linux android
 
 ```sh
 # cmake ninja
-python ./build_mininn.py --target android --tool cmake --generator ninja --compiler clang
+python ./build_mininn.py --target android --generator ninja --compiler clang
 
 # cmake make
-python ./build_mininn.py --target android --tool cmake --generator make --compiler clang
+python ./build_mininn.py --target android --generator make --compiler clang
 ```
 
 ## 第三方依赖
 
-| third_party    | version  |
-| -------------- | -------- |
-| flatbuffers    | v25.9.23 |
-| googletest     | v1.17.0  |
-| pybind11       | v3.0.1   |
+| third_party | version  |
+| ----------- | -------- |
+| flatbuffers | v25.9.23 |
+| googletest  | v1.17.0  |
+| pybind11    | v3.0.1   |

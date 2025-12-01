@@ -23,15 +23,14 @@ python python/test/model_test/mv2_test.py
 
 ### Environment Version
 
-| Host        | Target  | Tool         | Compiler     | Backend                           | Note         |
-| ----------- | ------- | ------------ | ------------ | --------------------------------- | ------------ |
-| **Windows** | Windows | cmake 3.26.4 | msvc 14.44   | cuda✅ opencl✅ avx✅ sse✅ mkl✅ | use VS shell |
-|             |         |              | clang 20.1.5 | cuda❌ opencl✅ avx✅ sse✅ mkl✅ |              |
-|             |         |              | g++ 13.1.0   | cuda❌ opencl✅ avx✅ sse✅ mkl❌ |              |
-|             | Android | cmake 3.26.4 | Clang 14.0.7 | cuda❌ opencl❌ avx❌ sse❌ mkl❌ | ndk 25.2     |
-| **Linux**   | Linux   | cmake 3.16.3 | clang 10.0.0 | cuda✅ opencl✅ avx✅ sse✅ mkl✅ |              |
-|             |         |              | g++ 9.4.0    | cuda✅ opencl✅ avx✅ sse✅ mkl✅ |              |
-|             | Android | cmake 3.16.3 | clang 9.0.9  | cuda❌ opencl❌ avx❌ sse❌ mkl❌ | ndk r21e     |
+| Host        | Target  | Tool         | Compiler     | Backend              | Note         |
+| ----------- | ------- | ------------ | ------------ | -------------------- | ------------ |
+| **Windows** | Windows | cmake 3.26.4 | clang 20.1.5 | opencl✅ avx✅ sse✅ |              |
+|             |         |              | msvc 14.44   | opencl✅ avx✅ sse✅ | use VS shell |
+|             | Android | cmake 3.26.4 | Clang 14.0.7 | opencl❌ avx❌ sse❌ | ndk 25.2     |
+| **Linux**   | Linux   | cmake 3.16.3 | clang 10.0.0 | opencl✅ avx✅ sse✅ |              |
+|             |         |              | g++ 9.4.0    | opencl✅ avx✅ sse✅ |              |
+|             | Android | cmake 3.16.3 | clang 9.0.9  | opencl❌ avx❌ sse❌ | ndk r21e     |
 
 ### Download
 
@@ -62,18 +61,18 @@ python build_mininn.py
 
 ## Unit Test
 
-### windows
+### cpp
 
+1. windows
 ```ps1
-# cmake
 .\build\mininn\test\gtest-main.exe
+.\build\demo\demo.exe .\models\add_model.gynn
 ```
 
-### linux
-
+2. linux
 ```sh
-# cmake
 ./build/mininn/test/gtest-main
+./build/demo/demo ./models/add_model.gynn
 ```
 
 ### python
@@ -84,16 +83,6 @@ python python/mininn/convertor.py
 
 # 2. run all tests
 python python/run_all_test.py
-```
-
-## demo
-
-```sh
-# win
-.\build\demo\demo.exe .\models\add_model.gynn
-
-# linux
-./build/demo/demo ./models/add_model.gynn
 ```
 
 ## TODO
@@ -111,12 +100,11 @@ python python/run_all_test.py
 3. mininn kernel
 
 - [x] 增加 opencl 后端
-- [x] 增加 cuda 后端
 - [x] 增加 avx 后端
 - [x] 增加 sse 后端
-- [x] 增加 mkl 后端
+- [x] 增加 neon 后端
 
-4. mininn release
+1. mininn release
 
 - [x] demo
 - [x] cpp sdk

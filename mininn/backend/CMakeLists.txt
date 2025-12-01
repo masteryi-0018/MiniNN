@@ -4,11 +4,6 @@ file(GLOB BACKEND_SRC "*.cc")
 add_library(backend ${BACKEND_LIB_TYPE} ${BACKEND_SRC})
 
 
-if(WITH_CUDA)
-    add_subdirectory(cuda)
-    target_link_libraries(backend cuda)
-endif()
-
 if(WITH_OPENCL)
     add_subdirectory(opencl)
     target_link_libraries(backend opencl)
@@ -28,21 +23,6 @@ endif()
 if(WITH_SSE)
     add_subdirectory(sse)
     target_link_libraries(backend sse)
-endif()
-
-if(WITH_MKL)
-    add_subdirectory(mkl)
-    target_link_libraries(backend mkl)
-    # target_link_libraries(backend ${MKL_LIBRARIES})
-    if(WIN32)
-        target_link_libraries(backend
-            ${MKL_LIB_DIR}/mkl_intel_lp64.lib
-            ${MKL_LIB_DIR}/mkl_core.lib
-            ${MKL_LIB_DIR}/mkl_sequential.lib
-        )
-    elseif(UNIX AND NOT ANDROID)
-        target_link_libraries(backend "${MKL_LIB_DIR}/libmkl_rt.so")
-    endif()
 endif()
 
 if(WITH_NEON)

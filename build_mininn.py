@@ -59,19 +59,11 @@ def build_cmake(args):
 
         if args.generator == "ninja":
             cmake_args.extend(["-G", "Ninja"])
-        elif args.generator == "mingw":
-            cmake_args.extend(["-G", "MinGW Makefiles"])
         elif args.generator == "vs2022":
             cmake_args.extend(["-G", "Visual Studio 17 2022"])
-        elif args.generator == "nmake":
-            cmake_args.extend(["-G", "NMake Makefiles"])
-        elif args.generator == "make":
-            cmake_args.extend(["-G", "Unix Makefiles"])
-        elif args.generator == "msys2":
-            cmake_args.extend(["-G", "MSYS Makefiles"])
         else:
             print(
-                "Unsupported generator for Windows. Use 'ninja', 'mingw', or 'vs2022'. Set default generator to 'ninja'."
+                "Unsupported generator for Windows. Use 'ninja' or 'vs2022'. Set default generator to 'ninja'."
             )
             cmake_args.extend(["-G", "Ninja"])
 
@@ -79,14 +71,11 @@ def build_cmake(args):
             cmake_args.extend(
                 ["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"]
             )
-        elif args.compiler == "gcc":
-            cmake_args.extend(["-DCMAKE_C_COMPILER=gcc", "-DCMAKE_CXX_COMPILER=g++"])
-            cmake_args.extend(["-DWITH_MKL=OFF"])  # MKL not supported with MinGW
         elif args.compiler == "cl":
             cmake_args.extend(["-DCMAKE_C_COMPILER=cl", "-DCMAKE_CXX_COMPILER=cl"])
         else:
             print(
-                "Unsupported compiler for Windows. Use 'clang', 'gcc', or 'cl'. Set default compiler to 'clang'."
+                "Unsupported compiler for Windows. Use 'clang' or 'cl'. Set default compiler to 'clang'."
             )
             cmake_args.extend(
                 ["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"]
@@ -128,11 +117,9 @@ def build_cmake(args):
         cmake_args.extend(
             [
                 "-DWITH_MULTI_THREADS=OFF",
-                "-DWITH_CUDA=OFF",
                 "-DWITH_OPENCL=OFF",
                 "-DWITH_AVX=OFF",
                 "-DWITH_SSE=OFF",
-                "-DWITH_MKL=OFF",
                 "-DWITH_NEON=OFF",
             ]
         )
@@ -141,11 +128,9 @@ def build_cmake(args):
             cmake_args.extend(
                 [
                     "-DWITH_MULTI_THREADS=OFF",
-                    "-DWITH_CUDA=OFF",
                     "-DWITH_OPENCL=OFF",
                     "-DWITH_AVX=OFF",
                     "-DWITH_SSE=OFF",
-                    "-DWITH_MKL=OFF",
                 ]
             )
         else:
@@ -245,9 +230,9 @@ def main():
     )
     parser.add_argument("--target", choices=["windows", "linux", "android"])
     parser.add_argument(
-        "--generator", choices=["ninja", "mingw", "vs2022", "make", "nmake", "msys2"], default="ninja"
+        "--generator", choices=["ninja", "vs2022", "make"], default="ninja"
     )
-    parser.add_argument("--compiler", choices=["gcc", "clang", "cl"], default="clang")
+    parser.add_argument("--compiler", choices=["clang", "cl", "gcc"], default="clang")
     parser.add_argument("--clean", action="store_true")
     parser.add_argument("--wheel", action="store_true")
 

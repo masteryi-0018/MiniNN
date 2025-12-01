@@ -4,8 +4,6 @@
 #include <thread>
 
 #include "mininn/backend/avx/avx.h"
-#include "mininn/backend/cuda/cuda.cuh"
-#include "mininn/backend/mkl/mkl.h"
 #include "mininn/backend/neon/neon.h"
 #include "mininn/backend/opencl/opencl.h"
 #include "mininn/backend/sse/sse.h"
@@ -72,15 +70,6 @@ void AddCompute::run() {
             << " seconds";
 #endif  // WITH_MULTI_THREADS
 
-#ifdef WITH_CUDA
-  start_time = std::chrono::high_resolution_clock::now();
-  cuda_add_wrapper(x_buffer, y_buffer, out_buffer, size);
-  end_time = std::chrono::high_resolution_clock::now();
-  elapsed_seconds = end_time - start_time;
-  LOG(INFO) << "Elapsed time in cuda: " << elapsed_seconds.count()
-            << " seconds";
-#endif  // WITH_CUDA
-
 #ifdef WITH_OPENCL
   start_time = std::chrono::high_resolution_clock::now();
   opencl_add_wrapper(x_buffer, y_buffer, out_buffer, size);
@@ -105,14 +94,6 @@ void AddCompute::run() {
   elapsed_seconds = end_time - start_time;
   LOG(INFO) << "Elapsed time in sse: " << elapsed_seconds.count() << " seconds";
 #endif  // WITH_SSE
-
-#ifdef WITH_MKL
-  start_time = std::chrono::high_resolution_clock::now();
-  mkl_add_wrapper(x_buffer, y_buffer, out_buffer, size);
-  end_time = std::chrono::high_resolution_clock::now();
-  elapsed_seconds = end_time - start_time;
-  LOG(INFO) << "Elapsed time in mkl: " << elapsed_seconds.count() << " seconds";
-#endif  // WITH_MKL
 
 #ifdef WITH_NEON
   start_time = std::chrono::high_resolution_clock::now();
