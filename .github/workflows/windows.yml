@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build-windows:
+  vs2022-cl:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
@@ -25,6 +25,56 @@ jobs:
     - name: Build
       run: |
         python .\build_mininn.py --target windows --generator vs2022 --compiler cl
+
+    - name: Test
+      run: |
+        .\build\mininn\test\Debug\gtest-main.exe
+        .\build\demo\Debug\demo.exe .\models\add_model.gynn
+
+  ninja-cl:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.13
+
+    - name: Install Dependencies
+      run: |
+        pip install cmake
+        pip install ninja
+
+    - name: Build
+      run: |
+        python .\build_mininn.py --target windows --generator ninja --compiler cl
+
+    - name: Test
+      run: |
+        .\build\mininn\test\gtest-main.exe
+        .\build\demo\demo.exe .\models\add_model.gynn
+
+  ninja-clang:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.13
+
+    - name: Install Dependencies
+      run: |
+        pip install cmake
+        pip install ninja
+
+    - name: Build
+      run: |
+        python .\build_mininn.py --target windows --generator ninja --compiler clang
 
     - name: Test
       run: |
