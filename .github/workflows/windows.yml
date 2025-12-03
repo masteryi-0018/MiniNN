@@ -49,6 +49,7 @@ jobs:
 
     - name: Build
       run: |
+        cmd /c "`"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat`" x64 && pwsh"
         python .\build_mininn.py --target windows --generator ninja --compiler cl
 
     - name: Test
