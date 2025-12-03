@@ -96,7 +96,6 @@ cmd /c "`"E:\visual studio\VC\Auxiliary\Build\vcvarsall.bat`" x64 && pwsh"
 ```ps1
 # cmake ninja
 python .\build_mininn.py --target windows --generator ninja --compiler clang
-python .\build_mininn.py --target windows --generator ninja --compiler cl
 
 # cmake vs2022
 python .\build_mininn.py --target windows --generator vs2022 --compiler cl

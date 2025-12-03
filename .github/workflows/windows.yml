@@ -31,32 +31,6 @@ jobs:
         .\build\mininn\test\Debug\gtest-main.exe
         .\build\demo\Debug\demo.exe .\models\add_model.gynn
 
-  ninja-cl:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-        fetch-depth: 0
-    - uses: actions/setup-python@v4
-      with:
-        python-version: 3.13
-
-    - name: Install Dependencies
-      run: |
-        pip install cmake
-        pip install ninja
-
-    - name: Build
-      run: |
-        cmd /c "`"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat`" x64 && pwsh"
-        python .\build_mininn.py --target windows --generator ninja --compiler cl
-
-    - name: Test
-      run: |
-        .\build\mininn\test\gtest-main.exe
-        .\build\demo\demo.exe .\models\add_model.gynn
-
   ninja-clang:
     runs-on: windows-latest
     steps:
