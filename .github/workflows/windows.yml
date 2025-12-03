@@ -10,10 +10,14 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: actions/setup-python@v4
       with:
         python-version: 3.13
+
+    - name: Install Dependencies
+      run: |
+        pip install cmake
 
     - name: Build
       run: |
