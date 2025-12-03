@@ -2,7 +2,7 @@ name: Windows Build & Test
 
 on:
   push:
-    branches: [ main, ci-test ]
+    branches: [ main, ci_dev ]
   pull_request:
     branches: [ main ]
 
