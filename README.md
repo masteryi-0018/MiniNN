@@ -23,14 +23,14 @@ python python/test/model_test/mv2_test.py
 
 ### Environment Version
 
-| Host        | Target  | Tool        | Compiler     | Backend                     | Note         |
-| ----------- | ------- | ----------- | ------------ | --------------------------- | ------------ |
-| **Windows** | Windows | cmake 4.2.0 | clang 20.1.5 | opencl✅ avx✅ sse✅ neon❌ |              |
-|             |         |             | msvc 14.44   | opencl✅ avx✅ sse✅ neon❌ | use VS shell |
-|             | Android | cmake 4.2.0 | clang 21.0.0 | opencl❌ avx❌ sse❌ neon✅ | ndk 29.0     |
-| **Linux**   | Linux   | cmake 4.2.0 | clang 10.0.0 | opencl✅ avx✅ sse✅ neon❌ |              |
-|             |         |             | g++ 9.4.0    | opencl✅ avx✅ sse✅ neon❌ |              |
-|             | Android | cmake 4.2.0 | clang 21.0.0 | opencl❌ avx❌ sse❌ neon✅ | ndk r29      |
+| Host        | Target  | Tool        | Compiler     | Backend            | Note         |
+| ----------- | ------- | ----------- | ------------ | ------------------ | ------------ |
+| **Windows** | Windows | cmake 4.2.0 | clang 20.1.5 | avx✅ sse✅ neon❌ |              |
+|             |         |             | msvc 14.44   | avx✅ sse✅ neon❌ | use VS shell |
+|             | Android | cmake 4.2.0 | clang 21.0.0 | avx❌ sse❌ neon✅ | ndk 29.0     |
+| **Linux**   | Linux   | cmake 4.2.0 | clang 10.0.0 | avx✅ sse✅ neon❌ |              |
+|             |         |             | g++ 9.4.0    | avx✅ sse✅ neon❌ |              |
+|             | Android | cmake 4.2.0 | clang 21.0.0 | avx❌ sse❌ neon✅ | ndk r29      |
 
 ### Download
 
@@ -106,7 +106,6 @@ python python/run_all_test.py
 
 3. mininn kernel
 
-- [x] 增加 opencl 后端
 - [x] 增加 avx 后端
 - [x] 增加 sse 后端
 - [x] 增加 neon 后端

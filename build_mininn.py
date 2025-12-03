@@ -117,7 +117,6 @@ def build_cmake(args):
         cmake_args.extend(
             [
                 "-DWITH_MULTI_THREADS=OFF",
-                "-DWITH_OPENCL=OFF",
                 "-DWITH_AVX=OFF",
                 "-DWITH_SSE=OFF",
                 "-DWITH_NEON=OFF",
@@ -128,7 +127,6 @@ def build_cmake(args):
             cmake_args.extend(
                 [
                     "-DWITH_MULTI_THREADS=OFF",
-                    "-DWITH_OPENCL=OFF",
                     "-DWITH_AVX=OFF",
                     "-DWITH_SSE=OFF",
                 ]
