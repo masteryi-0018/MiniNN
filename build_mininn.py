@@ -41,13 +41,13 @@ def build_cmake(args):
         if current_platform == "windows":
             cmake_args.extend(
                 [
-                    "-DCMAKE_TOOLCHAIN_FILE=E:\\android_sdk\\ndk\\25.2.9519653\\build\\cmake\\android.toolchain.cmake"
+                    "-DCMAKE_TOOLCHAIN_FILE=E:\\android_sdk\\ndk\\29.0.13846066\\build\\cmake\\android.toolchain.cmake"
                 ]
             )
         elif current_platform == "linux":
             cmake_args.extend(
                 [
-                    "-DCMAKE_TOOLCHAIN_FILE=/home/gy/tools/android-ndk-r21e/build/cmake/android.toolchain.cmake"
+                    "-DCMAKE_TOOLCHAIN_FILE=/home/gy/tools/android-ndk-r29/build/cmake/android.toolchain.cmake"
                 ]
             )
         cmake_args.extend(["-DANDROID_ABI=arm64-v8a"])

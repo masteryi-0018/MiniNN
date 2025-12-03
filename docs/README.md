@@ -35,6 +35,34 @@
 
 > 本项目作者受 tensorflow lite，paddle-lite，Android NNAPI 影响较大，一些设计可能借鉴上述项目
 
+## 环境
+
+### Windows
+
+1. 编译器：
+   1. msvc，下载vs2022
+   2. clang，GitHub官方下载，直接下载exe就可以，tar.gz只是多了一些llvm的东西，一般使用的话不需要
+   3. 不用gcc的话就不需要mingw，msys2这些了
+   4. ndk可以通过Android studio下载或者官网
+2. 其他通过pip
+   1. cmake
+   2. ninja
+3. miniforge
+   1. py313
+
+### Linux
+
+1. 编译器：
+   1. gcc，apt
+   2. clang，apt
+   3. make，apt
+   4. ndk通过wget官网
+2. 其他通过pip
+   1. cmake
+   2. ninja
+3. miniforge
+   1. py313
+
 ## 构建
 
 ### cmake

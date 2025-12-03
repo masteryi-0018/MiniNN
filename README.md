@@ -23,14 +23,14 @@ python python/test/model_test/mv2_test.py
 
 ### Environment Version
 
-| Host        | Target  | Tool         | Compiler     | Backend              | Note         |
-| ----------- | ------- | ------------ | ------------ | -------------------- | ------------ |
-| **Windows** | Windows | cmake 3.26.4 | clang 20.1.5 | opencl✅ avx✅ sse✅ |              |
-|             |         |              | msvc 14.44   | opencl✅ avx✅ sse✅ | use VS shell |
-|             | Android | cmake 3.26.4 | Clang 14.0.7 | opencl❌ avx❌ sse❌ | ndk 25.2     |
-| **Linux**   | Linux   | cmake 3.16.3 | clang 10.0.0 | opencl✅ avx✅ sse✅ |              |
-|             |         |              | g++ 9.4.0    | opencl✅ avx✅ sse✅ |              |
-|             | Android | cmake 3.16.3 | clang 9.0.9  | opencl❌ avx❌ sse❌ | ndk r21e     |
+| Host        | Target  | Tool        | Compiler     | Backend                     | Note         |
+| ----------- | ------- | ----------- | ------------ | --------------------------- | ------------ |
+| **Windows** | Windows | cmake 4.2.0 | clang 20.1.5 | opencl✅ avx✅ sse✅ neon❌ |              |
+|             |         |             | msvc 14.44   | opencl✅ avx✅ sse✅ neon❌ | use VS shell |
+|             | Android | cmake 4.2.0 | clang 21.0.0 | opencl❌ avx❌ sse❌ neon✅ | ndk 29.0     |
+| **Linux**   | Linux   | cmake 4.2.0 | clang 10.0.0 | opencl✅ avx✅ sse✅ neon❌ |              |
+|             |         |             | g++ 9.4.0    | opencl✅ avx✅ sse✅ neon❌ |              |
+|             | Android | cmake 4.2.0 | clang 21.0.0 | opencl❌ avx❌ sse❌ neon✅ | ndk r29      |
 
 ### Download
 
@@ -64,12 +64,19 @@ python build_mininn.py
 ### cpp
 
 1. windows
+
 ```ps1
+# ninja
 .\build\mininn\test\gtest-main.exe
 .\build\demo\demo.exe .\models\add_model.gynn
+
+# vs2022
+.\build\mininn\test\Debug\gtest-main.exe
+.\build\demo\Debug\demo.exe .\models\add_model.gynn
 ```
 
 2. linux
+
 ```sh
 ./build/mininn/test/gtest-main
 ./build/demo/demo ./models/add_model.gynn
