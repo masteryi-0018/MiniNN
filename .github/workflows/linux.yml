@@ -1,0 +1,37 @@
+name: Linux Build & Test
+
+on:
+  push:
+    branches: [ main, ci_dev ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  vs2022-cl:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        generator: [ninja, make]
+        compiler: [clang, gcc]
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.13
+
+    - name: Install Dependencies
+      run: |
+        pip install cmake
+        pip install ninja
+
+    - name: Build
+      run: |
+        python .\build_mininn.py --target linux --generator ${{ matrix.generator }} --compiler ${{ matrix.compiler }}
+
+    - name: Test
+      run: |
+        ./build/mininn/test/gtest-main
+        ./build/demo/demo ./models/add_model.gynn
