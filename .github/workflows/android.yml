@@ -17,36 +17,31 @@ jobs:
     - uses: actions/setup-python@v4
       with:
         python-version: 3.13
+
+    - name: Enable KVM group perms
+      run: |
+        echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+        sudo udevadm control --reload-rules
+        sudo udevadm trigger --name-match=kvm
+
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
+
+    - name: Start emulator
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        script: echo "Emulator is running"
+        ndk: 29.0.14206865
+        api-level: 24
+        target: default
+        arch: x86_64
+        disable-animations: true
+        emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
 
     - name: Install Dependencies
       run: |
         pip install cmake
         pip install ninja
-
-    - name: Install Android NDK
-      run: |
-        sdkmanager --install "ndk;29.0.14206865"
-
-    - name: Install SDK tools and emulator
-      run: |
-        sdkmanager "emulator" \
-                   "platform-tools" \
-                   "system-images;android-24;default;x86_64"
-
-    - name: Create & Start Emulator
-      run: |
-        mkdir -p $HOME/.android/avd
-        echo "ANDROID_AVD_HOME=$HOME/.android/avd" >> $GITHUB_ENV
-        echo "ANDROID_SDK_HOME=$HOME/.android" >> $GITHUB_ENV
-        ls -al $HOME/.android/avd
-        echo "no" | avdmanager create avd -n test -k "system-images;android-24;default;x86_64"
-        avdmanager - list avd
-        ls -al $HOME/.android/avd
-        $ANDROID_HOME/emulator/emulator -list-avds
-        ${{ env.ANDROID_SDK_ROOT }}/emulator/emulator -avd test -no-snapshot -no-window -no-audio -gpu swiftshader_indirect &
-        timeout 300 adb wait-for-device
 
     - name: Build
       env:
@@ -56,6 +51,7 @@ jobs:
 
     - name: Test
       run: |
+        adb wait-for-device
         adb push ./build/mininn/test/gtest-main /data/local/tmp
         adb push ./build/demo/demo /data/local/tmp
         adb push ./models/ /data/local/tmp
