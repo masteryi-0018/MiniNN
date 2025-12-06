@@ -31,7 +31,8 @@ jobs:
 
     - name: Install SDK tools and emulator
       run: |
-        sdkmanager "platform-tools" \
+        sdkmanager "emulator" \
+                   "platform-tools" \
                    "system-images;android-21;default;arm64-v8a"
 
     - name: Create & Start Emulator
