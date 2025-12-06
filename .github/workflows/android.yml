@@ -37,8 +37,13 @@ jobs:
 
     - name: Create & Start Emulator
       run: |
+        echo "ANDROID_AVD_HOME=$HOME/.android/avd" >> $GITHUB_ENV
+        ls -al $HOME/.android
+        mkdir -p $HOME/.android/avd
         echo "no" | avdmanager create avd -n test -k "system-images;android-24;default;x86_64"
         avdmanager - list avd
+        ls -al $HOME/.android/avd
+        $ANDROID_HOME/emulator/emulator -list-avds
         ${{ env.ANDROID_SDK_ROOT }}/emulator/emulator -avd test -no-snapshot -no-window -no-audio -gpu swiftshader_indirect &
         timeout 300 adb wait-for-device
 

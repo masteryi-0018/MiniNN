@@ -200,3 +200,8 @@ ldd /data/local/tmp/demo
 
 - 问题原因：（待确认）默认情况下，Android Studio 的 x86 模拟器 启用了 ARM 二进制翻译（即使你选择的是 x86_64 镜像）
 - 解决方法：不用解决。参考：<https://www.v2ex.com/t/872539>
+
+5. ubuntu配置Android SDK
+
+- 按理说可以直接`sudo apt install android-sdk`，但还没有试过，看起来很多包很全
+- 从官网下载可以选择完全版（Android studio 1.5GB）或者命令行工具（commandlinetools-linux-13114758_latest.zip），和ndk相似，在Windows下载后复制到ubuntu再unzip；这之后也需要安装java，`sudo apt install openjdk-17-jdk -y`，Ubuntu24似乎自带的java版本是21比较高，速度慢可以尝试apt换源
