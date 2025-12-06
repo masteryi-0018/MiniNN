@@ -33,12 +33,12 @@ jobs:
       run: |
         sdkmanager "emulator" \
                    "platform-tools" \
-                   "system-images;android-21;default;arm64-v8a"
+                   "system-images;android-24;default;x86_64"
 
     - name: Create & Start Emulator
       run: |
-        mkdir -p ~/.android/avd
-        echo "no" | avdmanager create avd -n test -k "system-images;android-21;default;arm64-v8a"
+        echo "no" | avdmanager create avd -n test -k "system-images;android-24;default;x86_64"
+        avdmanager -list-avds
         ${{ env.ANDROID_SDK_ROOT }}/emulator/emulator -avd test -no-snapshot -no-window -no-audio -gpu swiftshader_indirect &
         timeout 300 adb wait-for-device
 
