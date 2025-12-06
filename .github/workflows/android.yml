@@ -1,0 +1,56 @@
+name: Android Build & Test
+
+on:
+  push:
+    branches: [ main, ci_dev ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  android-build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.13
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
+    - name: Install Dependencies
+      run: |
+        pip install cmake
+        pip install ninja
+
+    - name: Install Android NDK
+      run: |
+        sdkmanager --install "ndk;29.0.14206865"
+
+    - name: Install SDK tools and emulator
+      run: |
+        sdkmanager "platform-tools" \
+                   "system-images;android-21;default;arm64-v8a"
+
+    - name: Create & Start Emulator
+      run: |
+        echo "no" | avdmanager create avd -n test -k "system-images;android-21;default;arm64-v8a"
+        emulator -avd test -no-snapshot -no-window -no-audio -gpu swiftshader_indirect &
+        adb wait-for-device
+
+    - name: Build
+      env:
+        ANDROID_NDK_HOME: ${{ env.ANDROID_SDK_ROOT }}/ndk/29.0.14206865
+      run: |
+        python ./build_mininn.py --target android --generator ninja --compiler clang
+
+    - name: Test
+      run: |
+        adb push ./build/mininn/test/gtest-main /data/local/tmp
+        adb push ./build/demo/demo /data/local/tmp
+        adb push ./models/ /data/local/tmp
+        adb shell chmod +x /data/local/tmp/*
+        adb shell "cd /data/local/tmp/ && ./gtest-main"
+        adb shell "cd /data/local/tmp/ && ./demo ./models/add_model.gynn"

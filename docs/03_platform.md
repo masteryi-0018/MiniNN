@@ -143,15 +143,23 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
    adb push ./build/mininn/test/gtest-main /data/local/tmp
    adb push ./build/demo/demo /data/local/tmp
    adb push ./models/ /data/local/tmp
-
-   adb shell
-   cd /data/local/tmp/
-   chmod +x ./gtest-main ./demo
-
-   ./gtest-main
-   ./demo ./models/add_model.gynn
+   adb shell chmod +x /data/local/tmp/*
+   adb shell "cd /data/local/tmp/ && ./gtest-main"
+   adb shell "cd /data/local/tmp/ && ./demo ./models/add_model.gynn"
    ```
-6. 进行异步运行时崩溃退出
+
+设置环境3
+
+1. 下载Android Studio
+2. 使用sdkmanager安装adb，emulator，avdmanager（command-line-tool），avdmanager可能需要Java version 17 or higher，不想安装java的话可以在bat脚本中加入`set SKIP_JDK_VERSION_CHECK=1`，继续运行就好
+3. 使用图形化界面或者命令行创建模拟器
+4. 使用图形化界面或者命令行运行模拟器
+5. 命令：
+   ```
+   avdmanager create avd -n test -k "system-images;android-21;default;arm64-v8a"
+   emulator -avd test -no-snapshot -no-window -no-audio -gpu swiftshader_indirect
+   ```
+6. 之后就和上面一样了，也支持neon
 
 问题
 
@@ -172,6 +180,8 @@ java.lang.Throwable: Emulator terminated with exit code 1
 ```
 
 查看源码：`https://android.googlesource.com/platform/external/qemu/+/refs/heads/emu-36-1-release/android/emulator/main-emulator.cpp#1095`，发现api>28就会报错，所以降低版本试试。另：platform/external/qemu/仓库main分支不是最新的，我找的是emu-36-1-release，还有emu-dev也比较新。按照这个，就找一个api<28的，也就是27（8.1）或者26（8.0），但是事与愿违，会报另一个错：`https://android.googlesource.com/platform/external/qemu/+/refs/heads/emu-36-1-release/android/emulator/main-emulator.cpp#1340`，试了几次，都不成功，遂放弃
+
+android studio中创建已经默认不显示arm64的ABI了，勾选使用不支持的镜像才会出现，依然有感叹号提示运行会特别慢，但实际上是不支持的，可以在命令行运行:`emulator -avd Small_Phone -no-snapshot -no-window -no-audio -gpu swiftshader_indirect`，直接报错：PANIC: QEMU2 emulator does not support arm64 CPU architecture。但实际上是通过虚拟化运行 ARM 镜像，所以应该也是没问题的
 
 2. WSL下直接再安装adb会报错
 
