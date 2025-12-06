@@ -17,26 +17,9 @@ jobs:
     - uses: actions/setup-python@v4
       with:
         python-version: 3.13
-
-    - name: Enable KVM group perms
-      run: |
-        echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-        sudo udevadm control --reload-rules
-        sudo udevadm trigger --name-match=kvm
-
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-
-    - name: Start emulator
-      uses: reactivecircus/android-emulator-runner@v2
+    - uses: android-actions/setup-android@v3
       with:
-        script: echo "Emulator is running"
-        ndk: 29.0.14206865
-        api-level: 24
-        target: default
-        arch: x86_64
-        disable-animations: true
-        emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        packages: ndk;29.0.14206865
 
     - name: Install Dependencies
       run: |
@@ -49,12 +32,26 @@ jobs:
       run: |
         python ./build_mininn.py --target android --generator ninja --compiler clang
 
-    - name: Test
+    - name: Enable KVM group perms
       run: |
-        adb wait-for-device
-        adb push ./build/mininn/test/gtest-main /data/local/tmp
-        adb push ./build/demo/demo /data/local/tmp
-        adb push ./models/ /data/local/tmp
-        adb shell chmod +x /data/local/tmp/*
-        adb shell "cd /data/local/tmp/ && ./gtest-main"
-        adb shell "cd /data/local/tmp/ && ./demo ./models/add_model.gynn"
+        echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+        sudo udevadm control --reload-rules
+        sudo udevadm trigger --name-match=kvm
+
+    - name: Test
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        script: |
+          timeout 60 adb wait-for-device
+          adb push ./build/mininn/test/gtest-main /data/local/tmp
+          adb push ./build/demo/demo /data/local/tmp
+          adb push ./models/ /data/local/tmp
+          adb shell chmod +x /data/local/tmp/*
+          adb shell "cd /data/local/tmp/ && ./gtest-main"
+          adb shell "cd /data/local/tmp/ && ./demo ./models/add_model.gynn"
+        ndk: 29.0.14206865
+        api-level: 34
+        target: default
+        arch: x86_64
+        disable-animations: true
+        emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none

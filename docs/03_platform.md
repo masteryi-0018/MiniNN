@@ -205,3 +205,24 @@ ldd /data/local/tmp/demo
 
 - 按理说可以直接`sudo apt install android-sdk`，但还没有试过，看起来很多包很全
 - 从官网下载可以选择完全版（Android studio 1.5GB）或者命令行工具（commandlinetools-linux-13114758_latest.zip），和ndk相似，在Windows下载后复制到ubuntu再unzip；这之后也需要安装java，`sudo apt install openjdk-17-jdk -y`，Ubuntu24似乎自带的java版本是21比较高，速度慢可以尝试apt换源
+
+值得注意的是，手动使用cmdline-tools必须要按照一定的目录形式组织，需要创建一个sdk目录，存放各种工具（即使最初只有cmdline-tools）
+
+```sh
+export ANDROID_SDK_ROOT=/home/gy/tools/sdk
+export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
+export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
+
+sdkmanager "ndk;29.0.14206865"
+sdkmanager "emulator"
+sdkmanager "system-images;android-24;default;x86_64"
+# 不推荐安装adb（platform-tools），会和Windows下的冲突
+```
+
+然后Linux下需要启动KVM才行
+
+```sh
+echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+sudo udevadm control --reload-rules
+sudo udevadm trigger --name-match=kvm
+```
