@@ -232,3 +232,5 @@ sudo udevadm trigger --name-match=kvm
 编译目标为`ANDROID_ABI=arm64-v8a`的Android版本，linux下是ELF 64-bit LSB shared object, ARM aarch64，windows下是ELF 64-bit LSB pie executable, ARM aarch64（使用git bash之类的查看）；可以发现都是arm64-v8a的结构
 
 模拟器emulator在linux下和windows下都不能直接开启arm64-v8a的镜像，会报错不支持，所以只能使用x86_64的镜像；但是linux下运行会报错：`not executable: 64-bit ELF file`，windows下不报错。在 x86_64 的 Android emulator 上能否执行 取决于该 emulator / system-image 是否带有 ARM-to-x86 二进制翻译层（比如 Houdini 或 qemu-user 翻译），以及翻译层是否对“system 可执行”生效，Windows 上的 emulator 实例 很可能包含或启用了 ARM 翻译支持（或某些运行时/镜像带翻译），所以看起来“能跑”；而 Linux（或 CI）上的 emulator 镜像/配置没有翻译层
+
+通过实验发现，"system-images;android-34;google_apis;x86_64"可以运行，"system-images;android-24;default;x86_64"不能运行，可能是高版本支持了，或者是google_apis的原因；github action使用"system-images;android-34;default;x86_64"也不行，感觉像是google_apis导致的，本地测试了"system-images;android-34;default;x86_64"确实不行
