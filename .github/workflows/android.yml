@@ -46,12 +46,12 @@ jobs:
           adb push ./build/mininn/test/gtest-main /data/local/tmp
           adb push ./build/demo/demo /data/local/tmp
           adb push ./models/ /data/local/tmp
-          adb shell chmod +x /data/local/tmp/*
+          adb shell "chmod +x /data/local/tmp/*"
           adb shell "cd /data/local/tmp/ && ./gtest-main"
           adb shell "cd /data/local/tmp/ && ./demo ./models/add_model.gynn"
         ndk: 29.0.14206865
         api-level: 34
         target: default
-        arch: x86_64
+        arch: arm64-v8a
         disable-animations: true
         emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
