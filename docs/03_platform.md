@@ -143,7 +143,7 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
    adb push ./build/mininn/test/gtest-main /data/local/tmp
    adb push ./build/demo/demo /data/local/tmp
    adb push ./models/ /data/local/tmp
-   adb shell chmod +x /data/local/tmp/*
+   adb shell "chmod +x /data/local/tmp/*"
    adb shell "cd /data/local/tmp/ && ./gtest-main"
    adb shell "cd /data/local/tmp/ && ./demo ./models/add_model.gynn"
    ```
@@ -154,7 +154,7 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
 2. 使用sdkmanager安装adb，emulator，avdmanager（command-line-tool），avdmanager可能需要Java version 17 or higher，不想安装java的话可以在bat脚本中加入`set SKIP_JDK_VERSION_CHECK=1`，继续运行就好
 3. 使用图形化界面或者命令行创建模拟器
 4. 使用图形化界面或者命令行运行模拟器
-5. 命令：
+5. 命令（建议加-no-snapshot从0启动）：
    ```
    avdmanager create avd -n test -k "system-images;android-21;default;arm64-v8a"
    emulator -avd test -no-snapshot -no-window -no-audio -gpu swiftshader_indirect
@@ -198,8 +198,8 @@ ldd /data/local/tmp/demo
 
 4. 为什么emulator运行x86架构的android镜像，可以跑arm64的程序？
 
-- 问题原因：（待确认）默认情况下，Android Studio 的 x86 模拟器 启用了 ARM 二进制翻译（即使你选择的是 x86_64 镜像）
-- 解决方法：不用解决。参考：<https://www.v2ex.com/t/872539>
+- 问题原因：默认情况下，Android Studio 的 x86 模拟器 启用了 ARM 二进制翻译（即使你选择的是 x86_64 镜像）
+- 解决方法：不用解决。参考：<https://www.v2ex.com/t/872539>。在system-image中的google_apis可以看到下方有个`Translated ABI: arm64-v8a`，所以确实是可以的，但是default没有带这个，实验也一样证明了这一点
 
 5. ubuntu配置Android SDK
 
@@ -234,3 +234,8 @@ sudo udevadm trigger --name-match=kvm
 模拟器emulator在linux下和windows下都不能直接开启arm64-v8a的镜像，会报错不支持，所以只能使用x86_64的镜像；但是linux下运行会报错：`not executable: 64-bit ELF file`，windows下不报错。在 x86_64 的 Android emulator 上能否执行 取决于该 emulator / system-image 是否带有 ARM-to-x86 二进制翻译层（比如 Houdini 或 qemu-user 翻译），以及翻译层是否对“system 可执行”生效，Windows 上的 emulator 实例 很可能包含或启用了 ARM 翻译支持（或某些运行时/镜像带翻译），所以看起来“能跑”；而 Linux（或 CI）上的 emulator 镜像/配置没有翻译层
 
 通过实验发现，"system-images;android-34;google_apis;x86_64"可以运行，"system-images;android-24;default;x86_64"不能运行，可能是高版本支持了，或者是google_apis的原因；github action使用"system-images;android-34;default;x86_64"也不行，感觉像是google_apis导致的，本地测试了"system-images;android-34;default;x86_64"确实不行
+
+7. avd下async_run_future直接crash，物理机没有问题
+
+- 问题原因：默认的avd给的内存比较小，物理机的内存比较大，线程池会崩
+- 解决方法：emulator中增加选项`-memory 4096`
