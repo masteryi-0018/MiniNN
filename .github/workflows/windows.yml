@@ -10,6 +10,7 @@ jobs:
   build-test:
     runs-on: windows-latest
     strategy:
+      fail-fast: false
       matrix:
         generator: [ninja, vs2022]
         compiler: [clang, cl]
@@ -29,9 +30,9 @@ jobs:
       run: |
         pip install cmake
 
-    - name: Add msbuild to PATH
+    - name: Add msvc to PATH
       if: matrix.compiler == 'cl'
-      uses: microsoft/setup-msbuild@v2
+      uses: ilammy/msvc-dev-cmd@v1
 
     - name: Build
       run: |
