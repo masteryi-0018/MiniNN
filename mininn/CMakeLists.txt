@@ -2,7 +2,6 @@
 option(WITH_GTEST "build with gtest" ON)
 option(WITH_MULTI_THREADS "build with multi_threads" ON)
 
-option(WITH_OPENCL "build with opencl" ON)
 option(WITH_AVX "build with avx" ON)
 option(WITH_SSE "build with sse" ON)
 option(WITH_NEON "build with neon" ON)

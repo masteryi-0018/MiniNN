@@ -21,7 +21,6 @@ endif()
 message(STATUS "Default cmake build type: ${CMAKE_BUILD_TYPE}")
 
 
-
 ####################  二、env  ####################
 
 # 1. project
@@ -36,25 +35,12 @@ endif()
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # 2. backend
-# custom libs
-if(WIN32)
-    set(OPENCL_INCLUDE_DIR "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.9/include")
-    set(OPENCL_LIB_DIR "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.9/lib/x64")
-elseif(UNIX AND NOT ANDROID)
-    set(OPENCL_INCLUDE_DIR "/usr/local/cuda/include/")
-    set(OPENCL_LIB_DIR "/usr/local/cuda/lib64")
-endif()
-
-# standard libs
-# find_package(OpenCL REQUIRED)
 
 
 ####################  三、main  ####################
 
 # 1. include directories
 set(MININN_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-
-include_directories(${OPENCL_INCLUDE_DIR})
 
 include_directories("${MININN_SOURCE_DIR}")
 include_directories("third_party/flatbuffers/include")

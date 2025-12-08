@@ -143,15 +143,23 @@ Copy-Item -Path .\build\mininn\utils\libutils.dll -Destination $destinationFolde
    adb push ./build/mininn/test/gtest-main /data/local/tmp
    adb push ./build/demo/demo /data/local/tmp
    adb push ./models/ /data/local/tmp
-
-   adb shell
-   cd /data/local/tmp/
-   chmod +x ./gtest-main ./demo
-
-   ./gtest-main
-   ./demo ./models/add_model.gynn
+   adb shell "chmod +x /data/local/tmp/*"
+   adb shell "cd /data/local/tmp/ && ./gtest-main"
+   adb shell "cd /data/local/tmp/ && ./demo ./models/add_model.gynn"
    ```
-6. 进行异步运行时崩溃退出
+
+设置环境3
+
+1. 下载Android Studio
+2. 使用sdkmanager安装adb，emulator，avdmanager（command-line-tool），avdmanager可能需要Java version 17 or higher，不想安装java的话可以在bat脚本中加入`set SKIP_JDK_VERSION_CHECK=1`，继续运行就好
+3. 使用图形化界面或者命令行创建模拟器
+4. 使用图形化界面或者命令行运行模拟器
+5. 命令（建议加-no-snapshot从0启动）：
+   ```
+   avdmanager create avd -n test -k "system-images;android-21;default;arm64-v8a"
+   emulator -avd test -no-snapshot -no-window -no-audio -gpu swiftshader_indirect
+   ```
+6. 之后就和上面一样了，也支持neon
 
 问题
 
@@ -173,6 +181,8 @@ java.lang.Throwable: Emulator terminated with exit code 1
 
 查看源码：`https://android.googlesource.com/platform/external/qemu/+/refs/heads/emu-36-1-release/android/emulator/main-emulator.cpp#1095`，发现api>28就会报错，所以降低版本试试。另：platform/external/qemu/仓库main分支不是最新的，我找的是emu-36-1-release，还有emu-dev也比较新。按照这个，就找一个api<28的，也就是27（8.1）或者26（8.0），但是事与愿违，会报另一个错：`https://android.googlesource.com/platform/external/qemu/+/refs/heads/emu-36-1-release/android/emulator/main-emulator.cpp#1340`，试了几次，都不成功，遂放弃
 
+android studio中创建已经默认不显示arm64的ABI了，勾选使用不支持的镜像才会出现，依然有感叹号提示运行会特别慢，但实际上是不支持的，可以在命令行运行:`emulator -avd Small_Phone -no-snapshot -no-window -no-audio -gpu swiftshader_indirect`，直接报错：PANIC: QEMU2 emulator does not support arm64 CPU architecture。但实际上是通过虚拟化运行 ARM 镜像，所以应该也是没问题的
+
 2. WSL下直接再安装adb会报错
 
 - 问题原因：一台物理机有2个adb会不兼容。
@@ -188,5 +198,44 @@ ldd /data/local/tmp/demo
 
 4. 为什么emulator运行x86架构的android镜像，可以跑arm64的程序？
 
-- 问题原因：（待确认）默认情况下，Android Studio 的 x86 模拟器 启用了 ARM 二进制翻译（即使你选择的是 x86_64 镜像）
-- 解决方法：不用解决。参考：<https://www.v2ex.com/t/872539>
+- 问题原因：默认情况下，Android Studio 的 x86 模拟器 启用了 ARM 二进制翻译（即使你选择的是 x86_64 镜像）
+- 解决方法：不用解决。参考：<https://www.v2ex.com/t/872539>。在system-image中的google_apis可以看到下方有个`Translated ABI: arm64-v8a`，所以确实是可以的，但是default没有带这个，实验也一样证明了这一点
+
+5. ubuntu配置Android SDK
+
+- 按理说可以直接`sudo apt install android-sdk`，但还没有试过，看起来很多包很全
+- 从官网下载可以选择完全版（Android studio 1.5GB）或者命令行工具（commandlinetools-linux-13114758_latest.zip），和ndk相似，在Windows下载后复制到ubuntu再unzip；这之后也需要安装java，`sudo apt install openjdk-17-jdk -y`，Ubuntu24似乎自带的java版本是21比较高，速度慢可以尝试apt换源
+
+值得注意的是，手动使用cmdline-tools必须要按照一定的目录形式组织，需要创建一个sdk目录，存放各种工具（即使最初只有cmdline-tools）
+
+```sh
+export ANDROID_SDK_ROOT=/home/gy/tools/sdk
+export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
+export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
+
+sdkmanager "ndk;29.0.14206865"
+sdkmanager "emulator"
+sdkmanager "system-images;android-24;default;x86_64"
+# 不推荐安装adb（platform-tools），会和Windows下的冲突
+```
+
+然后Linux下需要启动KVM才行
+
+```sh
+echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+sudo udevadm control --reload-rules
+sudo udevadm trigger --name-match=kvm
+```
+
+6. windows和linux的Android emulator差异
+
+编译目标为`ANDROID_ABI=arm64-v8a`的Android版本，linux下是ELF 64-bit LSB shared object, ARM aarch64，windows下是ELF 64-bit LSB pie executable, ARM aarch64（使用git bash之类的查看）；可以发现都是arm64-v8a的结构
+
+模拟器emulator在linux下和windows下都不能直接开启arm64-v8a的镜像，会报错不支持，所以只能使用x86_64的镜像；但是linux下运行会报错：`not executable: 64-bit ELF file`，windows下不报错。在 x86_64 的 Android emulator 上能否执行 取决于该 emulator / system-image 是否带有 ARM-to-x86 二进制翻译层（比如 Houdini 或 qemu-user 翻译），以及翻译层是否对“system 可执行”生效，Windows 上的 emulator 实例 很可能包含或启用了 ARM 翻译支持（或某些运行时/镜像带翻译），所以看起来“能跑”；而 Linux（或 CI）上的 emulator 镜像/配置没有翻译层
+
+通过实验发现，"system-images;android-34;google_apis;x86_64"可以运行，"system-images;android-24;default;x86_64"不能运行，可能是高版本支持了，或者是google_apis的原因；github action使用"system-images;android-34;default;x86_64"也不行，感觉像是google_apis导致的，本地测试了"system-images;android-34;default;x86_64"确实不行
+
+7. avd下async_run_future直接crash，物理机没有问题
+
+- 问题原因：默认的avd给的内存比较小，物理机的内存比较大，线程池会崩
+- 解决方法：emulator中增加选项`-memory 4096`

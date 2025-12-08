@@ -1,0 +1,56 @@
+name: Android Build & Test
+
+on:
+  push:
+    branches: [ main, ci_dev ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  android-build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.13
+    - uses: android-actions/setup-android@v3
+      with:
+        packages: ndk;29.0.14206865
+
+    - name: Install Dependencies
+      run: |
+        pip install cmake
+        pip install ninja
+
+    - name: Build
+      env:
+        ANDROID_NDK_HOME: ${{ env.ANDROID_SDK_ROOT }}/ndk/29.0.14206865
+      run: |
+        python ./build_mininn.py --target android --generator ninja --compiler clang
+
+    - name: Enable KVM group perms
+      run: |
+        echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+        sudo udevadm control --reload-rules
+        sudo udevadm trigger --name-match=kvm
+
+    - name: Test
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        script: |
+          timeout 60 adb wait-for-device
+          adb push ./build/mininn/test/gtest-main /data/local/tmp
+          adb push ./build/demo/demo /data/local/tmp
+          adb push ./models/ /data/local/tmp
+          adb shell "chmod +x /data/local/tmp/*"
+          adb shell "cd /data/local/tmp/ && ./gtest-main"
+          adb shell "cd /data/local/tmp/ && ./demo ./models/add_model.gynn"
+        api-level: 34
+        target: google_apis
+        arch: x86_64
+        disable-animations: true
+        emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -memory 4096

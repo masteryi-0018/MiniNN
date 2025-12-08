@@ -3,9 +3,6 @@ add_library(kernel ${LIB_TYPE} ${KERNEL_SRC})
 target_link_libraries(kernel PRIVATE mininn_compile_options)
 
 
-if (WITH_OPENCL)
-    target_compile_definitions(kernel PRIVATE -DWITH_OPENCL)
-endif()
 if (WITH_AVX)
     target_compile_definitions(kernel PRIVATE -DWITH_AVX)
 endif()

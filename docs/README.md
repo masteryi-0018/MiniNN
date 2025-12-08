@@ -96,7 +96,6 @@ cmd /c "`"E:\visual studio\VC\Auxiliary\Build\vcvarsall.bat`" x64 && pwsh"
 ```ps1
 # cmake ninja
 python .\build_mininn.py --target windows --generator ninja --compiler clang
-python .\build_mininn.py --target windows --generator ninja --compiler cl
 
 # cmake vs2022
 python .\build_mininn.py --target windows --generator vs2022 --compiler cl
@@ -105,6 +104,8 @@ python .\build_mininn.py --target windows --generator vs2022 --compiler cl
 2. windows android
 
 ```ps1
+$env:ANDROID_NDK_HOME = "E:\\android_sdk\\ndk\\29.0.13846066"
+
 # cmake ninja
 python .\build_mininn.py --target android --generator ninja --compiler clang
 
@@ -127,6 +128,8 @@ python ./build_mininn.py --target linux --generator make --compiler gcc
 4. linux android
 
 ```sh
+export ANDROID_NDK_HOME=/home/gy/tools/android-ndk-r29
+
 # cmake ninja
 python ./build_mininn.py --target android --generator ninja --compiler clang
 

@@ -5,7 +5,6 @@
 
 #include "mininn/backend/avx/avx.h"
 #include "mininn/backend/neon/neon.h"
-#include "mininn/backend/opencl/opencl.h"
 #include "mininn/backend/sse/sse.h"
 #include "mininn/graph/register.h"
 #include "mininn/utils/log.h"
@@ -69,15 +68,6 @@ void AddCompute::run() {
   LOG(INFO) << "Elapsed time in multi_threads: " << elapsed_seconds.count()
             << " seconds";
 #endif  // WITH_MULTI_THREADS
-
-#ifdef WITH_OPENCL
-  start_time = std::chrono::high_resolution_clock::now();
-  opencl_add_wrapper(x_buffer, y_buffer, out_buffer, size);
-  end_time = std::chrono::high_resolution_clock::now();
-  elapsed_seconds = end_time - start_time;
-  LOG(INFO) << "Elapsed time in opencl: " << elapsed_seconds.count()
-            << " seconds";
-#endif  // WITH_OPENCL
 
 #ifdef WITH_AVX
   start_time = std::chrono::high_resolution_clock::now();

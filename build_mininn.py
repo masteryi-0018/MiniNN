@@ -38,18 +38,15 @@ def build_cmake(args):
         #     print("Unsupported compiler for Android. Use 'clang'. Set default compiler to 'clang'.")
         #     cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
 
-        if current_platform == "windows":
-            cmake_args.extend(
-                [
-                    "-DCMAKE_TOOLCHAIN_FILE=E:\\android_sdk\\ndk\\29.0.13846066\\build\\cmake\\android.toolchain.cmake"
-                ]
-            )
-        elif current_platform == "linux":
-            cmake_args.extend(
-                [
-                    "-DCMAKE_TOOLCHAIN_FILE=/home/gy/tools/android-ndk-r29/build/cmake/android.toolchain.cmake"
-                ]
-            )
+        ndk_home = os.environ.get('ANDROID_NDK_HOME')
+        if not ndk_home:
+            raise EnvironmentError("ANDROID_NDK_HOME not set")
+        toolchain = os.path.join(ndk_home, 'build', 'cmake', 'android.toolchain.cmake')
+        cmake_args.extend(
+            [
+                f"-DCMAKE_TOOLCHAIN_FILE={toolchain}"
+            ]
+        )
         cmake_args.extend(["-DANDROID_ABI=arm64-v8a"])
         cmake_args.extend(
             ["-DANDROID_PLATFORM=android-21"]
@@ -117,7 +114,6 @@ def build_cmake(args):
         cmake_args.extend(
             [
                 "-DWITH_MULTI_THREADS=OFF",
-                "-DWITH_OPENCL=OFF",
                 "-DWITH_AVX=OFF",
                 "-DWITH_SSE=OFF",
                 "-DWITH_NEON=OFF",
@@ -128,7 +124,6 @@ def build_cmake(args):
             cmake_args.extend(
                 [
                     "-DWITH_MULTI_THREADS=OFF",
-                    "-DWITH_OPENCL=OFF",
                     "-DWITH_AVX=OFF",
                     "-DWITH_SSE=OFF",
                 ]
