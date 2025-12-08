@@ -1,14 +1,21 @@
-name: Windows Build & Test
+name: Windows CI
 
 on:
   push:
-    branches: [ main, ci_dev ]
+    branches: main
   pull_request:
-    branches: [ main ]
+    branches: main
 
 jobs:
-  vs2022-cl:
+  build-test:
     runs-on: windows-latest
+    strategy:
+      matrix:
+        generator: [ninja, vs2022]
+        compiler: [clang, cl]
+        exclude:
+          - generator: vs2022
+            compiler: clang
     steps:
     - uses: actions/checkout@v4
       with:
@@ -22,36 +29,22 @@ jobs:
       run: |
         pip install cmake
 
+    - name: Add msbuild to PATH
+      if: matrix.compiler == 'cl'
+      uses: microsoft/setup-msbuild@v2
+
     - name: Build
       run: |
-        python .\build_mininn.py --target windows --generator vs2022 --compiler cl
+        python .\build_mininn.py --target windows --generator ${{ matrix.generator }} --compiler ${{ matrix.compiler }}
 
-    - name: Test
+    - name: Test(vs2022)
+      if: matrix.generator == 'vs2022'
       run: |
         .\build\mininn\test\Debug\gtest-main.exe
         .\build\demo\Debug\demo.exe .\models\add_model.gynn
 
-  ninja-clang:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-        fetch-depth: 0
-    - uses: actions/setup-python@v4
-      with:
-        python-version: 3.13
-
-    - name: Install Dependencies
-      run: |
-        pip install cmake
-        pip install ninja
-
-    - name: Build
-      run: |
-        python .\build_mininn.py --target windows --generator ninja --compiler clang
-
-    - name: Test
+    - name: Test(ninja)
+      if: matrix.generator == 'ninja'
       run: |
         .\build\mininn\test\gtest-main.exe
         .\build\demo\demo.exe .\models\add_model.gynn

@@ -1,13 +1,13 @@
-name: Linux Build & Test
+name: Linux CI
 
 on:
   push:
-    branches: [ main, ci_dev ]
+    branches: main
   pull_request:
-    branches: [ main ]
+    branches: main
 
 jobs:
-  linux-build:
+  build-test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -25,7 +25,6 @@ jobs:
     - name: Install Dependencies
       run: |
         pip install cmake
-        pip install ninja
 
     - name: Build
       run: |

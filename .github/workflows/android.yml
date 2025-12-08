@@ -1,14 +1,17 @@
-name: Android Build & Test
+name: Android CI
 
 on:
   push:
-    branches: [ main, ci_dev ]
+    branches: main
   pull_request:
-    branches: [ main ]
+    branches: main
 
 jobs:
-  android-build:
+  build-test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        generator: [ninja, make]
     steps:
     - uses: actions/checkout@v4
       with:
@@ -24,13 +27,12 @@ jobs:
     - name: Install Dependencies
       run: |
         pip install cmake
-        pip install ninja
 
     - name: Build
       env:
         ANDROID_NDK_HOME: ${{ env.ANDROID_SDK_ROOT }}/ndk/29.0.14206865
       run: |
-        python ./build_mininn.py --target android --generator ninja --compiler clang
+        python ./build_mininn.py --target android --generator ${{ matrix.generator }} --compiler clang
 
     - name: Enable KVM group perms
       run: |
