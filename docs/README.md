@@ -85,7 +85,17 @@
 5. 获得环境之后依旧不推荐使用不匹配的工具链进行开发，容易出问题
 6. 不推荐手动配置 cl 的环境，windows SDK（mt.exe）的环境，甚至 windows SDK（kernel32.lib）的环境
 
-```ps1
+```sh
+# cmd 可以
+call "E:\visual studio\VC\Auxiliary\Build\vcvarsall.bat" x64
+
+# pwsh 不可以
+& "E:\visual studio\VC\Auxiliary\Build\vcvarsall.bat" x64
+
+# pwsh 可以但会改变路径
+. "E:\visual studio\Common7\Tools\Launch-VsDevShell.ps1" -Arch amd64
+
+# pwsh 取巧
 cmd /c "`"E:\visual studio\VC\Auxiliary\Build\vcvarsall.bat`" x64 && pwsh"
 ```
 
@@ -96,6 +106,7 @@ cmd /c "`"E:\visual studio\VC\Auxiliary\Build\vcvarsall.bat`" x64 && pwsh"
 ```ps1
 # cmake ninja
 python .\build_mininn.py --target windows --generator ninja --compiler clang
+python .\build_mininn.py --target windows --generator ninja --compiler cl
 
 # cmake vs2022
 python .\build_mininn.py --target windows --generator vs2022 --compiler cl

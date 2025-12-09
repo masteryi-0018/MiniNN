@@ -32,11 +32,11 @@ def build_cmake(args):
             cmake_args.extend(["-G", "Ninja"])
 
         # if set compiler, cmake will re-generate the build files of linux target
-        # if args.compiler == "clang":
-        #     cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
-        # else:
-        #     print("Unsupported compiler for Android. Use 'clang'. Set default compiler to 'clang'.")
-        #     cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
+        if args.compiler == "clang":
+            cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
+        else:
+            print("Unsupported compiler for Android. Use 'clang'. Set default compiler to 'clang'.")
+            cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
 
         ndk_home = os.environ.get('ANDROID_NDK_HOME')
         if not ndk_home:
@@ -196,11 +196,6 @@ def build_wheel(args):
         cmake_output = os.path.abspath(
             "./build/python/mininn_capi.cpython-313-x86_64-linux-gnu.so"
         )
-
-    # you can cp .pyd/.so file to pybuild/lib/mininn directly, but you should mkdir before python setup.py
-    # target_dir = os.path.join("pybuild/lib", "mininn")
-    # if not os.path.exists(target_dir):
-    #     os.makedirs(target_dir)
 
     target_dir = os.path.join("python", "mininn")
 
