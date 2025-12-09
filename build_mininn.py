@@ -69,6 +69,7 @@ def build_cmake(args):
             cmake_args.extend(["-G", "Unix Makefiles"])
         elif args.generator == "msys2":
             cmake_args.extend(["-G", "MSYS Makefiles"])
+            cmake_args.extend(["-DWITH_MKL=OFF"])  # MKL not supported with clang-gnu
         else:
             print(
                 "Unsupported generator for Windows. Use 'ninja', 'mingw', or 'vs2022'. Set default generator to 'ninja'."
@@ -123,6 +124,10 @@ def build_cmake(args):
             cmake_args.extend(
                 ["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"]
             )
+
+    elif "msys_nt" in current_platform:  # msys shell on windows: msys_nt-10.0-26200
+
+        print("Unsupported platform: MSYS on Windows. Please use ucrt64 shell or other shells.")
 
     if args.wheel:
         cmake_args.extend(

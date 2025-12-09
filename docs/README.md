@@ -102,8 +102,9 @@ python .\build_mininn.py --target windows --tool cmake --generator make --compil
 python .\build_mininn.py --target windows --tool cmake --generator make --compiler gcc
 python .\build_mininn.py --target windows --tool cmake --generator make --compiler cl
 
-# cmake msys2（后续移除）
-python .\build_mininn.py --target windows --tool cmake --generator msys2 --compiler gcc
+# cmake msys2（后续移除）这里需要clang-gnu版本
+python ./build_mininn.py --target windows --tool cmake --generator msys2 --compiler clang
+python ./build_mininn.py --target windows --tool cmake --generator msys2 --compiler gcc
 
 # bazel msvc bzlmod
 python .\build_mininn.py --target windows --tool bazel
