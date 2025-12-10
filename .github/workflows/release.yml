@@ -2,8 +2,9 @@ name: Release Build
 
 on:
   push:
-    tags:
-      - "v*"
+    branches: main
+  pull_request:
+    branches: main
 
 jobs:
   windows:
@@ -81,6 +82,7 @@ jobs:
           name: mininn-linux
           path: release/linux/
 
+      # you need to add Read and write permissions in Settings → Actions → General → Workflow permission
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -94,6 +96,7 @@ jobs:
 
       - name: Zip Windows SDK
         run: |
+          ls -R release
           cd release/windows
           zip -r mininn-windows-sdk.zip mininn_sdk
 
@@ -101,6 +104,8 @@ jobs:
         run: |
           cd release/linux
           zip -r mininn-linux-sdk.zip mininn_sdk
+          cd ../../
+          ls -R release
 
       - name: Upload Windows SDK zip
         uses: actions/upload-release-asset@v1
