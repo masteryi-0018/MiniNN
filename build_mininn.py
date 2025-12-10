@@ -59,20 +59,13 @@ def build_cmake(args):
 
         if args.generator == "ninja":
             cmake_args.extend(["-G", "Ninja"])
-        elif args.generator == "mingw":
-            cmake_args.extend(["-G", "MinGW Makefiles"])
         elif args.generator == "vs2022":
             cmake_args.extend(["-G", "Visual Studio 17 2022"])
         elif args.generator == "nmake":
             cmake_args.extend(["-G", "NMake Makefiles"])
-        elif args.generator == "make":
-            cmake_args.extend(["-G", "Unix Makefiles"])
-        elif args.generator == "msys2":
-            cmake_args.extend(["-G", "MSYS Makefiles"])
-            cmake_args.extend(["-DWITH_MKL=OFF"])  # MKL not supported with clang-gnu
         else:
             print(
-                "Unsupported generator for Windows. Use 'ninja', 'mingw', or 'vs2022'. Set default generator to 'ninja'."
+                "Unsupported generator for Windows. Use 'ninja', 'vs2022', or 'nmake'. Set default generator to 'ninja'."
             )
             cmake_args.extend(["-G", "Ninja"])
 
@@ -80,14 +73,11 @@ def build_cmake(args):
             cmake_args.extend(
                 ["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"]
             )
-        elif args.compiler == "gcc":
-            cmake_args.extend(["-DCMAKE_C_COMPILER=gcc", "-DCMAKE_CXX_COMPILER=g++"])
-            cmake_args.extend(["-DWITH_MKL=OFF"])  # MKL not supported with MinGW
         elif args.compiler == "cl":
             cmake_args.extend(["-DCMAKE_C_COMPILER=cl", "-DCMAKE_CXX_COMPILER=cl"])
         else:
             print(
-                "Unsupported compiler for Windows. Use 'clang', 'gcc', or 'cl'. Set default compiler to 'clang'."
+                "Unsupported compiler for Windows. Use 'clang' or 'cl'. Set default compiler to 'clang'."
             )
             cmake_args.extend(
                 ["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"]
@@ -120,6 +110,38 @@ def build_cmake(args):
         else:
             print(
                 "Unsupported compiler for Linux. Use 'clang' or 'gcc'. Set default compiler to 'clang'."
+            )
+            cmake_args.extend(
+                ["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"]
+            )
+
+    elif "mingw64_nt" in current_platform:  # ucrt64/mingw64 shell on windows
+
+        cmake_args.extend(["-DWITH_MKL=OFF"]) # MKL is not supported on mingw64/ucrt64
+
+        if args.generator == "ninja":
+            cmake_args.extend(["-G", "Ninja"])
+        elif args.generator == "mingw":
+            cmake_args.extend(["-G", "MinGW Makefiles"])
+        elif args.generator == "make":
+            cmake_args.extend(["-G", "Unix Makefiles"])
+        elif args.generator == "msys2":
+            cmake_args.extend(["-G", "MSYS Makefiles"])
+        else:
+            print(
+                "Unsupported generator for ucrt64. Use 'ninja', 'mingw', 'make', or 'msys2'. Set default generator to 'ninja'."
+            )
+            cmake_args.extend(["-G", "Ninja"])
+
+        if args.compiler == "clang":
+            cmake_args.extend(
+                ["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"]
+            )
+        elif args.compiler == "gcc":
+            cmake_args.extend(["-DCMAKE_C_COMPILER=gcc", "-DCMAKE_CXX_COMPILER=g++"])
+        else:
+            print(
+                "Unsupported compiler for ucrt64. Use 'clang' or 'gcc'. Set default compiler to 'clang'."
             )
             cmake_args.extend(
                 ["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"]

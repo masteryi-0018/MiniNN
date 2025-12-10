@@ -76,35 +76,19 @@ cmd /c "`"E:\visual studio\VC\Auxiliary\Build\vcvarsall.bat`" x64 && pwsh"
 
 ### 命令
 
-1. windows local
+1. windows local (clang-msvc)
 
 ```ps1
 # cmake ninja
 python .\build_mininn.py --target windows --tool cmake --generator ninja --compiler clang
-python .\build_mininn.py --target windows --tool cmake --generator ninja --compiler gcc
 python .\build_mininn.py --target windows --tool cmake --generator ninja --compiler cl
 
 # cmake vs2022
 python .\build_mininn.py --target windows --tool cmake --generator vs2022 --compiler cl
 
-# cmake mingw（后续移除）
-python .\build_mininn.py --target windows --tool cmake --generator mingw --compiler clang
-python .\build_mininn.py --target windows --tool cmake --generator mingw --compiler gcc
-python .\build_mininn.py --target windows --tool cmake --generator mingw --compiler cl
-
 # cmake nmake（后续移除）
 python .\build_mininn.py --target windows --tool cmake --generator nmake --compiler clang
-python .\build_mininn.py --target windows --tool cmake --generator nmake --compiler gcc
 python .\build_mininn.py --target windows --tool cmake --generator nmake --compiler cl
-
-# cmake make（后续移除）
-python .\build_mininn.py --target windows --tool cmake --generator make --compiler clang
-python .\build_mininn.py --target windows --tool cmake --generator make --compiler gcc
-python .\build_mininn.py --target windows --tool cmake --generator make --compiler cl
-
-# cmake msys2（后续移除）这里需要clang-gnu版本
-python ./build_mininn.py --target windows --tool cmake --generator msys2 --compiler clang
-python ./build_mininn.py --target windows --tool cmake --generator msys2 --compiler gcc
 
 # bazel msvc bzlmod
 python .\build_mininn.py --target windows --tool bazel
@@ -143,6 +127,26 @@ python ./build_mininn.py --target android --tool cmake --generator ninja --compi
 
 # cmake make
 python ./build_mininn.py --target android --tool cmake --generator make --compiler clang
+```
+
+5. windows local + ucrt64 (clang-gnu)
+
+```sh
+# cmake ninja
+python ./build_mininn.py --target windows --tool cmake --generator ninja --compiler clang
+python ./build_mininn.py --target windows --tool cmake --generator ninja --compiler gcc
+
+# cmake mingw（后续移除），可以使用原生的mingw32-make
+python ./build_mininn.py --target windows --tool cmake --generator mingw --compiler clang
+python ./build_mininn.py --target windows --tool cmake --generator mingw --compiler gcc
+
+# cmake make（后续移除），需要rename为make
+python ./build_mininn.py --target windows --tool cmake --generator make --compiler clang
+python ./build_mininn.py --target windows --tool cmake --generator make --compiler gcc
+
+# cmake msys2（后续移除），需要rename为make
+python ./build_mininn.py --target windows --tool cmake --generator msys2 --compiler clang
+python ./build_mininn.py --target windows --tool cmake --generator msys2 --compiler gcc
 ```
 
 ## 使用 msys2 生成器的坑
