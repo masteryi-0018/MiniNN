@@ -2,9 +2,8 @@ name: Release Build
 
 on:
   push:
-    branches: main
-  pull_request:
-    branches: main
+    tags:
+      - 'v*.*.*'
 
 jobs:
   windows:
@@ -82,18 +81,6 @@ jobs:
           name: mininn-linux
           path: release/linux/
 
-      # you need to add Read and write permissions in Settings → Actions → General → Workflow permission
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref_name }}
-          release_name: ${{ github.ref_name }}
-          draft: false
-          prerelease: false
-
       - name: Zip Windows SDK
         run: |
           cd release/windows
@@ -104,17 +91,12 @@ jobs:
           cd release/linux
           zip -r mininn-linux-sdk.zip mininn_sdk
 
+      # you need to add Read and write permissions in Settings → Actions → General → Workflow permission
       - name: Release
         uses: softprops/action-gh-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          draft: false
-          prerelease: false
           files: |
             release/windows/mininn-windows-sdk.zip
             release/windows/python/dist/mininn-*.whl
             release/linux/mininn-linux-sdk.zip
             release/linux/wheelhouse/mininn-*.whl
-          name: ${{ github.ref_name }}
-          tag_name: ${{ github.ref_name }}
