@@ -96,7 +96,6 @@ jobs:
 
       - name: Zip Windows SDK
         run: |
-          ls -R release
           cd release/windows
           zip -r mininn-windows-sdk.zip mininn_sdk
 
@@ -104,29 +103,6 @@ jobs:
         run: |
           cd release/linux
           zip -r mininn-linux-sdk.zip mininn_sdk
-          cd ../../
-          ls -R release
-
-
-      - name: Upload Linux SDK zip
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: release/linux/mininn-linux-sdk.zip
-          asset_name: mininn-linux-sdk-${{ github.ref_name }}.zip
-          asset_content_type: application/zip
-
-      - name: Upload Linux Wheel
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: release/linux/wheelhouse/mininn-*.whl
-          asset_name: mininn-linux-${{ github.ref_name }}.whl
-          asset_content_type: application/octet-stream
 
       - name: Upload Windows SDK zip
         uses: actions/upload-release-asset@v1
@@ -146,4 +122,24 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: release/windows/python/dist/mininn-1.5.0-cp313-cp313-win_amd64.whl
           asset_name: mininn-windows-${{ github.ref_name }}.whl
+          asset_content_type: application/octet-stream
+
+      - name: Upload Linux SDK zip
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: release/linux/mininn-linux-sdk.zip
+          asset_name: mininn-linux-sdk-${{ github.ref_name }}.zip
+          asset_content_type: application/zip
+
+      - name: Upload Linux Wheel
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: release/linux/wheelhouse/mininn-1.4.0-cp313-cp313-manylinux_2_31_x86_64.whl
+          asset_name: mininn-linux-${{ github.ref_name }}.whl
           asset_content_type: application/octet-stream
