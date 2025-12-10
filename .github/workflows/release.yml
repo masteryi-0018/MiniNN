@@ -107,25 +107,6 @@ jobs:
           cd ../../
           ls -R release
 
-      - name: Upload Windows SDK zip
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: release/windows/mininn-windows-sdk.zip
-          asset_name: mininn-windows-sdk-${{ github.ref_name }}.zip
-          asset_content_type: application/zip
-
-      - name: Upload Windows Wheel
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: release/windows/python/dist/mininn-*.whl
-          asset_name: mininn-windows-${{ github.ref_name }}.whl
-          asset_content_type: application/octet-stream
 
       - name: Upload Linux SDK zip
         uses: actions/upload-release-asset@v1
@@ -145,4 +126,24 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: release/linux/wheelhouse/mininn-*.whl
           asset_name: mininn-linux-${{ github.ref_name }}.whl
+          asset_content_type: application/octet-stream
+
+      - name: Upload Windows SDK zip
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: release/windows/mininn-windows-sdk.zip
+          asset_name: mininn-windows-sdk-${{ github.ref_name }}.zip
+          asset_content_type: application/zip
+
+      - name: Upload Windows Wheel
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: release/windows/python/dist/mininn-1.5.0-cp313-cp313-win_amd64.whl
+          asset_name: mininn-windows-${{ github.ref_name }}.whl
           asset_content_type: application/octet-stream
