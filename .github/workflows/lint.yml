@@ -1,0 +1,27 @@
+name: Lint check
+
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: main
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.13
+
+    - name: Install Dependencies
+      run: |
+        pip install pre-commit
+
+    - name: Check
+      run: |
+        pre-commit run --all-files

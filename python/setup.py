@@ -1,16 +1,18 @@
 import sys
 
-from setuptools import find_packages, setup, Extension
+from setuptools import Extension, find_packages, setup
 from setuptools.command.build_ext import build_ext
 
 VERSION = "1.3.0"
 DESCRIPTION = "python interface of MiniNN"
 LONG_DESCRIPTION = "Build a deep learning inference framework from scratch"
 
+
 # windows can not use empty sources in Extension, so we create a dummy build_ext command
 class DummyBuildExt(build_ext):
     def build_extension(self, ext):
         print(f"Skipping build for {ext.name} (prebuilt binary assumed)")
+
 
 ext_modules = [Extension("mininn.mininn_capi", sources=[])]
 
@@ -30,7 +32,7 @@ setup(
     ext_modules=ext_modules,
     cmdclass={"build_ext": DummyBuildExt},
     install_requires=[
-        "onnxruntime", # >=1.23.2
-        "onnx", # >=1.19.1
+        "onnxruntime",  # >=1.23.2
+        "onnx",  # >=1.19.1
     ],
 )

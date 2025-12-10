@@ -92,11 +92,11 @@ def test_model(new_model_path, model_path, debug=True):
             #     print("output value" , output.get_data())
             #     print("golden value" , golden)
         input = input.flatten()
-        with open("./models/mv2_input.txt", 'w') as f:
+        with open("./models/mv2_input.txt", "w") as f:
             for value in input:
                 f.write(f"{value}\n")
         golden = all_golden[-1].flatten()
-        with open("./models/mv2_golden.txt", 'w') as f:
+        with open("./models/mv2_golden.txt", "w") as f:
             for value in golden:
                 f.write(f"{value}\n")
     else:

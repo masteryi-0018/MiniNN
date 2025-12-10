@@ -1,7 +1,7 @@
-#include <fstream>
-#include <cmath>
-
 #include "mininn/utils/utils.h"
+
+#include <cmath>
+#include <fstream>
 
 bool is_equal(float* tensor1, float* tensor2, int size) {
   for (int i = 0; i < size; ++i) {
@@ -15,18 +15,18 @@ bool is_equal(float* tensor1, float* tensor2, int size) {
 double l2_norm(float* tensor1, float* tensor2, int size) {
   double sum = 0.0;
   for (int i = 0; i < size; ++i) {
-      double diff = tensor1[i] - tensor2[i];
-      sum += diff * diff;
+    double diff = tensor1[i] - tensor2[i];
+    sum += diff * diff;
   }
   return std::sqrt(sum);
 }
 
 std::vector<float> load_txt(const std::string& filename) {
-    std::vector<float> result;
-    std::ifstream file(filename);
-    float value;
-    while (file >> value) {
-        result.push_back(value);
-    }
-    return result;
+  std::vector<float> result;
+  std::ifstream file(filename);
+  float value;
+  while (file >> value) {
+    result.push_back(value);
+  }
+  return result;
 }

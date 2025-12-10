@@ -33,20 +33,22 @@ def build_cmake(args):
 
         # if set compiler, cmake will re-generate the build files of linux target
         if args.compiler == "clang":
-            cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
+            cmake_args.extend(
+                ["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"]
+            )
         else:
-            print("Unsupported compiler for Android. Use 'clang'. Set default compiler to 'clang'.")
-            cmake_args.extend(["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"])
+            print(
+                "Unsupported compiler for Android. Use 'clang'. Set default compiler to 'clang'."
+            )
+            cmake_args.extend(
+                ["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"]
+            )
 
-        ndk_home = os.environ.get('ANDROID_NDK_HOME')
+        ndk_home = os.environ.get("ANDROID_NDK_HOME")
         if not ndk_home:
             raise EnvironmentError("ANDROID_NDK_HOME not set")
-        toolchain = os.path.join(ndk_home, 'build', 'cmake', 'android.toolchain.cmake')
-        cmake_args.extend(
-            [
-                f"-DCMAKE_TOOLCHAIN_FILE={toolchain}"
-            ]
-        )
+        toolchain = os.path.join(ndk_home, "build", "cmake", "android.toolchain.cmake")
+        cmake_args.extend([f"-DCMAKE_TOOLCHAIN_FILE={toolchain}"])
         cmake_args.extend(["-DANDROID_ABI=arm64-v8a"])
         cmake_args.extend(
             ["-DANDROID_PLATFORM=android-21"]
@@ -209,9 +211,7 @@ def build_wheel(args):
             f"{cmake_output} does not exist. Build with CMake first."
         )
 
-    run_command(
-        ["python", "-m", "build"], cwd="python"
-    )
+    run_command(["python", "-m", "build"], cwd="python")
 
 
 def main():
