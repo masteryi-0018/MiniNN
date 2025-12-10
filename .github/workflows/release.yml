@@ -1,0 +1,67 @@
+name: Release Build
+
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: main
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.13
+
+    - name: Install Dependencies
+      run: |
+        pip install cmake
+        pip install build
+
+    - name: Build
+      run: |
+        python .\build_mininn.py --target windows --generator vs2022 --compiler cl --wheel
+
+    - name: Upload mininnlib artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: mininnlib-windows
+        path: |
+          mininn_sdk/
+          python/dist/mininn-*.whl
+
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.13
+
+    - name: Install Dependencies
+      run: |
+        pip install cmake
+        pip install build
+        pip install auditwheel
+        pip install patchelf
+
+    - name: Build
+      run: |
+        python ./build_mininn.py --target linux --generator ninja --compiler clang --wheel
+        auditwheel repair python/dist/mininn-*.whl
+
+    - name: Upload mininnlib artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: mininnlib-linux
+        path: |
+          mininn_sdk/
+          wheelhouse/mininn-*.whl
