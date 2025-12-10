@@ -113,6 +113,7 @@ def build_cmake(args):
             )
 
     if args.wheel:
+        cmake_args.extend(["-DCMAKE_BUILD_TYPE=Release"])
         cmake_args.extend(
             [
                 "-DWITH_MULTI_THREADS=OFF",
