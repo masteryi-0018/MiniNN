@@ -145,6 +145,24 @@ python ./build_mininn.py --target android --tool cmake --generator ninja --compi
 python ./build_mininn.py --target android --tool cmake --generator make --compiler clang
 ```
 
+## 使用 msys2 生成器的坑
+
+1. msys2，ucrt64，mingw64 等，都是不互通的 shell，各个 shell 中都有自己的工具
+2. msys2 实际上就是一个很接近 linux 的 shell，里面的工具也是接近 linux 的，比如 cmake 没有 msys 的生成器，make 也不会重命名；在其中编译程序的体验和 linux 基本一样，但是最终产物会带有 msys-2.0.dll 的依赖，是因为 MSYS 层本质是一个 POSIX 兼容层（像 Cygwin）
+3. 而随着 ucrt64 和 mingw64 的出现，MSYS 环境主要用于运行 shell，不再推荐在 MSYS 环境构建 C/C++ 项目
+4. 如果要用 msys 的生成器，需要在 ucrt64 中，把 mingw32-make rename 成 make
+5. 在低版本 ucrt 中会显示 windows，高版本的显示 mingw64-nt；在低版本和高版本 mingw64 中都会显示 mingw64-nt
+6. 在 pwsh 中的测试：
+
+| 添加环境变量 | rename | 结果                                                                        |
+| ------------ | ------ | --------------------------------------------------------------------------- |
+| √            | √      | gcc/clang.exe is not able to compile a simple test program.                 |
+| √            | ×      | CMake was unable to find a build program corresponding to "MSYS Makefiles". |
+| ×            | √      | CMake was unable to find a build program corresponding to "MSYS Makefiles". |
+| ×            | ×      | CMake was unable to find a build program corresponding to "MSYS Makefiles". |
+
+第一种情况属于工具链混用，这种就是能找到编译器，但是不能编译 demo 程序，就是工具链有问题，不推荐
+
 ## 第三方依赖
 
 | third_party    | version  |
