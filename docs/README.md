@@ -167,6 +167,20 @@ python ./build_mininn.py --target windows --tool cmake --generator msys2 --compi
 
 第一种情况属于工具链混用，这种就是能找到编译器，但是不能编译 demo 程序，就是工具链有问题，不推荐
 
+## gcc in windows
+
+1. scoop install gcc
+
+这是一个最简单的gcc，功能最少，体积最小，工具最简洁；只能用ninja
+
+2. scoop install mingw
+
+这是一个中等的gcc，功能中等，体积中等，工具中等（fortran，POSIX）；可以用mingw，make（自动安装了make而不是rename的版本）
+
+3. scoop install msys2 + ucrt + pacman -S gcc
+
+这是一个最全的gcc，功能最多，体积最大，工具最多（obj-c++, jit）；需要独立终端，可以用msys2生成器
+
 ## 第三方依赖
 
 | third_party    | version  |
