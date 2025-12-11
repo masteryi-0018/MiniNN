@@ -127,6 +127,16 @@ jobs:
           name: mininn-linux
           path: release/linux/
 
+      - name: Move Windows whl to release folder
+        run: |
+          cd release/windows
+          mv python/dist/mininn-*.whl ../
+
+      - name: Move Linux whl to release folder
+        run: |
+          cd release/linux
+          mv wheelhouse/mininn-*.whl ../
+
       - name: Publish release distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
