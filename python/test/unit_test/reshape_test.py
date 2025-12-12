@@ -1,6 +1,6 @@
 import numpy as np
 import onnx
-from common import convert_model, test_model
+from common import convert_model, run_model
 from onnx import TensorProto, helper
 
 
@@ -37,9 +37,7 @@ def make_model(input_shape=[1, 1280, 1, 1], output_shape=[1, 1280], shape=[1, 12
 
     return model_path
 
-
-if __name__ == "__main__":
-
+def test_reshape():
     input_shape = (1, 1280, 1, 1)
     shape = (2,)
     output_shape = (1, 1280)
@@ -50,4 +48,7 @@ if __name__ == "__main__":
 
     new_model_path = convert_model(model_path)
 
-    test_model(new_model_path, model_path, True)
+    run_model(new_model_path, model_path, True)
+
+if __name__ == "__main__":
+    test_reshape()

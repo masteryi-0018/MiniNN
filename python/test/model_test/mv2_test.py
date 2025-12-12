@@ -66,7 +66,7 @@ def l2_norm(a, b):
     return np.linalg.norm(arr_a - arr_b)
 
 
-def test_model(new_model_path, model_path, debug=True):
+def run_mv2_model(new_model_path, model_path, debug=True):
     my_predictor = Predictor(new_model_path)
 
     inputs = my_predictor.get_input()
@@ -107,12 +107,14 @@ def test_model(new_model_path, model_path, debug=True):
         print(l2_norm(output.get_data(), golden))
     return
 
-
-if __name__ == "__main__":
+def test_mv2():
     model_path = "./models/mobilenetv2-10.onnx"
     new_model_path = model_path.replace(".onnx", ".gynn")
     my_convertor = Convertor()
     my_convertor.load_onnx_model(model_path)
     my_convertor.build_mininn(new_model_path)
 
-    test_model(new_model_path, model_path, False)
+    run_mv2_model(new_model_path, model_path, False)
+
+if __name__ == "__main__":
+    test_mv2()

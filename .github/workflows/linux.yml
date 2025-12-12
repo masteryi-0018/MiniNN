@@ -33,5 +33,5 @@ jobs:
 
     - name: Test
       run: |
-        ./build/mininn/test/gtest-main
+        ctest --test-dir ./build/
         ./build/demo/demo ./models/add_model.gynn

@@ -1,14 +1,7 @@
-import os
-import sys
-
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../build/python"))
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../bazel-bin/python"))
-
-import mininn_capi
+from mininn import mininn_capi
 import numpy as np
 
-
-def main():
+def test_add():
     # Tensor
     tensor = mininn_capi.Tensor()
     tensor.set_shape([1, 3, 224, 224])
@@ -61,6 +54,9 @@ def main():
     assert (c == golden).all()
     return
 
+
+def main():
+    test_add()
 
 if __name__ == "__main__":
     main()

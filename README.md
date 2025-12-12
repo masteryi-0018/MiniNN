@@ -73,6 +73,9 @@ python build_mininn.py
 # vs2022
 .\build\mininn\test\Debug\gtest-main.exe
 .\build\demo\Debug\demo.exe .\models\add_model.gynn
+
+# ctest
+ctest --test-dir .\build\
 ```
 
 2. linux
@@ -80,16 +83,19 @@ python build_mininn.py
 ```sh
 ./build/mininn/test/gtest-main
 ./build/demo/demo ./models/add_model.gynn
+
+# ctest
+ctest --test-dir ./build/
 ```
 
 ### python
 
 ```sh
-# 1. convert onnx into gynn
-python python/mininn/convertor.py
+# pytest
+pytest python
 
-# 2. run all tests
-python python/run_all_test.py
+# convert onnx into gynn
+python python/mininn/convertor.py
 ```
 
 ## TODO

@@ -41,11 +41,11 @@ jobs:
     - name: Test(vs2022)
       if: matrix.generator == 'vs2022'
       run: |
-        .\build\mininn\test\Debug\gtest-main.exe
+        ctest --test-dir .\build\
         .\build\demo\Debug\demo.exe .\models\add_model.gynn
 
     - name: Test(ninja)
       if: matrix.generator == 'ninja'
       run: |
-        .\build\mininn\test\gtest-main.exe
+        ctest --test-dir .\build\
         .\build\demo\demo.exe .\models\add_model.gynn

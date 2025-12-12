@@ -13,10 +13,7 @@ message(STATUS "Default C++ standard: ${CMAKE_CXX_STANDARD}")
 
 # 3. set build type
 if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug)
-    # set(CMAKE_BUILD_TYPE Release)
-    # set(CMAKE_BUILD_TYPE RelWithDebInfo)
-    # set(CMAKE_BUILD_TYPE MinSizeRel)
+    set(CMAKE_BUILD_TYPE Debug) # Options: Debug, Release, RelWithDebInfo, MinSizeRel
 endif()
 message(STATUS "Default cmake build type: ${CMAKE_BUILD_TYPE}")
 
@@ -33,6 +30,8 @@ endif()
 
 # set PIC for shared library
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+enable_testing()
+include(GoogleTest)
 
 # 2. backend
 

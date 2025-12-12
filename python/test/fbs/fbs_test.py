@@ -164,8 +164,10 @@ def read(model_path):
         data = tensor.DataAsNumpy()
         assert data == 0
 
-
-if __name__ == "__main__":
+def test_fbs():
     model_path = "./models/mininn_test.gynn"
     write(model_path)
     read(model_path)
+
+if __name__ == "__main__":
+    test_fbs()

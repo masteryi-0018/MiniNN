@@ -1,15 +1,13 @@
 # 1. environment
 option(WITH_GTEST "build with gtest" ON)
-option(WITH_MULTI_THREADS "build with multi_threads" ON)
 
+option(WITH_MULTI_THREADS "build with multi_threads" ON)
 option(WITH_AVX "build with avx" ON)
 option(WITH_SSE "build with sse" ON)
 option(WITH_NEON "build with neon" ON)
 
 # pybind need one static lib to produce a shared lib, so use a OBJECT to handle it
-set(LIB_TYPE OBJECT)
-# set(LIB_TYPE SHARED)
-# set(LIB_TYPE STATIC)
+set(LIB_TYPE OBJECT) # options: OBJECT, STATIC, SHARED
 
 # use interface library to manage compile options
 add_library(mininn_compile_options INTERFACE)
@@ -74,9 +72,4 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E copy ${MININN_SOURCE_DIR}/mininn/graph/use_kernel.h ${MININN_SOURCE_DIR}/mininn_sdk/include/mininn/graph/use_kernel.h
     COMMAND ${CMAKE_COMMAND} -E copy ${MININN_SOURCE_DIR}/mininn/graph/register_helper.h ${MININN_SOURCE_DIR}/mininn_sdk/include/mininn/graph/register_helper.h
     COMMENT "Copying mininn_lib and headers to SDK directory"
-)
-
-file(GLOB_RECURSE ALL_SOURCE_FILES *.cc *.h)
-add_custom_target(format
-    COMMAND clang-format -style=google -i ${ALL_SOURCE_FILES}
 )

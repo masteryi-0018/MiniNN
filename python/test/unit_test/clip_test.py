@@ -1,5 +1,5 @@
 import onnx
-from common import convert_model, test_model
+from common import convert_model, run_model
 from onnx import TensorProto, helper
 
 
@@ -36,9 +36,7 @@ def make_model(
 
     return model_path
 
-
-if __name__ == "__main__":
-
+def test_clip():
     batch_size = 1
     channel = 3
     height = 224
@@ -54,4 +52,7 @@ if __name__ == "__main__":
 
     new_model_path = convert_model(model_path)
 
-    test_model(new_model_path, model_path, True)
+    run_model(new_model_path, model_path, True)
+
+if __name__ == "__main__":
+    test_clip()

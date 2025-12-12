@@ -68,7 +68,7 @@ def l2_norm(a, b):
     return np.linalg.norm(arr_a - arr_b)
 
 
-def test_model(new_model_path, model_path, debug=True):
+def run_model(new_model_path, model_path, debug=True):
     my_predictor = Predictor(new_model_path)
 
     inputs = my_predictor.get_input()

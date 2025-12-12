@@ -3,6 +3,7 @@
 # cmake
 build
 mininn_sdk
+cmake_test_discovery_*.json
 
 # py
 __pycache__
