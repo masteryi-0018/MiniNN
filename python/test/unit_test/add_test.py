@@ -34,6 +34,7 @@ def make_model(input_shape=[1, 3, 224, 224], output_shape=[1, 3, 224, 224]):
 
     return model_path
 
+
 def test_add():
     batch_size = 1
     channel = 3
@@ -47,6 +48,7 @@ def test_add():
     new_model_path = convert_model(model_path)
 
     run_model(new_model_path, model_path, True)
+
 
 if __name__ == "__main__":
     test_add()

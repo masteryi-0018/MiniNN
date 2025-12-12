@@ -48,6 +48,7 @@ def make_model(
 
     return model_path
 
+
 def test_gather():
     axis = 0
     input_shape = [4]
@@ -65,6 +66,7 @@ def test_gather():
     new_model_path = convert_model(model_path)
 
     run_model(new_model_path, model_path, True)
+
 
 if __name__ == "__main__":
     test_gather()

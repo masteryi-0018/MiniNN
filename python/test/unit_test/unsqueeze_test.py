@@ -34,6 +34,7 @@ def make_model(input_shape=[1, 3, 224, 224], output_shape=[1, 3, 224, 224], axes
 
     return model_path
 
+
 def test_unsqueeze():
     axes = [0]
     input_shape = (3, 224, 224)
@@ -46,6 +47,7 @@ def test_unsqueeze():
     new_model_path = convert_model(model_path)
 
     run_model(new_model_path, model_path, True)
+
 
 if __name__ == "__main__":
     test_unsqueeze()

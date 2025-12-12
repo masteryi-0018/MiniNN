@@ -37,6 +37,7 @@ def make_model(input_shape=[1, 1280, 1, 1], output_shape=[1, 1280], shape=[1, 12
 
     return model_path
 
+
 def test_reshape():
     input_shape = (1, 1280, 1, 1)
     shape = (2,)
@@ -49,6 +50,7 @@ def test_reshape():
     new_model_path = convert_model(model_path)
 
     run_model(new_model_path, model_path, True)
+
 
 if __name__ == "__main__":
     test_reshape()

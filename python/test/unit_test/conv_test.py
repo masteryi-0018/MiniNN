@@ -62,6 +62,7 @@ def make_model(
 
     return model_path
 
+
 def test_conv():
     batch_size = 1
     height = 224
@@ -95,6 +96,7 @@ def test_conv():
     new_model_path = convert_model(model_path)
 
     run_model(new_model_path, model_path, True)
+
 
 if __name__ == "__main__":
     test_conv()

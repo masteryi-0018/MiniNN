@@ -107,6 +107,7 @@ def run_mv2_model(new_model_path, model_path, debug=True):
         print(l2_norm(output.get_data(), golden))
     return
 
+
 def test_mv2():
     model_path = "./models/mobilenetv2-10.onnx"
     new_model_path = model_path.replace(".onnx", ".gynn")
@@ -115,6 +116,7 @@ def test_mv2():
     my_convertor.build_mininn(new_model_path)
 
     run_mv2_model(new_model_path, model_path, False)
+
 
 if __name__ == "__main__":
     test_mv2()

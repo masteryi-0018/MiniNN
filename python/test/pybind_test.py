@@ -1,5 +1,7 @@
-from mininn import mininn_capi
 import numpy as np
+
+from mininn import mininn_capi
+
 
 def test_add():
     # Tensor
@@ -57,6 +59,7 @@ def test_add():
 
 def main():
     test_add()
+
 
 if __name__ == "__main__":
     main()

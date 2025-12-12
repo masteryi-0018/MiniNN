@@ -59,6 +59,7 @@ def make_model(
 
     return model_path
 
+
 def test_gemm():
     # test case 1
     input_shape = (1, 1280)

@@ -35,6 +35,7 @@ def make_model(input_shape=[1, 3, 224, 224], output_shape=[1, 3, 1, 1]):
 
     return model_path
 
+
 def run_globalaveragepool():
     input_shape = (1, 3, 224, 224)
     output_shape = (1, 3, 1, 1)
@@ -44,6 +45,7 @@ def run_globalaveragepool():
     new_model_path = convert_model(model_path)
 
     run_model(new_model_path, model_path, True)
+
 
 if __name__ == "__main__":
     run_globalaveragepool()
