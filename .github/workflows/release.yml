@@ -26,12 +26,16 @@ jobs:
       run: |
         python .\build_mininn.py --target windows --generator vs2022 --compiler cl --wheel
 
+    - name: Zip Windows SDK
+      run: |
+        zip -r mininn-windows-sdk.zip .\build\install\*
+
     - name: Upload mininn artifact
       uses: actions/upload-artifact@v4
       with:
         name: mininn-windows
         path: |
-          mininn_sdk/
+          mininn-windows-sdk.zip
           python/dist/mininn-*.whl
 
   linux:
@@ -57,12 +61,16 @@ jobs:
         python ./build_mininn.py --target linux --generator ninja --compiler clang --wheel
         auditwheel repair python/dist/mininn-*.whl
 
+    - name: Zip Linux SDK
+      run: |
+        zip -r mininn-linux-sdk.zip ./build/install/*
+
     - name: Upload mininn artifact
       uses: actions/upload-artifact@v4
       with:
         name: mininn-linux
         path: |
-          mininn_sdk/
+          mininn-linux-sdk.zip
           wheelhouse/mininn-*.whl
 
   release:
@@ -80,16 +88,6 @@ jobs:
         with:
           name: mininn-linux
           path: release/linux/
-
-      - name: Zip Windows SDK
-        run: |
-          cd release/windows
-          zip -r mininn-windows-sdk.zip mininn_sdk
-
-      - name: Zip Linux SDK
-        run: |
-          cd release/linux
-          zip -r mininn-linux-sdk.zip mininn_sdk
 
       # you need to add Read and write permissions in Settings → Actions → General → Workflow permission
       - name: Release

@@ -8,3 +8,7 @@ target_link_libraries(demo mininn_lib)
 if(UNIX AND NOT ANDROID)
     target_link_libraries(demo pthread)
 endif()
+
+install(TARGETS demo
+    RUNTIME DESTINATION bin
+)

@@ -33,6 +33,9 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 enable_testing()
 include(GoogleTest)
 
+set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install" CACHE PATH "" FORCE)
+set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
+
 # 2. backend
 
 

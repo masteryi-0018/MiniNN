@@ -1,4 +1,5 @@
 import argparse
+import glob
 import os
 import platform
 import shutil
@@ -139,6 +140,7 @@ def build_cmake(args):
             )
     run_command(cmake_args)
     run_command(["cmake", "--build", "."], cwd="build")
+    run_command(["cmake", "--install", "."], cwd="build")
     if args.wheel and args.target != "android":
         build_wheel(args)
 
@@ -150,11 +152,9 @@ def clean_cmake():
     else:
         print(f"No directory to remove: 'build'")
 
-    if os.path.exists("mininn_sdk"):
-        print(f"Removing mininn_sdk directory: 'mininn_sdk'")
-        shutil.rmtree("mininn_sdk")
-    else:
-        print(f"No directory to remove: 'mininn_sdk'")
+    for file in glob.glob("cmake_test_discovery_*.json"):
+        os.remove(file)
+        print(f"Removing: {file}")
     clean_wheel()
 
 
