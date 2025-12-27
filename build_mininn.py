@@ -140,7 +140,7 @@ def build_cmake(args):
             )
     run_command(cmake_args)
     run_command(["cmake", "--build", "."], cwd="build")
-    run_command(["cmake", "--install", "."], cwd="build")
+    run_command(["cmake", "--install", ".", "--config Debug"], cwd="build")
     if args.wheel and args.target != "android":
         build_wheel(args)
 
