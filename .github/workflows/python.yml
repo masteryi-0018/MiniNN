@@ -30,7 +30,7 @@ jobs:
 
     - name: Test
       run: |
-        pip install python\dist\mininn-*.whl
+        pip install (Get-ChildItem python\dist\mininn-*.whl)
         pytest python
 
   linux:

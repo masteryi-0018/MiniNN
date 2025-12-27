@@ -7,6 +7,7 @@ cmake_test_discovery_*.json
 
 # py
 __pycache__
+.pytest_cache
 dist
 *.egg-info
 wheelhouse
