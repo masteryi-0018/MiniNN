@@ -224,7 +224,9 @@ def build_wheel(args):
             "./build/python/mininn_capi.cpython-313-x86_64-linux-gnu.so"
         )
     elif sys.platform == "darwin":
-        cmake_output = os.path.abspath("./build/python/mininn_capi.cpython-313-darwin.so")
+        cmake_output = os.path.abspath(
+            "./build/python/mininn_capi.cpython-313-darwin.so"
+        )
     else:
         raise RuntimeError(f"Unsupported platform: {sys.platform}")
 
@@ -247,7 +249,7 @@ def main():
     parser = argparse.ArgumentParser(
         description="Build and clean script for multiple tools, generator and compiler"
     )
-    parser.add_argument("--target", choices=["windows", "linux", "darwin", "android"])
+    parser.add_argument("--target", choices=["windows", "linux", "mac", "android"])
     parser.add_argument(
         "--generator", choices=["ninja", "vs2022", "make"], default="ninja"
     )
