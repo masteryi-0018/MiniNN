@@ -18,6 +18,8 @@ std::string Logger::get_current_time() {
   localtime_s(&local_time, &now);
 #elif __unix__
   localtime_r(&now, &local_time);
+#elif __MACH__
+  localtime_r(&now, &local_time);
 #endif
   std::ostringstream oss;
   oss << std::put_time(&local_time, "%Y-%m-%d %H:%M:%S");

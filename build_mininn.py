@@ -113,6 +113,30 @@ def build_cmake(args):
                 ["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"]
             )
 
+    elif current_platform == "darwin":
+
+        if args.generator == "ninja":
+            cmake_args.extend(["-G", "Ninja"])
+        elif args.generator == "make":
+            cmake_args.extend(["-G", "Unix Makefiles"])
+        else:
+            print(
+                "Unsupported generator for Linux. Use 'ninja' or 'make'. Set default generator to 'ninja'."
+            )
+            cmake_args.extend(["-G", "Ninja"])
+
+        if args.compiler == "clang":
+            cmake_args.extend(
+                ["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"]
+            )
+        else:
+            print(
+                "Unsupported compiler for Linux. Use 'clang'. Set default compiler to 'clang'."
+            )
+            cmake_args.extend(
+                ["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"]
+            )
+
     if args.wheel:
         cmake_args.extend(["-DCMAKE_BUILD_TYPE=Release"])
         cmake_args.extend(
@@ -199,13 +223,17 @@ def build_wheel(args):
         cmake_output = os.path.abspath(
             "./build/python/mininn_capi.cpython-313-x86_64-linux-gnu.so"
         )
+    elif sys.platform == "darwin":
+        cmake_output = os.path.abspath("./build/python/mininn_capi.cpython-313-darwin.so")
+    else:
+        raise RuntimeError(f"Unsupported platform: {sys.platform}")
 
     target_dir = os.path.join("python", "mininn")
 
     if os.path.exists(cmake_output):
         if sys.platform == "win32":
             shutil.copyfile(cmake_output, os.path.join(target_dir, "mininn_capi.pyd"))
-        elif sys.platform == "linux":
+        elif sys.platform == "linux" or "darwin":
             shutil.copyfile(cmake_output, os.path.join(target_dir, "mininn_capi.so"))
     else:
         raise FileNotFoundError(
@@ -219,7 +247,7 @@ def main():
     parser = argparse.ArgumentParser(
         description="Build and clean script for multiple tools, generator and compiler"
     )
-    parser.add_argument("--target", choices=["windows", "linux", "android"])
+    parser.add_argument("--target", choices=["windows", "linux", "darwin", "android"])
     parser.add_argument(
         "--generator", choices=["ninja", "vs2022", "make"], default="ninja"
     )

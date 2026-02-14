@@ -63,20 +63,32 @@
 3. miniforge
    1. py313
 
+### Mac
+
+1. 编译器：
+   1. 自带apple clang
+2. 其他通过pip
+   1. cmake
+   2. ninja
+3. miniforge
+   1. py313
+
 ## 构建
 
 ### cmake
 
 | Host        | Target  | Generator             | gcc | clang | msvc |
 | ----------- | ------- | --------------------- | --- | ----- | ---- |
-| **Windows** | Windows | Ninja                 | ✅  | ✅    | ⚠️   |
-|             |         | Visual Studio 17 2022 | ❌  | ❌    | ✅   |
-|             | Android | Ninja                 | ❌  | ✅    | ❌   |
-|             |         | Unix Makefiles        | ❌  | ✅    | ❌   |
-| **Linux**   | Linux   | Ninja                 | ✅  | ✅    | ❌   |
-|             |         | Unix Makefiles        | ✅  | ✅    | ❌   |
-|             | Android | Ninja                 | ❌  | ✅    | ❌   |
-|             |         | Unix Makefiles        | ❌  | ✅    | ❌   |
+| **Windows** | Windows | Ninja                 | ✅   | ✅     | ⚠️    |
+|             |         | Visual Studio 17 2022 | ❌   | ❌     | ✅    |
+|             | Android | Ninja                 | ❌   | ✅     | ❌    |
+|             |         | Unix Makefiles        | ❌   | ✅     | ❌    |
+| **Linux**   | Linux   | Ninja                 | ✅   | ✅     | ❌    |
+|             |         | Unix Makefiles        | ✅   | ✅     | ❌    |
+|             | Android | Ninja                 | ❌   | ✅     | ❌    |
+|             |         | Unix Makefiles        | ❌   | ✅     | ❌    |
+| **Mac**     | Mac     | Ninja                 | ❌   | ✅     | ❌    |
+|             |         | Unix Makefiles        | ❌   | ✅     | ❌    |
 
 1. 使用 Unix Makefile 需要 rename mingw32-make -> make，不推荐
 2. 使用 MSYS Makefiles 需要特定的 shell，否则找不到默认的使用 sh.exe，不推荐，而且不容易配置 clang 和 cl
@@ -146,6 +158,16 @@ python ./build_mininn.py --target android --generator ninja --compiler clang
 
 # cmake make
 python ./build_mininn.py --target android --generator make --compiler clang
+```
+
+5. mac local
+
+```sh
+# cmake ninja
+python ./build_mininn.py --target mac --generator ninja --compiler clang
+
+# cmake make
+python ./build_mininn.py --target mac --generator make --compiler clang
 ```
 
 ## 第三方依赖
