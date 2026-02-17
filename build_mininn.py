@@ -148,10 +148,18 @@ def build_cmake(args):
             ]
         )
     else:
+        arch = platform.machine()
         if args.target == "android":
             cmake_args.extend(
                 [
                     "-DWITH_MULTI_THREADS=OFF",
+                    "-DWITH_AVX=OFF",
+                    "-DWITH_SSE=OFF",
+                ]
+            )
+        elif args.target == "darwin" and arch == "arm64": # M chip
+            cmake_args.extend(
+                [
                     "-DWITH_AVX=OFF",
                     "-DWITH_SSE=OFF",
                 ]
