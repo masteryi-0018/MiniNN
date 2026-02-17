@@ -177,3 +177,18 @@ python ./build_mininn.py --target mac --generator make --compiler clang
 | flatbuffers | v25.9.23 |
 | googletest  | v1.17.0  |
 | pybind11    | v3.0.1   |
+
+# 开发后
+
+## release
+
+```sh
+# 打tag
+git tag v1.5.1
+# 联连同tag一起push
+git push origin main v1.5.1
+
+# 如果出错，重新tag，本地删除，远端删除
+git tag -d v1.5.1
+git push --delete origin v1.5.1
+```

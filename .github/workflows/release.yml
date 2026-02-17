@@ -28,7 +28,7 @@ jobs:
 
     - name: Zip Windows SDK
       run: |
-        zip -r mininn-windows-sdk.zip .\build\install\*
+        Compress-Archive -Path build\install\* -DestinationPath mininn-windows-sdk.zip
 
     - name: Upload mininn artifact
       uses: actions/upload-artifact@v4
