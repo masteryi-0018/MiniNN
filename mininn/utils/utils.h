@@ -4,13 +4,6 @@
 #include <iostream>
 #include <vector>
 
-#ifdef _WIN32
-#include <windows.h>
-#define sleep(x) Sleep(1000 * x)
-#else
-#include <unistd.h>
-#endif
-
 bool is_equal(float* tensor1, float* tensor2, int size);
 
 double l2_norm(float* tensor1, float* tensor2, int size);

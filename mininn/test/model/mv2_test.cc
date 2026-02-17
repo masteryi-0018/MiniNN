@@ -9,6 +9,13 @@
 #include "mininn/utils/log.h"
 #include "mininn/utils/utils.h"
 
+#ifdef _WIN32
+#include <windows.h>
+#define sleep(x) Sleep(1000 * x)
+#else
+#include <unistd.h>
+#endif
+
 std::string mv2_filename = "models/mobilenetv2-10.gynn";
 
 TEST(Operator_Conv, get_input_tensors) {

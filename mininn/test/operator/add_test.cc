@@ -9,6 +9,13 @@
 #include "mininn/utils/log.h"
 #include "mininn/utils/utils.h"
 
+#ifdef _WIN32
+#include <windows.h>
+#define sleep(x) Sleep(1000 * x)
+#else
+#include <unistd.h>
+#endif
+
 std::string add_filename = "models/add_model.gynn";
 
 TEST(Operator_Add, get_input_tensors) {
