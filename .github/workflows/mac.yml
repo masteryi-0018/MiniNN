@@ -1,0 +1,39 @@
+name: Mac CI
+
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: main
+
+jobs:
+  build-test:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        generator: [ninja, make]
+        compiler: [clang]
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.13
+
+    - name: Install Dependencies
+      run: |
+        brew update
+        brew install ninja
+        pip install cmake
+
+    - name: Build
+      run: |
+        python ./build_mininn.py --target mac --generator ${{ matrix.generator }} --compiler ${{ matrix.compiler }}
+
+    - name: Test
+      run: |
+        ctest --test-dir ./build/
+        ./build/demo/demo ./models/add_model.gynn
