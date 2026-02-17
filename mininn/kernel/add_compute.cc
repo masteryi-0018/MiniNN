@@ -6,7 +6,6 @@
 #include "mininn/backend/avx/avx.h"
 #include "mininn/backend/neon/neon.h"
 #include "mininn/backend/sse/sse.h"
-#include "mininn/backend/metal/metal.h"
 #include "mininn/graph/register.h"
 #include "mininn/utils/log.h"
 
@@ -94,15 +93,6 @@ void AddCompute::run() {
   LOG(INFO) << "Elapsed time in neon: " << elapsed_seconds.count()
             << " seconds";
 #endif  // WITH_NEON
-
-#ifdef WITH_METAL
-  start_time = std::chrono::high_resolution_clock::now();
-  metal_add_wrapper(x_buffer, y_buffer, out_buffer, size);
-  end_time = std::chrono::high_resolution_clock::now();
-  elapsed_seconds = end_time - start_time;
-  LOG(INFO) << "Elapsed time in metal: " << elapsed_seconds.count()
-            << " seconds";
-#endif  // WITH_METAL
 
   start_time = std::chrono::high_resolution_clock::now();
   add_func(x_buffer, y_buffer, out_buffer, 0, size);

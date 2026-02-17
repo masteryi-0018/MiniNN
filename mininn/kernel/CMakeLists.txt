@@ -15,8 +15,5 @@ endif()
 if (WITH_NEON)
     target_compile_definitions(kernel PRIVATE -DWITH_NEON)
 endif()
-if (WITH_METAL)
-    target_compile_definitions(kernel PRIVATE -DWITH_METAL)
-endif()
 
 message(STATUS "Source files for kernel library: ${KERNEL_SRC}")

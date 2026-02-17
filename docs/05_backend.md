@@ -283,22 +283,3 @@ E:\android_sdk\ndk\29.0.13846066\toolchains\llvm\prebuilt\windows-x86_64\bin\aar
 ```sh
 E:\android_sdk\ndk\29.0.13846066\toolchains\llvm\prebuilt\windows-x86_64\bin\aarch64-linux-android21-clang .\test.cc -o test -march=armv8.2-a+sve
 ```
-
-## apple metal
-
-需要macos，但是官网似乎也有windows的版本：<https://developer.apple.com/cn/metal/tools/>
-
-1. 需要下载xcode，xcode-cmd-line工具不够
-2. xcodebuild -downloadComponent MetalToolchain
-
-## apple metal 测试
-
-intel系列和M系列的芯片都支持metal，但是最新的metal 4只有M系列芯片支持。metal文件可以直接在运行时编译，或者提前编译好，运行时直接加载metallib，这样会快很多，但是需要一些`add_custom_command`来调用xcrun的命令。
-
-```sh
-xcrun -sdk macosx metal -c add.metal -o add.air
-xcrun -sdk macosx metallib add.air -o default.metallib
-clang++ main.mm -framework Metal -framework Foundation -std=c++17 -o metal_add
-```
-
-测试发现2种实现的速度差不多。
