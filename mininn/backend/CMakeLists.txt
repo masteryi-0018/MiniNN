@@ -19,4 +19,9 @@ if(WITH_NEON)
     target_link_libraries(backend neon)
 endif()
 
+if(WITH_METAL)
+    add_subdirectory(metal)
+    target_link_libraries(backend metal)
+endif()
+
 message(STATUS "Source files for backend library: ${BACKEND_SRC}")
