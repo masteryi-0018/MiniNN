@@ -157,7 +157,7 @@ def build_cmake(args):
                     "-DWITH_SSE=OFF",
                 ]
             )
-        elif args.target == "darwin" and arch == "arm64": # M chip
+        elif args.target == "mac" and arch == "arm64":  # M chip
             cmake_args.extend(
                 [
                     "-DWITH_AVX=OFF",
