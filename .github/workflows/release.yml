@@ -73,8 +73,41 @@ jobs:
           mininn-linux-sdk.zip
           wheelhouse/mininn-*.whl
 
+
+  macos:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.13
+
+    - name: Install Dependencies
+      run: |
+        pip install cmake
+        pip install build
+
+    - name: Build (universal2)
+      run: |
+        python ./build_mininn.py --target mac --generator ninja --compiler clang --wheel
+
+    - name: Zip macOS SDK
+      run: |
+        zip -r mininn-macos-sdk.zip ./build/install/*
+
+    - name: Upload mininn Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: mininn-macos
+        path: |
+          mininn-macos-sdk.zip
+          python/dist/mininn-*.whl
+
   release:
-    needs: [windows, linux]
+    needs: [windows, linux, macos]
     runs-on: ubuntu-latest
     steps:
       - name: Download Windows Artifact
@@ -89,6 +122,12 @@ jobs:
           name: mininn-linux
           path: release/linux/
 
+      - name: Download macOS Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mininn-macos
+          path: release/macos/
+
       # you need to add Read and write permissions in Settings → Actions → General → Workflow permission
       - name: Release
         uses: softprops/action-gh-release@v2
@@ -98,6 +137,8 @@ jobs:
             release/windows/python/dist/mininn-*.whl
             release/linux/mininn-linux-sdk.zip
             release/linux/wheelhouse/mininn-*.whl
+            release/macos/mininn-macos-sdk.zip
+            release/macos/python/dist/mininn-*.whl
 
   # need config by https://docs.pypi.org/trusted-publishers/adding-a-publisher/
   pypi-publish:
@@ -125,6 +166,12 @@ jobs:
           name: mininn-linux
           path: release/linux/
 
+      - name: Download Mac Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mininn-macos
+          path: release/macos/
+
       - name: Move Windows whl to release folder
         run: |
           mkdir dist
@@ -135,6 +182,11 @@ jobs:
         run: |
           cd release/linux
           mv wheelhouse/mininn-*.whl ../../dist
+
+      - name: Move Mac whl to release folder
+        run: |
+          cd release/macos
+          mv python/dist/mininn-*.whl ../../dist
 
       - name: Publish release distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1

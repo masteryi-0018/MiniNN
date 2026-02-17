@@ -61,3 +61,29 @@ jobs:
       run: |
         pip install wheelhouse/mininn-*.whl
         pytest python
+
+  macos:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.13
+
+    - name: Install Dependencies
+      run: |
+        pip install cmake
+        pip install build
+        pip install pytest
+
+    - name: Build
+      run: |
+        python ./build_mininn.py --target mac --generator ninja --compiler clang --wheel
+
+    - name: Test
+      run: |
+        pip install python/dist/mininn-*.whl
+        pytest python
