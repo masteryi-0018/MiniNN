@@ -25,6 +25,9 @@ struct ConvParams : Params {
   std::vector<int> kernel_shape;
   std::vector<int> pads;
   std::vector<int> strides;
+  // optional fused clip, enabled when min/max are not empty
+  std::vector<int> max;
+  std::vector<int> min;
 };
 
 struct ClipParams : Params {

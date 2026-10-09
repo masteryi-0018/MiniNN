@@ -6,6 +6,7 @@
 #include <thread>
 
 #include "mininn/graph/register.h"
+#include "mininn/kernel/clip_compute.h"
 #include "mininn/utils/log.h"
 
 ConvCompute::ConvCompute() {}
@@ -141,6 +142,8 @@ void ConvCompute::run() {
   std::vector<int> kernel_shape = params->kernel_shape;
   std::vector<int> pads = params->pads;
   std::vector<int> strides = params->strides;
+  std::vector<int> max = params->max;
+  std::vector<int> min = params->min;
 
   std::vector<int> input_shape = input->get_shape();
   std::vector<int> out_shape = out->get_shape();
@@ -151,6 +154,11 @@ void ConvCompute::run() {
 
   conv_func(input_buffer, weight_buffer, bias_buffer, out_buffer, dilations,
             group, kernel_shape, pads, strides, input_shape, out_shape);
+
+  // optional fused clip, in place
+  if (!max.empty() && !min.empty()) {
+    clip_func(out_buffer, out_buffer, max, min, out->get_size());
+  }
 
   auto end_time = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double> elapsed_seconds = end_time - start_time;

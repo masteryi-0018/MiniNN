@@ -27,6 +27,9 @@ void Conv::set_attributes(std::map<std::string, std::vector<int>>& attrs) {
   params_->kernel_shape = attrs["kernel_shape"];
   params_->pads = attrs["pads"];
   params_->strides = attrs["strides"];
+  // optional fused clip
+  params_->max = attrs["max"];
+  params_->min = attrs["min"];
 }
 
 void Conv::init_kernel(std::shared_ptr<Kernel> kernel) {

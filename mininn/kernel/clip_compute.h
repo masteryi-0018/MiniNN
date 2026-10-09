@@ -3,6 +3,10 @@
 
 #include "mininn/graph/kernel.h"
 
+// shared by ConvCompute for the optional fused clip
+void clip_func(float* input_buffer, float* out_buffer, std::vector<int> max,
+               std::vector<int> min, int size);
+
 class ClipCompute : public Kernel {
  public:
   ClipCompute();
