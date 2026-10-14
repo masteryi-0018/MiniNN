@@ -12,10 +12,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        generator: [ninja, vs2022]
+        generator: [ninja, vs2026]
         compiler: [clang, cl]
         exclude:
-          - generator: vs2022
+          - generator: vs2026
             compiler: clang
     steps:
     - uses: actions/checkout@v4
@@ -38,8 +38,8 @@ jobs:
       run: |
         python .\build_mininn.py --target windows --generator ${{ matrix.generator }} --compiler ${{ matrix.compiler }}
 
-    - name: Test(vs2022)
-      if: matrix.generator == 'vs2022'
+    - name: Test(vs2026)
+      if: matrix.generator == 'vs2026'
       run: |
         ctest --test-dir .\build\
         .\build\demo\Debug\demo.exe .\models\add_model.gynn

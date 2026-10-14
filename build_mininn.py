@@ -61,9 +61,11 @@ def build_cmake(args):
             cmake_args.extend(["-G", "Ninja"])
         elif args.generator == "vs2022":
             cmake_args.extend(["-G", "Visual Studio 17 2022"])
+        elif args.generator == "vs2026":
+            cmake_args.extend(["-G", "Visual Studio 18 2026"])
         else:
             print(
-                "Unsupported generator for Windows. Use 'ninja' or 'vs2022'. Set default generator to 'ninja'."
+                "Unsupported generator for Windows. Use 'ninja', 'vs2022' or 'vs2026'. Set default generator to 'ninja'."
             )
             cmake_args.extend(["-G", "Ninja"])
 
@@ -81,7 +83,7 @@ def build_cmake(args):
                 ["-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++"]
             )
 
-        if args.generator == "vs2022" and args.compiler != "cl":
+        if args.generator in ("vs2022", "vs2026") and args.compiler != "cl":
             print(
                 "Visual Studio generator only uses the MSVC compiler. Set default compiler to 'cl'."
             )
@@ -219,7 +221,7 @@ def clean_wheel():
 
 def build_wheel(args):
     if sys.platform == "win32":
-        if args.generator == "vs2022":
+        if args.generator in ("vs2022", "vs2026"):
             cmake_output = os.path.abspath(
                 "./build/python/Debug/mininn_capi.cp313-win_amd64.pyd"
             )
@@ -259,7 +261,7 @@ def main():
     )
     parser.add_argument("--target", choices=["windows", "linux", "mac", "android"])
     parser.add_argument(
-        "--generator", choices=["ninja", "vs2022", "make"], default="ninja"
+        "--generator", choices=["ninja", "vs2022", "vs2026", "make"], default="ninja"
     )
     parser.add_argument("--compiler", choices=["clang", "cl", "gcc"], default="clang")
     parser.add_argument("--clean", action="store_true")

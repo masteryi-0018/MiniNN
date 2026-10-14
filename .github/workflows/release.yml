@@ -24,7 +24,7 @@ jobs:
 
     - name: Build
       run: |
-        python .\build_mininn.py --target windows --generator vs2022 --compiler cl --wheel
+        python .\build_mininn.py --target windows --generator vs2026 --compiler cl --wheel
 
     - name: Zip Windows SDK
       run: |
